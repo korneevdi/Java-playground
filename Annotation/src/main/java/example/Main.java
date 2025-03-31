@@ -1,3 +1,5 @@
+// This class runs the annotation processor
+
 package example;
 
 public class Main {

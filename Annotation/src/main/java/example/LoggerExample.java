@@ -1,3 +1,5 @@
+// A class containing methods some of which are marked by the @Log annotation
+
 package example;
 
 public class LoggerExample {

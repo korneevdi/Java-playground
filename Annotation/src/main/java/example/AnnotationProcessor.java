@@ -1,3 +1,5 @@
+// Class which scan specified classes, get all their methods, and check whether they belong to the Log annotation
+
 package example;
 
 import java.lang.reflect.Method;
