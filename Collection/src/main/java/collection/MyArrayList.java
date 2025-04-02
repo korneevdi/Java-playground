@@ -5,7 +5,37 @@ import java.util.Arrays;
 public class MyArrayList implements MyList {
 
     private Car[] array = new Car[10];
+
     private int size = 0;
+
+    // No args constructor
+    public MyArrayList() {
+
+    }
+
+    // Constructor with initial capacity
+    public MyArrayList(int initialCapacity) {
+        if(initialCapacity < 0) {
+            throw new IllegalArgumentException("Capacity cannot be negative: " + initialCapacity);
+        }
+        array = new Car[initialCapacity];
+    }
+
+    // Constructor based on another collection
+    public MyArrayList(MyList anotherList) {
+        Car[] array = new Car[anotherList.size()];
+        for(int i = 0; i < anotherList.size(); i++) {
+            array[i] = anotherList.get(i);
+        }
+        size = anotherList.size();
+    }
+
+    // Constructor based on an array
+    public MyArrayList(Car[] anotherArray) {
+        Car[] array = new Car[anotherArray.length];
+        System.arraycopy(anotherArray, 0, array, 0, anotherArray.length);
+        size = anotherArray.length;
+    }
 
     @Override
     public Car get(int index) {
