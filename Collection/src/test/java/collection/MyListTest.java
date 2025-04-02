@@ -10,9 +10,9 @@ class MyListTest {
     private MyList list;
 
     @BeforeEach
-    private void setUp(){
+    private void setUp() {
         list = new MyArrayList();
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             list.add(new Car("Brand" + i, "Color" + i, i));
         }
     }
@@ -94,7 +94,7 @@ class MyListTest {
     @Test
     void whenRemoveAllElementsContainingByAnotherCollectionSizeMustDecrease() {
         MyList anotherList = new MyArrayList();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             anotherList.add(new Car("Brand" + i, "Color" + i, i));
         }
         assertTrue(list.removeAll(anotherList));
@@ -111,7 +111,7 @@ class MyListTest {
     @Test
     void whenRetainAllElementsContainingByAnotherCollectionSizeMustDecrease() {
         MyList anotherList = new MyArrayList();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             anotherList.add(new Car("Brand" + i, "Color" + i, i));
         }
         assertTrue(list.retainAll(anotherList));
@@ -136,7 +136,7 @@ class MyListTest {
     void whenTrimToSizeCapacityMustBeEqualToSize() {
         int initCapacity = list.getCapacity();
         int desiredCapacity = 80;
-        for(int i = 99; i >= desiredCapacity; i--) {
+        for (int i = 99; i >= desiredCapacity; i--) {
             list.removeAt(i);
         }
         assertEquals(initCapacity, list.getCapacity());
@@ -173,7 +173,7 @@ class MyListTest {
     @Test
     void methodContainsAllReturnsCorrectValue() {
         MyList anotherList = new MyArrayList();
-        for(int i = 0; i < 70; i++) {
+        for (int i = 0; i < 70; i++) {
             anotherList.add(new Car("Brand" + i, "Color" + i, i));
         }
         assertTrue(list.containsAll(anotherList));

@@ -1,14 +1,12 @@
 package collection;
 
-import java.util.ArrayList;
-
 public interface MyList {
 
     // Getting an element by index
     Car get(int index);
 
     // Adding an element to collection
-    void add (Car car);
+    void add(Car car);
 
     // Adding new element to a specific position
     void add(Car car, int index);

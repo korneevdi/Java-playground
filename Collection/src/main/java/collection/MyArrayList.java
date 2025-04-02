@@ -15,7 +15,7 @@ public class MyArrayList implements MyList {
 
     // Constructor with initial capacity
     public MyArrayList(int initialCapacity) {
-        if(initialCapacity < 0) {
+        if (initialCapacity < 0) {
             throw new IllegalArgumentException("Capacity cannot be negative: " + initialCapacity);
         }
         array = new Car[initialCapacity];
@@ -24,7 +24,7 @@ public class MyArrayList implements MyList {
     // Constructor based on another collection
     public MyArrayList(MyList anotherList) {
         Car[] array = new Car[anotherList.size()];
-        for(int i = 0; i < anotherList.size(); i++) {
+        for (int i = 0; i < anotherList.size(); i++) {
             array[i] = anotherList.get(i);
         }
         size = anotherList.size();
@@ -45,7 +45,7 @@ public class MyArrayList implements MyList {
 
     @Override
     public void add(Car car) {
-        if(size == array.length) {
+        if (size == array.length) {
             array = Arrays.copyOf(array, array.length * 2);
         }
         array[size] = car;
@@ -54,13 +54,13 @@ public class MyArrayList implements MyList {
 
     @Override
     public void add(Car car, int index) {
-        if(index < 0 || index > size) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        if(size == array.length) {
+        if (size == array.length) {
             array = Arrays.copyOf(array, array.length * 2);
         }
-        for(int i = size + 1; i >= index; i--) {
+        for (int i = size + 1; i >= index; i--) {
             array[i + 1] = array[i];
         }
         array[index] = car;
@@ -69,8 +69,8 @@ public class MyArrayList implements MyList {
 
     @Override
     public boolean remove(Car car) {
-        for(int i = 0; i < size; i++) {
-            if(array[i].equals(car)) {
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(car)) {
                 return removeAt(i);
             }
         }
@@ -80,7 +80,7 @@ public class MyArrayList implements MyList {
     @Override
     public boolean removeAt(int index) {
         checkIndex(index);
-        for(int i = index; i < size - 1; i++) {
+        for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
         size--;
@@ -90,8 +90,8 @@ public class MyArrayList implements MyList {
     @Override
     public boolean removeAll(MyList anotherList) {
         boolean modified = false;
-        for(int i = 0; i < size; i++) {
-            if(anotherList.contains(array[i])) {
+        for (int i = 0; i < size; i++) {
+            if (anotherList.contains(array[i])) {
                 removeAt(i);
                 i--;
                 modified = true;
@@ -103,8 +103,8 @@ public class MyArrayList implements MyList {
     @Override
     public boolean retainAll(MyList anotherList) {
         boolean modified = false;
-        for(int i = 0; i < size; i++) {
-            if(!anotherList.contains(array[i])) {
+        for (int i = 0; i < size; i++) {
+            if (!anotherList.contains(array[i])) {
                 removeAt(i);
                 i--;
                 modified = true;
@@ -141,8 +141,8 @@ public class MyArrayList implements MyList {
 
     @Override
     public boolean contains(Car car) {
-        for(int i = 0; i < size; i++) {
-            if(array[i].equals(car)) {
+        for (int i = 0; i < size; i++) {
+            if (array[i].equals(car)) {
                 return true;
             }
         }
@@ -151,8 +151,8 @@ public class MyArrayList implements MyList {
 
     @Override
     public boolean containsAll(MyList list) {
-        for(int i = 0; i < list.size(); i++) {
-            if(!this.contains(list.get(i))) {
+        for (int i = 0; i < list.size(); i++) {
+            if (!this.contains(list.get(i))) {
                 return false;
             }
         }
@@ -161,7 +161,7 @@ public class MyArrayList implements MyList {
 
     @Override
     public int indexOf(Car car) {
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             if (array[i].equals(car)) {
                 return i;
             }
@@ -171,7 +171,7 @@ public class MyArrayList implements MyList {
 
     @Override
     public int lastIndexOf(Car car) {
-        for(int i = size - 1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (array[i].equals(car)) {
                 return i;
             }
@@ -182,14 +182,14 @@ public class MyArrayList implements MyList {
     @Override
     public MyList clone() {
         MyList clonedArray = new MyArrayList();
-        for(int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             clonedArray.add(this.get(i));
         }
         return clonedArray;
     }
 
     private void checkIndex(int index) {
-        if(index < 0 || index >= size) {
+        if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
     }
