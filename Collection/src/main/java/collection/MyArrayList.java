@@ -56,6 +56,19 @@ public class MyArrayList implements MyList {
     }
 
     @Override
+    public boolean retainAll(MyList anotherList) {
+        boolean modified = false;
+        for(int i = 0; i < size; i++) {
+            if(!anotherList.contains(array[i])) {
+                removeAt(i);
+                i--;
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    @Override
     public int size() {
         return size;
     }

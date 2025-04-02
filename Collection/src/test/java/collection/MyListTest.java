@@ -107,6 +107,23 @@ class MyListTest {
         assertEquals(89, list.size());
     }
 
+    // retainAll()
+    @Test
+    void whenRetainAllElementsContainingByAnotherCollectionSizeMustDecrease() {
+        MyList anotherList = new MyArrayList();
+        for(int i = 0; i < 10; i++) {
+            anotherList.add(new Car("Brand" + i, "Color" + i, i));
+        }
+        assertTrue(list.retainAll(anotherList));
+        assertEquals(10, list.size());
+        anotherList.add(new Car("BMW", "Blue", 111));
+        assertFalse(list.retainAll(anotherList));
+        assertEquals(10, list.size());
+        anotherList.remove(new Car("Brand4", "Color4", 4));
+        assertTrue(list.retainAll(anotherList));
+        assertEquals(9, list.size());
+    }
+
     // clear()
     @Test
     void whenClearCollectionSizeMustBeZero() {

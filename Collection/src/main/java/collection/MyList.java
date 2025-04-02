@@ -22,6 +22,9 @@ public interface MyList {
     // Removing a set of elements containing by another collection
     boolean removeAll(MyList anotherList);
 
+    // Retaining a set of elements containing by another collection
+    boolean retainAll(MyList anotherList);
+
     // Size of the collection
     int size();
 
