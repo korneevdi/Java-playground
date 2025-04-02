@@ -169,6 +169,18 @@ class MyListTest {
         assertFalse(list.contains(car2));
     }
 
+    // containsAll()
+    @Test
+    void methodContainsAllReturnsCorrectValue() {
+        MyList anotherList = new MyArrayList();
+        for(int i = 0; i < 70; i++) {
+            anotherList.add(new Car("Brand" + i, "Color" + i, i));
+        }
+        assertTrue(list.containsAll(anotherList));
+        anotherList.add(new Car("BMW", "Red", 565));
+        assertFalse(list.containsAll(anotherList));
+    }
+
     // indexOf()
     @Test
     void methodIndexOfReturnsCorrectIndex() {

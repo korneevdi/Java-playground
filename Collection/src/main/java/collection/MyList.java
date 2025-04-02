@@ -43,6 +43,9 @@ public interface MyList {
     // Whether the collection contains an element
     boolean contains(Car car);
 
+    // Whether the collection contains all elements of another collection
+    boolean containsAll(MyList list);
+
     // Index of the first occurrence of the specified element
     int indexOf(Car car);
 

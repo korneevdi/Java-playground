@@ -23,6 +23,21 @@ public class MyArrayList implements MyList {
     }
 
     @Override
+    public void add(Car car, int index) {
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if(size == array.length) {
+            array = Arrays.copyOf(array, array.length * 2);
+        }
+        for(int i = size + 1; i >= index; i--) {
+            array[i + 1] = array[i];
+        }
+        array[index] = car;
+        size++;
+    }
+
+    @Override
     public boolean remove(Car car) {
         for(int i = 0; i < size; i++) {
             if(array[i].equals(car)) {
@@ -105,6 +120,16 @@ public class MyArrayList implements MyList {
     }
 
     @Override
+    public boolean containsAll(MyList list) {
+        for(int i = 0; i < list.size(); i++) {
+            if(!this.contains(list.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public int indexOf(Car car) {
         for(int i = 0; i < size; i++) {
             if (array[i].equals(car)) {
@@ -131,21 +156,6 @@ public class MyArrayList implements MyList {
             clonedArray.add(this.get(i));
         }
         return clonedArray;
-    }
-
-    @Override
-    public void add(Car car, int index) {
-        if(index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
-        if(size == array.length) {
-            array = Arrays.copyOf(array, array.length * 2);
-        }
-        for(int i = size + 1; i >= index; i--) {
-            array[i + 1] = array[i];
-        }
-        array[index] = car;
-        size++;
     }
 
     private void checkIndex(int index) {
