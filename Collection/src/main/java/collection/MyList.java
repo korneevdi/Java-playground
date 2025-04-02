@@ -10,6 +10,9 @@ public interface MyList {
     // Adding an element to collection
     void add (Car car);
 
+    // Adding new element to a specific position
+    void add(Car car, int index);
+
     // Removing a specific element from collection
     boolean remove(Car car);
 
@@ -39,7 +42,4 @@ public interface MyList {
 
     // Clone collection
     MyList clone();
-
-    // Set new element to a specific position
-    void set(Car car, int index);
 }

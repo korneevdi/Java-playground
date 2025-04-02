@@ -26,12 +26,44 @@ class MyListTest {
         assertEquals(24, car.getNumber());
     }
 
-    // add()
+    // add(Car car)
     @Test
     void when100ElementsAddedThenSizeMustBe100() {
         assertEquals(100, list.size());
         list.add(new Car("BMW", "Black", 198));
         assertEquals(101, list.size());
+    }
+
+    // add(Car car, int index)
+    @Test
+    void whenAddElementSizeMustIncrease() {
+        list.add(new Car("Toyota", "White", 618), 15);
+        assertEquals(101, list.size());
+        assertEquals(18, list.get(19).getNumber());
+        assertEquals(618, list.get(15).getNumber());
+        assertEquals("Toyota", list.get(15).getBrand());
+        assertEquals("White", list.get(15).getColor());
+    }
+
+    // add(Car car, int index)
+    @Test
+    void whenAddElementToFirstPositionSizeMustIncrease() {
+        list.add(new Car("Toyota", "White", 618), 0);
+        assertEquals(101, list.size());
+        assertEquals(18, list.get(19).getNumber());
+        assertEquals(618, list.get(0).getNumber());
+        assertEquals("Toyota", list.get(0).getBrand());
+        assertEquals("White", list.get(0).getColor());
+    }
+
+    // add(Car car, int index)
+    @Test
+    void whenAddElementToLastPositionSizeMustIncrease() {
+        list.add(new Car("Toyota", "White", 618), 100);
+        assertEquals(101, list.size());
+        assertEquals(618, list.get(100).getNumber());
+        assertEquals("Toyota", list.get(100).getBrand());
+        assertEquals("White", list.get(100).getColor());
     }
 
     // remove()
@@ -125,13 +157,5 @@ class MyListTest {
         assertEquals(copyList.get(19).getNumber(), list.get(19).getNumber());
         assertEquals(copyList.get(19).getColor(), list.get(19).getColor());
         assertEquals(copyList.get(19).getBrand(), list.get(19).getBrand());
-    }
-
-    // set()
-    @Test
-    void whenSetElementSizeMustIncrease() {
-        list.set(new Car("Toyota", "White", 618), 15);
-        assertEquals(101, list.size());
-        assertEquals(18, list.get(19).getNumber());
     }
 }

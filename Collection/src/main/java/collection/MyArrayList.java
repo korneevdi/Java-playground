@@ -103,7 +103,10 @@ public class MyArrayList implements MyList {
     }
 
     @Override
-    public void set(Car car, int index) {
+    public void add(Car car, int index) {
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
         if(size == array.length) {
             array = Arrays.copyOf(array, array.length * 2);
         }
