@@ -90,6 +90,23 @@ class MyListTest {
         assertEquals(99, list.size());
     }
 
+    // removeAll()
+    @Test
+    void whenRemoveAllElementsContainingByAnotherCollectionSizeMustDecrease() {
+        MyList anotherList = new MyArrayList();
+        for(int i = 0; i < 10; i++) {
+            anotherList.add(new Car("Brand" + i, "Color" + i, i));
+        }
+        assertTrue(list.removeAll(anotherList));
+        assertEquals(90, list.size());
+        anotherList.add(new Car("BMW", "Blue", 111));
+        assertFalse(list.removeAll(anotherList));
+        assertEquals(90, list.size());
+        anotherList.add(new Car("Brand44", "Color44", 44));
+        assertTrue(list.removeAll(anotherList));
+        assertEquals(89, list.size());
+    }
+
     // clear()
     @Test
     void whenClearCollectionSizeMustBeZero() {
@@ -98,9 +115,17 @@ class MyListTest {
     }
 
     // trimToSize()
-    //@Test
-    //void whenTrimToSizeCapacityMustBeEqualToSize() {
-    //}
+    @Test
+    void whenTrimToSizeCapacityMustBeEqualToSize() {
+        int initCapacity = list.getCapacity();
+        int desiredCapacity = 80;
+        for(int i = 99; i >= desiredCapacity; i--) {
+            list.removeAt(i);
+        }
+        assertEquals(initCapacity, list.getCapacity());
+        list.trimToSize();
+        assertEquals(desiredCapacity, list.getCapacity());
+    }
 
     // isEmpty()
     @Test

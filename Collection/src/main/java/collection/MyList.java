@@ -19,8 +19,14 @@ public interface MyList {
     // Removing an element with a specific index from collection
     boolean removeAt(int index);
 
+    // Removing a set of elements containing by another collection
+    boolean removeAll(MyList anotherList);
+
     // Size of the collection
     int size();
+
+    // Capacity of the array
+    int getCapacity();
 
     // Clear the collection (remove all elements)
     void clear();
