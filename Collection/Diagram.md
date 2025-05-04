@@ -1,6 +1,20 @@
 # Java Collection Framework Diagram
 
-![Collection Framework Diagram](Diagram.png)
+<p align="center">
+  <img src="images/Diagram.png" alt="Java Collection Framework diagram" width="1000"/>
+  <br>
+  <em>Figure 1: Java Collection Framework diagram</em>
+</p>
+
+### Class 'ArrayList'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) and [my implementation](src/main/java/collection/MyArrayList.java).
+
+<p align="center">
+  <img src="images/ArrayList.png" alt="ArrayList structure" width="500"/>
+  <br>
+  <em>Figure 2: ArrayList structure</em>
+</p>
 
 ### Interface 'Iterable'
 
