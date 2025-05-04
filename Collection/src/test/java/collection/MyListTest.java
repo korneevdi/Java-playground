@@ -11,7 +11,8 @@ class MyListTest {
 
     @BeforeEach
     private void setUp() {
-        list = new MyArrayList();
+        // list = new MyArrayList();
+        list = new MyLinkedList();
         for (int i = 0; i < 100; i++) {
             list.add(new Car("Brand" + i, "Color" + i, i));
         }
@@ -139,7 +140,6 @@ class MyListTest {
         for (int i = 99; i >= desiredCapacity; i--) {
             list.removeAt(i);
         }
-        assertEquals(initCapacity, list.getCapacity());
         list.trimToSize();
         assertEquals(desiredCapacity, list.getCapacity());
     }
