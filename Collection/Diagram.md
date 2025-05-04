@@ -4,6 +4,8 @@
 
 ### Interface 'Iterable'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html).
+
 The **Iterable** interface is the top-level interface in the Java Collection Framework hierarchy. It represents a collection of elements that can be traversed sequentially, one element at a time. The main purpose of this interface is to provide a standardized way to allow objects to be the target of the enhanced for-each loop introduced in Java 5.
 
 **Iterable** defines a single abstract method:
