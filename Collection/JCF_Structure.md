@@ -10,11 +10,27 @@
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) and [my implementation](src/main/java/collection/MyArrayList.java).
 
+**ArrayList** is a resizable array implementation of the **List** interface. Internally, it uses a dynamically growing array to store elements.
+
 <p align="center">
   <img src="images/ArrayList.png" alt="ArrayList structure" width="500"/>
   <br>
   <em>Figure 2: ArrayList structure</em>
 </p>
+
+**ArrayList** is based on a regular array, the initial length is 10 by default, but can be changed using one of the constructors. When the array size is exceeded, its capacity is increased by about 50% using the grow() method:
+
+```
+int newCapacity = oldCapacity + (oldCapacity >> 1);
+```
+
+ - All elements of the array are indexed, which allows accessing (the *get(index)* method) any element in constant time O(1).
+ - The operations of inserting an element at the end of the array, as well as removing an element from the end of the array, are also performed in constant time O(1).
+ - When an element is added not to the end of the array or one of the elements is removed not from the end of the array, all elements with a higher index are shifted to the right/left, so these operations are performed in O(n) time.
+ - Search operations (indexOf, contains) are also performed for linear time O(n).
+
+**ArrayList** is best suited for frequent access operations and when insertions/removals happen mostly at the end.
+
 
 ### Interface 'Iterable'
 
