@@ -12,7 +12,8 @@ class MyListTest {
     @BeforeEach
     private void setUp() {
         // list = new MyArrayList();
-        list = new MyLinkedList();
+        // list = new MyLinkedList();
+        list = new MyVector();
         for (int i = 0; i < 100; i++) {
             list.add(new Car("Brand" + i, "Color" + i, i));
         }
