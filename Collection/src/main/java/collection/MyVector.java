@@ -3,7 +3,6 @@ package collection;
 import java.util.Arrays;
 
 public class MyVector implements MyList {
-
     private Car[] array = new Car[10];
 
     private int size = 0;
@@ -46,7 +45,8 @@ public class MyVector implements MyList {
     @Override
     public synchronized void add(Car car) {
         if (size == array.length) {
-            array = Arrays.copyOf(array, array.length * 2);
+            int newCapacity = array.length + (array.length >> 1);
+            array = Arrays.copyOf(array, newCapacity);
         }
         array[size] = car;
         size++;
@@ -58,7 +58,8 @@ public class MyVector implements MyList {
             throw new IndexOutOfBoundsException();
         }
         if (size == array.length) {
-            array = Arrays.copyOf(array, array.length * 2);
+            int newCapacity = array.length + (array.length >> 1);
+            array = Arrays.copyOf(array, newCapacity);
         }
         for (int i = size + 1; i >= index; i--) {
             array[i + 1] = array[i];

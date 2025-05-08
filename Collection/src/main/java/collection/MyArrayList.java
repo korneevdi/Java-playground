@@ -46,7 +46,8 @@ public class MyArrayList implements MyList {
     @Override
     public void add(Car car) {
         if (size == array.length) {
-            array = Arrays.copyOf(array, array.length * 2);
+            int newCapacity = array.length + (array.length >> 1);
+            array = Arrays.copyOf(array, newCapacity);
         }
         array[size] = car;
         size++;
@@ -58,7 +59,8 @@ public class MyArrayList implements MyList {
             throw new IndexOutOfBoundsException();
         }
         if (size == array.length) {
-            array = Arrays.copyOf(array, array.length * 2);
+            int newCapacity = array.length + (array.length >> 1);
+            array = Arrays.copyOf(array, newCapacity);
         }
         for (int i = size + 1; i >= index; i--) {
             array[i + 1] = array[i];
