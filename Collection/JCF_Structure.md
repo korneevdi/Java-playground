@@ -6,7 +6,7 @@
   <em>Figure 1: Java Collection Framework diagram</em>
 </p>
 
-### Class 'ArrayList'
+### 1.1. Class 'ArrayList'
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) and [my implementation](src/main/java/collection/MyArrayList.java).
 
@@ -32,7 +32,7 @@ int newCapacity = oldCapacity + (oldCapacity >> 1);
 **ArrayList** is best suited for frequent access operations and when insertions/removals happen mostly at the end.
 
 
-### Class 'LinkedList'
+### 1.2. Class 'LinkedList'
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html) and [my implementation](src/main/java/collection/MyLinkedList.java).
 
@@ -60,7 +60,7 @@ Unlike ArrayList, which uses a contiguous array, **LinkedList** stores elements 
 **LinkedList** is best suited for scenarios where frequent insertions and deletions happen at the beginning or end of the list, or when you need to work with iterators.
 
 
-### Class 'Vector'
+### 1.3. Class 'Vector'
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Vector.html) and [my implementation](src/main/java/collection/MyVector.java).
 
@@ -81,6 +81,45 @@ Key points:
  - All operations (e.g., get(index), add(element), remove(index)) have the same time complexity as in ArrayList.
 
 **Vector** is maintained for backward compatibility with legacy code.
+
+
+### 1.4. Class 'Stack'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html) and [my implementation](src/main/java/collection/MyStack.java).
+
+The **Stack** class represents a last-in, first-out (LIFO) stack of objects. It extends the legacy **Vector** class and provides methods to operate on the stack structure.
+
+<p align="center">
+  <img src="images/Stack.png" alt="Stack as a LIFO structure" width="270"/>
+  <br>
+  <em>Figure 5: Stack as a LIFO structure</em>
+</p>
+
+**Stack** is built on top of Vector, so it inherits all its properties, including dynamic resizing and indexed access. However, unlike **Vector**, it is used in a strictly LIFO manner and exposes a limited set of stack-specific methods:
+
+ - push(E item) – adds an element to the top of the stack.
+ - pop() – removes and returns the top element of the stack. Throws *EmptyStackException* if the stack is empty.
+ - peek() – returns the top element without removing it. Also throws *EmptyStackException* if empty.
+ - isEmpty() – returns *true* if the stack contains no elements and *false* otherwise.
+ - search(Object o) – returns the 1-based position from the top of the stack of the first occurrence of the element, or -1 if this element is not present in the stack.
+
+Internally, since **Stack** is based on Vector, all operations like push, pop, and peek rely on indexed access:
+
+ - push is implemented as addElement(item).
+ - pop removes the element at size() - 1.
+ - peek accesses the element at size() - 1.
+
+Although **Stack** is fully synchronized due to its inheritance from **Vector**, it is considered legacy. Modern Java code prefers **Deque** (e.g., **ArrayDeque**) for stack-like behavior, as it offers better performance and flexibility without legacy synchronization overhead.
+
+
+
+### 1.5. Abstract class 'AbstractSequentialList'
+
+### 1.6. Abstract class 'AbstractList'
+
+### 1.7. Interface 'List'
+
+
 
 
 ### Interface 'Iterable'
