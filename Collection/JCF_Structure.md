@@ -6,6 +6,8 @@
   <em>Figure 1: Java Collection Framework diagram</em>
 </p>
 
+## 1. List – Ordered, indexed collection with duplicates allowed
+
 ### 1.1. Class 'ArrayList'
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html) and [my implementation](src/main/java/collection/MyArrayList.java).
@@ -87,7 +89,13 @@ Key points:
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Stack.html) and [my implementation](src/main/java/collection/MyStack.java).
 
-The **Stack** class represents a last-in, first-out (LIFO) stack of objects. It extends the legacy **Vector** class and provides methods to operate on the stack structure.
+The **Stack** class represents a Last-In-First-Out (LIFO) stack of objects. It extends the legacy **Vector** class and provides methods to operate on the stack structure.
+
+**Stack** was added in Java 1.0 — at that time there were no **List**, **Collection**, **Deque** interfaces, and the Java Collections Framework architecture did not exist yet. **Vector** was the basic dynamic array with built-in synchronization, and **Stack** simply inherited it, adding the Last-In-First-Out (LIFO) behavior.
+
+This is now considered a deprecated solution, and **Deque** (e.g. **ArrayDeque**) is recommended for new stack implementations.
+
+All **Vector** methods (e.g. add(), remove(int index)) are also available in **Stack**, but they may break the LIFO logic.
 
 <p align="center">
   <img src="images/Stack.png" alt="Stack as a LIFO structure" width="270"/>
@@ -112,17 +120,87 @@ Internally, since **Stack** is based on Vector, all operations like push, pop, a
 Although **Stack** is fully synchronized due to its inheritance from **Vector**, it is considered legacy. Modern Java code prefers **Deque** (e.g., **ArrayDeque**) for stack-like behavior, as it offers better performance and flexibility without legacy synchronization overhead.
 
 
+### 1.5. Abstract class 'AbstractList'
 
-### 1.5. Abstract class 'AbstractSequentialList'
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractList.html).
 
-### 1.6. Abstract class 'AbstractList'
+**AbstractList** is an abstract class that partially implements the **List** interface. It serves as a convenience base class for list implementations like **ArrayList** and **Vector**.
+
+It provides default implementations for many commonly used methods such as *isEmpty()*, *addAll()*, *contains()*, *equals()*, and others. These implementations rely on the assumption that the subclass provides working versions of at least a few core methods like *get(int index)*, *size()*, and, optionally, *set(int index, E element)* and *add(int index, E element)*. This allows developers to implement custom list classes without having to re-write all the logic required by the **List** interface.
+Instead, they can extend **AbstractList** and only focus on implementing the essential, structure-specific operations.
+
+That is, in simple words, the **List** interface contains a lot of methods. At the same time, some of these methods are already implemented in **AbstractList**, and then only the remaining ones need to be implemented in **ArrayList** and **Vector**, and those methods that are implemented in **AbstractList** will be available in **ArrayList** and **Vector** automatically.
+
+**AbstractList** is best suited for lists with efficient random access (like array-backed structures).
+
+
+### 1.6. Abstract class 'AbstractSequentialList'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractSequentialList.html).
+
+**AbstractSequentialList** is an abstract subclass of **AbstractList** that is optimized for *sequential access* rather than *random access*.
+
+Unlike **AbstractList**, which expects subclasses to provide access to elements by index (via *get(int index)*), **AbstractSequentialList** is designed for data structures like linked lists, where indexed access is slow. Instead, it requires subclasses to implement *listIterator(int index)* and *size()*. By overriding just these two methods, **AbstractSequentialList** automatically provides working implementations of other **List** methods (like get, set, add, remove, etc.) using a **ListIterator** under the hood, which traverses the list sequentially.
+
+It is the base class for **LinkedList**, which relies on a doubly linked list structure, where random access is inefficient but sequential traversal is fast.
+
 
 ### 1.7. Interface 'List'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/List.html).
 
+The **List** interface is part of the Java Collections Framework and represents an ordered collection of elements. It allows duplicate elements and provides precise control over where each element is inserted. Elements can be accessed by their integer index, making it suitable for use cases where order and position matter.
 
+Key characteristics:
+ - Maintains insertion order.
+ - Supports duplicate elements.
+ - Provides indexed access (*get(int index)*).
+ - Allows positional insertions and deletions.
 
-### Interface 'Iterable'
+List is suitable when:
+ - Element order is important.
+ - You need random access or position-based operations.
+ - Duplicate elements are allowed.
+
+## 2. Set – Unordered collection with unique elements
+
+### 2.1. Class 'HashSet'
+
+### 2.2. Class 'LinkedHashSet'
+
+### 2.3. Class 'TreeSet'
+
+### 2.4. Abstract class 'AbstractSet'
+
+### 2.5. Interface 'NavigableSet'
+
+### 2.6. Interface 'SortedSet'
+
+### 2.7. Interface 'SequencedSet'
+
+### 2.8. Interface 'Set'
+
+## 3. Queue – FIFO structure for ordered element processing
+
+### 3.1. Class 'ArrayDeque'
+
+### 3.2. Interface 'Deque'
+
+### 3.3. Class 'PriorityQueue'
+
+### 3.4. Abstract class 'AbstractQueue'
+
+### 3.5. Interface 'Queue'
+
+## 4. Collection – Root interface for all collection types
+
+### 4.1. Abstract class 'AbstractCollection'
+
+### 4.2. Interface 'SequencedCollection'
+
+### 4.3. Interface 'Collection'
+
+## 5. Interface 'Iterable' – Provides iterator for enhanced-for loop
 
 See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html).
 
