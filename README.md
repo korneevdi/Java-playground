@@ -8,6 +8,9 @@ Feel free to explore and use!
 ## Projects
 
 - [Annotation](./Annotation) – Using annotations in Java with simple examples.
-- [Collection](./Annotation) – Implementation of the main classes and methods in Java Collections Framework. [Java Collections Framework architecture diagram](https://github.com/korneevdi/Java-playground/blob/main/Collection/JCF_Structure.md).
+- [Collection](./Annotation)
+    - Implementation of the main classes and methods in Java Collections Framework.
+    - [Java Collections Framework diagram](https://github.com/korneevdi/Java-playground/blob/main/Collection/JCF_Structure.md).
+    - [Map Hierarchy in Java Collections Framework](https://github.com/korneevdi/Java-playground/blob/main/Collection/Map_Structure.md).
 
 More topics coming soon...
