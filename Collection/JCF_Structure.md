@@ -6,6 +6,39 @@
   <em>Figure 1: Java Collection Framework diagram</em>
 </p>
 
+
+## Table of Contents
+
+- [1. List – Ordered, indexed collection with duplicates allowed](#1-list--ordered-indexed-collection-with-duplicates-allowed)
+    - [1.1. Class 'ArrayList'](#11-class-arraylist)
+    - [1.2. Class 'LinkedList'](#12-class-linkedlist)
+    - [1.3. Class 'Vector'](#13-class-vector)
+    - [1.4. Class 'Stack'](#14-class-stack)
+    - [1.5. Abstract class 'AbstractList'](#15-abstract-class-abstractlist)
+    - [1.6. Abstract class 'AbstractSequentialList'](#16-abstract-class-abstractsequentiallist)
+    - [1.7. Interface 'List'](#17-interface-list)
+- [2. Set – Unordered collection with unique elements](#2-set--unordered-collection-with-unique-elements)
+    - [2.1. Class 'HashSet'](#21-class-hashset)
+    - [2.2. Class 'LinkedHashSet'](#22-class-linkedhashset)
+    - [2.3. Class 'TreeSet'](#23-class-treeset)
+    - [2.4. Abstract class 'AbstractSet'](#24-abstract-class-abstractset)
+    - [2.5. Interface 'NavigableSet'](#25-interface-navigableset)
+    - [2.6. Interface 'SortedSet'](#26-interface-sortedset)
+    - [2.7. Interface 'SequencedSet'](#27-interface-sequencedset)
+    - [2.8. Interface 'Set'](#28-interface-set)
+- [3. Queue – FIFO structure for ordered element processing](#3-queue--fifo-structure-for-ordered-element-processing)
+    - [3.1. Class 'ArrayDeque'](#31-class-arraydeque)
+    - [3.2. Interface 'Deque'](#32-interface-deque)
+    - [3.3. Class 'PriorityQueue'](#33-class-priorityqueue)
+    - [3.4. Abstract class 'AbstractQueue'](#34-abstract-class-abstractqueue)
+    - [3.5. Interface 'Queue'](#35-interface-queue)
+- [4. Collection – Root interface for all collection types](#4-collection--root-interface-for-all-collection-types)
+    - [4.1. Abstract class 'AbstractCollection'](#41-abstract-class-abstractcollection)
+    - [4.2. Interface 'SequencedCollection'](#42-interface-sequencedcollection)
+    - [4.3. Interface 'Collection'](#43-interface-collection)
+- [5. Interface 'Iterable' – Provides iterator for enhanced-for loop](#5-interface-iterable--provides-iterator-for-enhanced-for-loop)
+
+
 ## 1. List – Ordered, indexed collection with duplicates allowed
 
 ### 1.1. Class 'ArrayList'
@@ -157,7 +190,7 @@ Key characteristics:
  - Provides indexed access (*get(int index)*).
  - Allows positional insertions and deletions.
 
-List is suitable when:
+**List** is suitable when:
  - Element order is important.
  - You need random access or position-based operations.
  - Duplicate elements are allowed.
