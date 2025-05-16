@@ -4,7 +4,9 @@ import java.util.Arrays;
 
 public class MyArrayList implements MyList {
 
-    private Car[] array = new Car[10];
+    private final int DEFAULT_INITIAL_CAPACITY = 10;
+
+    private Car[] array = new Car[DEFAULT_INITIAL_CAPACITY];
 
     private int size = 0;
 
