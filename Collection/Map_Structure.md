@@ -5,7 +5,7 @@ Although the **Map** interface does not inherit from the **Collection** interfac
 <p align="center">
   <img src="images/Map_Diagram.png" alt="Map diagram" width="750"/>
   <br>
-  <em>Figure 1: Map in Java Collection Framework</em>
+  <em>Figure 1: Map hierarchy in Java Collection Framework</em>
 </p>
 
 
@@ -27,6 +27,33 @@ Although the **Map** interface does not inherit from the **Collection** interfac
 ## 1. Map – Key-value pairs with unique keys
 
 ### 1.1. Class 'HashMap'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html) and [my implementation](src/main/java/collection/MyHashMap.java).
+
+**HashMap** is a hash table–based implementation of the **Map** interface. It stores key-value pairs and allows efficient retrieval, insertion, and deletion based on keys.
+
+<p align="center">
+  <img src="images/HashMap.png" alt="HashMap structure" width="620"/>
+  <br>
+  <em>Figure 2: HashMap structure</em>
+</p>
+
+Internally, **HashMap** uses an array of buckets (of the type of the internal **Entry** class), where each bucket is a linked list (or a balanced tree for high-collision cases). The position of each key in the array is determined by applying the hashCode() of the key and then compressing it using modulo or bit manipulation:
+
+```
+index = hash(key) % capacity;
+```
+
+Key characteristics of **HashMap**:
+
+ - Allows null keys and values (only one null key allowed).
+ - Unordered: does not maintain insertion order.
+ - Not synchronized: must be manually synchronized for thread safety.
+ - Time complexity:
+   - put(), get(), remove() — average case: O(1), worst case: O(n) (or O(log n) with tree bins).
+   - containsKey() / containsValue() — O(1) / O(n).
+
+**HashMap** is the default choice for most use cases when fast access by key is required and order does not matter.
 
 ### 1.2. Class 'LinkedHashMap'
 
