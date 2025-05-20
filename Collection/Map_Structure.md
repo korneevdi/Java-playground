@@ -57,6 +57,25 @@ Key characteristics of **HashMap**:
 
 ### 1.2. Class 'LinkedHashMap'
 
+**LinkedHashMap** is a hash table–based implementation of the **Map** interface that maintains a predictable iteration order. It extends **HashMap** and preserves the insertion order (or access order, if configured) by maintaining a doubly linked list that runs through all its entries.
+
+Internally, **LinkedHashMap** creates two structures:
+ - A hash table (array of buckets) for efficient key-based access, just like in **HashMap**.
+ - A doubly linked list connecting all entries in insertion (or access) order.
+
+Each entry stores additional pointers (*before* and *after*) to maintain the list order. This allows ordered iteration without compromising key lookup performance.
+
+Key characteristics of **LinkedHashMap**:
+ - Maintains insertion order by default (or access order if accessOrder is true).
+ - Allows one null key and multiple null values.
+ - Slightly slower than **HashMap** due to linked list maintenance.
+ - Time complexity:
+   - put(), get(), remove() — O(1) on average.
+   - ordered iteration — O(n), in insertion or access order.
+ - Not synchronized.
+
+**LinkedHashMap** is ideal when predictable iteration order is needed along with fast lookups — for example, in caches, LRU algorithms, or when you want consistent output order from a map.
+
 ### 1.3. Class 'TreeMap'
 
 ### 1.4. Abstract class 'AbstractMap'
