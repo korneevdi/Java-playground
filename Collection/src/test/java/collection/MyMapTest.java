@@ -12,7 +12,8 @@ class MyMapTest {
 
     @BeforeEach
     private void setUp() {
-        map = new MyHashMap();
+        //map = new MyHashMap();
+        map = new MyLinkedHashMap();
         for (int i = 0; i < 100; i++) {
             map.put(
                     new CarOwner(i, "firstName" + i, "lastName" + i),

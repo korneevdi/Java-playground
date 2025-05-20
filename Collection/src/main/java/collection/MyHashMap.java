@@ -7,13 +7,13 @@ import java.util.Set;
 
 public class MyHashMap implements MyMap {
 
-    private final int DEFAULT_INITIAL_CAPACITY = 16;
+    protected final int DEFAULT_INITIAL_CAPACITY = 16;
 
-    private final double LOAD_FACTOR = 0.75;
+    protected final double LOAD_FACTOR = 0.75;
 
-    private Entry[] hashTable = new Entry[DEFAULT_INITIAL_CAPACITY];
+    protected Entry[] hashTable = new Entry[DEFAULT_INITIAL_CAPACITY];
 
-    private int size = 0;
+    protected int size = 0;
 
     // No args constructor
     public MyHashMap() {
@@ -226,10 +226,14 @@ public class MyHashMap implements MyMap {
         hashTable = newHashTable;
     }
 
-    private static class Entry {
-        private CarOwner key;
-        private Car value;
-        private Entry next;
+    protected static class Entry {
+        protected CarOwner key;
+        protected Car value;
+        protected Entry next;
+
+        // Two fields for MyLinkedHashMap
+        protected Entry before;
+        protected Entry after;
 
         public Entry(CarOwner key, Car value, Entry next) {
             this.key = key;
