@@ -12,7 +12,8 @@ class MySetTest {
 
     @BeforeEach
     private void setUp() {
-        set = new MyHashSet();
+        //set = new MyHashSet();
+        set = new MyLinkedHashSet();
         for (int i = 0; i < 100; i++) {
             set.add(new Car("brand" + i, "color" + i, i));
         }
