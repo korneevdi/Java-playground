@@ -57,6 +57,8 @@ Key characteristics of **HashMap**:
 
 ### 1.2. Class 'LinkedHashMap'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html) and [my implementation](src/main/java/collection/MyLinkedHashMap.java).
+
 **LinkedHashMap** is a hash table–based implementation of the **Map** interface that maintains a predictable iteration order. It extends **HashMap** and preserves the insertion order (or access order, if configured) by maintaining a doubly linked list that runs through all its entries.
 
 Internally, **LinkedHashMap** creates two structures:

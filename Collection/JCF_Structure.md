@@ -199,7 +199,43 @@ Key characteristics:
 
 ### 2.1. Class 'HashSet'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html) and [my implementation](src/main/java/collection/MyHashSet.java).
+
+**HashSet** is a hash table–based implementation of the **Set** interface. It stores unique elements and provides efficient operations such as add, remove, and contains.
+Internally, **HashSet** uses a **HashMap** to store its elements (see the [HashMap documentation](Map_Structure.md#11-class-hashmap)) — each element is stored as a key in the map, and all values are replaced with a constant placeholder object:
+
+```
+private transient HashMap<E, Object> map;
+private static final Object PRESENT = new Object();
+```
+
+This design ensures that all elements in a **HashSet** are unique, and provides the following characteristics:
+
+ - Constant-time performance O(1) for basic operations like add, remove, and contains (on average).
+ - Does not guarantee any specific iteration order of elements.
+ - Allows the *null* element (only one).
+ - Backed by a hash table; internally uses hashing and singly linked lists (or tree bins in Java 8+ if number of collisions exceeds 8).
+
+**HashSet** is ideal for scenarios where you need a fast, unordered collection of unique elements.
+
 ### 2.2. Class 'LinkedHashSet'
+
+**LinkedHashSet** is a hash table–based implementation of the **Set** interface that maintains a predictable iteration order. It extends **HashSet** and preserves the insertion order of elements by maintaining a doubly linked list across all elements. Internally, **LinkedHashSet** relies on a **LinkedHashMap** to store its elements. Each element is stored as a key in the map, and the value is a constant placeholder.
+
+This setup creates two internal structures:
+ - A hash table for fast lookup, insertion, and deletion (via the underlying **LinkedHashMap**).
+ - A doubly linked list to maintain insertion order, enabling ordered iteration.
+
+Key characteristics of **LinkedHashSet**:
+ - Maintains insertion order (unlike **HashSet**).
+ - Does not allow duplicate elements.
+ - Allows at most one null element.
+ - Time complexity:
+   - add(), remove(), contains() — O(1) on average.
+   - ordered iteration — O(n), in insertion order.
+ - Not synchronized.
+
+**LinkedHashSet** is useful when you need the performance of a hash set but also want to preserve the order in which elements were added — for example, in cases where consistent iteration order matters, such as exporting, caching, or display logic.
 
 ### 2.3. Class 'TreeSet'
 
