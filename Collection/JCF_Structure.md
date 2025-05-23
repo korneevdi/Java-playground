@@ -241,6 +241,21 @@ Key characteristics of **LinkedHashSet**:
 
 ### 2.4. Abstract class 'AbstractSet'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractSet.html)
+
+**AbstractSet** is an abstract base class for implementations of the **Set** interface. It extends **AbstractCollection** and provides skeletal implementations for common **Set** behavior, reducing the effort required to implement a custom **Set**.
+
+**AbstractSet** is not meant to be used directly — it is intended to be subclassed by concrete Set implementations such as **HashSet**, **TreeSet**, and **LinkedHashSet**.
+
+This class contains only three methods:
+ - equals(Object) to compare sets by element equality, not order or identity.
+ - hashCode() to return the sum of the hash codes of the set's elements, as required by the **Set** contract.
+ - default implementation of removeAll(Collection).
+
+**AbstractSet** inherits common collection behavior (like addAll(), toArray(), etc.) from AbstractCollection.
+
+**AbstractSet** simplifies the creation of **Set** classes by handling structural equality, hash code consistency, and bulk operations out of the box.
+
 ### 2.5. Interface 'NavigableSet'
 
 ### 2.6. Interface 'SortedSet'

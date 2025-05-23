@@ -82,6 +82,20 @@ Key characteristics of **LinkedHashMap**:
 
 ### 1.4. Abstract class 'AbstractMap'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractMap.html)
+
+**AbstractMap** is an abstract base class for implementations of the **Map** interface. It provides a skeletal implementation of the **Map** interface to minimize the effort required to implement custom maps.
+
+Unlike **AbstractSet**, which only defines a few utility methods, **AbstractMap** includes complete default implementations for most **Map** operations.
+
+Key characteristics of **AbstractMap**:
+ - Implements get(), put(), remove(), containsKey(), containsValue(), isEmpty(), and others in terms of the entrySet().
+ - Provides default implementations for keySet(), values(), and entrySet() views as inner classes that reflect changes in the map.
+ - Implements equals(), hashCode(), and toString() according to the **Map** contract.
+ - Supports putAll() and clear() based on the entrySet().
+
+**AbstractMap** significantly reduces boilerplate code when implementing a new map, making it the foundation for most standard Map implementations in the Java Collections Framework.
+
 ### 1.5. Interface 'SequencedMap'
 
 ### 1.6. Interface 'SortedMap'
