@@ -180,7 +180,7 @@ It is the base class for **LinkedList**, which relies on a doubly linked list st
 
 ### 1.7. Interface 'List'
 
-See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/List.html).
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) and [my implementation](src/main/java/collection/MyList.java).
 
 The **List** interface is part of the Java Collections Framework and represents an ordered collection of elements. It allows duplicate elements and provides precise control over where each element is inserted. Elements can be accessed by their integer index, making it suitable for use cases where order and position matter.
 
@@ -263,6 +263,18 @@ This class contains only three methods:
 ### 2.7. Interface 'SequencedSet'
 
 ### 2.8. Interface 'Set'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html) and [my implementation](src/main/java/collection/MySet.java).
+
+The **Set** interface represents a collection of unique elements — it does not allow duplicates. It extends the **Collection** interface and preserves most of its behavior, but redefines it to enforce the uniqueness constraint.
+
+Key characteristics of **Set**:
+ - Contains no duplicate elements: adding an already existing element has no effect.
+ - Based on equals() and hashCode() to determine uniqueness.
+ - Provides standard collection operations (add, remove, contains, etc.), but all adapted to the uniqueness constraint.
+ - Does not provide positional access (no *get(index)*).
+
+Use **Set** when you need to store a group of unique values and order or index access is not required.
 
 ## 3. Queue – FIFO structure for ordered element processing
 

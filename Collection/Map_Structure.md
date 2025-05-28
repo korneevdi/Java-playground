@@ -108,5 +108,13 @@ Key characteristics of **AbstractMap**:
 
 ### 1.10. Interface 'Map'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html) and [my implementation](src/main/java/collection/MyMap.java).
 
+The **Map** interface represents a collection of key-value pairs, where each key is unique and maps to a single value. **Map** is not a subtype of **Collection**, as its data model is fundamentally different.
 
+Key characteristics of **Map**:
+ - Stores data as (key, value) pairs.
+ - Keys are unique, but values may be duplicated.
+ - Provides efficient access and update based on the key.
+
+Use **Map** when you need to associate values with unique keys and retrieve them efficiently.
