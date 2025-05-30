@@ -1,6 +1,6 @@
 package collection;
 
-public interface MyDeque<E> {
+public interface MyDeque {
 
     // Adds the element at the front of the deque
     void addFirst(Car car);

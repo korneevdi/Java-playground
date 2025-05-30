@@ -280,7 +280,74 @@ Use **Set** when you need to store a group of unique values and order or index a
 
 ### 3.1. Class 'ArrayDeque'
 
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayDeque.html) and [my implementation](src/main/java/collection/MyArrayDeque.java).
+
+**ArrayDeque** is a resizable array implementation of the **Deque** (double-ended queue) interface, offering efficient insertion and removal operations at both ends of the queue. Unlike **LinkedList**, which uses node-based structure, **ArrayDeque** uses a circular buffer internally, making it generally faster for most use cases involving queues or stacks.
+Internally, **ArrayDeque** maintains an array and two pointers:
+ - *head* — points to the index of the first element;
+ - *tail* — points to the index where the next element will be inserted at the rear.
+
+<p align="center">
+  <img src="images/ArrayDeque.png" alt="ArrayDeque internal structure" width="450"/>
+  <br>
+  <em>Figure 6: ArrayDeque internal structure</em>
+</p>
+
+When elements are added or removed, the pointers move modulo the array’s length to create a circular structure. Insertions and deletions do not shift all elements, making them constant-time (amortized) operations.
+
+Adding a new element to the deque is done under the hood using two methods: 
+ - *addFirst(E e)*
+   - Decrements head (wrapping around if needed)
+   - Inserts the element at the new head position
+
+```
+head = (head - 1 + array.lenght) % array.lenght;
+```
+
+<p align="center">
+  <img src="images/ArrayDeque_addFirst.png" alt="Adding element to the front and wrapping around" width= 800"/>
+  <br>
+  <em>Figure 7: Adding element to the front and wrapping around</em>
+</p>
+
+ - *addLast(E e)*
+   - Inserts the element at tail
+   - Increments tail (wrapping around if needed)
+
+```
+tail = (tail + 1) % array.lenght;
+```
+    
+<p align="center">
+  <img src="images/ArrayDeque_addLast.png" alt="Adding element to the back and wrapping around" width="800"/>
+  <br>
+  <em>Figure 8: Adding element to the back and wrapping around</em>
+</p>
+
+The methods for removing elements from the end and from the beginning of the array are arranged internally in a similar way, with possible wrapping if necessary.
+
+When the array becomes full (i.e., ```size == array.length```), **ArrayDeque** doubles the size of the array and reorders the elements so *head* starts at index 0, and *tail* follows sequentially. This keeps operations efficient and supports growth over time.
+
+Attempting to add *null* will throw a *NullPointerException*. This is by design, to avoid ambiguity with return values like *poll()* which return null if the deque is empty.
+
+While **ArrayDeque** is primarily a queue/deque, it also supports stack-like methods for compatibility with legacy code:
+ - *push(e)* = *addFirst(e)*
+ - *pop()* = *removeFirst()*
+ - *peek()* = *peekFirst()*
+
 ### 3.2. Interface 'Deque'
+
+See [official documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Deque.html) and [my implementation](src/main/java/collection/MyDeque.java).
+
+The **Deque** interface (short for “Double-Ended Queue”) is part of the Java Collections Framework and represents a linear collection that allows elements to be added or removed from both ends — the front (head) and the back (tail).
+
+The **Deque** interface is designed for use cases that require flexible insertion and removal at either end. It can be used as:
+ - A queue (FIFO, first in first out) — using *addLast()* and *removeFirst()*
+ - A stack (LIFO, last in first out) — using *addFirst()* and *removeFirst()* (or *push()* and *pop()*)
+
+This makes **Deque** a more versatile interface than **Queue**.
+
+Implementations of **Deque** (like **ArrayDeque**) generally do not allow null elements, as *null* is often used to signal absence of elements (e.g., *poll()* returns *null* if empty).
 
 ### 3.3. Class 'PriorityQueue'
 
