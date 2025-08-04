@@ -223,7 +223,7 @@ This design ensures that all elements in a **HashSet** are unique, and provides 
 **LinkedHashSet** is a hash table–based implementation of the **Set** interface that maintains a predictable iteration order. It extends **HashSet** and preserves the insertion order of elements by maintaining a doubly linked list across all elements. Internally, **LinkedHashSet** relies on a **LinkedHashMap** to store its elements. Each element is stored as a key in the map, and the value is a constant placeholder.
 
 This setup creates two internal structures:
- - A hash table for fast lookup, insertion, and deletion (via the underlying **LinkedHashMap**).
+ - A hash table for fast lookup, insertion, and deletion (via the underlying **LinkedHashMap** ((see the [LinkedHashMap documentation](Map_Structure.md#12-class-linkedhashmap)))).
  - A doubly linked list to maintain insertion order, enabling ordered iteration.
 
 Key characteristics of **LinkedHashSet**:
