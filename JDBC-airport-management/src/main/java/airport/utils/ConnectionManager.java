@@ -6,18 +6,21 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/airport";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "+dima1755#";
+    private static final String URL_KEY = "db.url";
+    private static final String USERNAME_KEY = "db.username";
+    private static final String PASSWORD_KEY = "db.password";
 
     // Prohibit to create objects of this class from outside,
     // since this is a utility class
-    private ConnectionManager() {}
+    private ConnectionManager() {
+    }
 
     public static Connection openConnection() {
-        try{
+        try {
             return DriverManager.getConnection(
-                    URL, USERNAME, PASSWORD
+                    PropertiesReader.getValue(URL_KEY),
+                    PropertiesReader.getValue(USERNAME_KEY),
+                    PropertiesReader.getValue(PASSWORD_KEY)
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
