@@ -124,10 +124,10 @@ CREATE TABLE airports
     airport_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     iata VARCHAR (3) UNIQUE NOT NULL,
     icao VARCHAR (4) UNIQUE NOT NULL,
-    name VARCHAR (100) NOT NULL,
+    name VARCHAR (100) UNIQUE NOT NULL,
     city VARCHAR (25) NOT NULL,
     country VARCHAR (25) NOT NULL,
-    timezone VARCHAR (15) NOT NULL
+    timezone VARCHAR (40) NOT NULL
 );
 
 -- 16
@@ -155,7 +155,7 @@ CREATE TABLE customers
 
     CONSTRAINT customer_contacts_fk FOREIGN KEY (contact)
         REFERENCES customer_contacts(contact_id),
-    CONSTRAINT unique_passport UNIQUE (passport_country, passport_number)
+    CONSTRAINT unique_passport_customers UNIQUE (passport_country, passport_number)
 );
 
 -- 18
@@ -172,7 +172,7 @@ CREATE TABLE crews
 
     CONSTRAINT sex_fk FOREIGN KEY (sex)
         REFERENCES person_sex(sex_id),
-    CONSTRAINT unique_passport UNIQUE (passport_country, passport_number)
+    CONSTRAINT unique_passport_crews UNIQUE (passport_country, passport_number)
 );
 
 -- 19
@@ -194,7 +194,7 @@ CREATE TABLE airport_employees
         REFERENCES employee_contacts(contact_id),
     CONSTRAINT employee_emergency_contacts_fk FOREIGN KEY (emergency_contact)
         REFERENCES emergency_contacts(contact_id),
-    CONSTRAINT unique_passport UNIQUE (passport_country, passport_number)
+    CONSTRAINT unique_passport_airport_employees UNIQUE (passport_country, passport_number)
 );
 
 -- 20
@@ -210,7 +210,7 @@ CREATE TABLE passengers
 
     CONSTRAINT sex_fk FOREIGN KEY (sex)
         REFERENCES person_sex(sex_id),
-    CONSTRAINT unique_passport UNIQUE (passport_country, passport_number)
+    CONSTRAINT unique_passport_passengers UNIQUE (passport_country, passport_number)
 );
 
 -- 21
@@ -225,7 +225,7 @@ CREATE TABLE airplanes
 
     CONSTRAINT airline_fk FOREIGN KEY (airline)
         REFERENCES airlines(airline_id),
-    CONSTRAINT type_fk FOREIGN KEY (type)
+    CONSTRAINT airplines_type_fk FOREIGN KEY (type)
         REFERENCES types(type_id)
 );
 
@@ -267,7 +267,7 @@ CREATE TABLE flights
         REFERENCES airplanes(airplane_id),
     CONSTRAINT responsible_dispatcher_fk FOREIGN KEY (responsible_dispatcher)
         REFERENCES airport_employees(employee_id),
-    CONSTRAINT type_fk FOREIGN KEY (type)
+    CONSTRAINT flights_type_fk FOREIGN KEY (type)
         REFERENCES types(type_id),
     CONSTRAINT customer_fk FOREIGN KEY (customer)
         REFERENCES customers(customer_id),
