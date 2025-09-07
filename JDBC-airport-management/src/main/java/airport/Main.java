@@ -18,7 +18,11 @@ public class Main {
             PersonSexService personSexService = new PersonSexService(personSexDao);
 
             // Call appropriate methods
-            personSexService.showAllSexes();
+            //personSexService.showAllSexes();
+            //personSexService.findSex(2);
+            //personSexService.addSex("new sex");
+            //personSexService.updateSex("male", "ololo");
+            personSexService.deleteSex("new sex");
 
         } catch(Exception e) {
             throw new RuntimeException(e);
