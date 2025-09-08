@@ -108,7 +108,7 @@ public class PersonSexDao {
     }
 
     // Delete sex
-    public void delete(String sex) {
+    public boolean delete(String sex) {
         String sql =
                 """
                 DELETE FROM person_sex
@@ -117,7 +117,8 @@ public class PersonSexDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, sex);
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

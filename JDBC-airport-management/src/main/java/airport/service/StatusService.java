@@ -57,8 +57,11 @@ public class StatusService {
 
     public void deleteStatus(String status) {
         if(status != null && !status.isEmpty()) {
-            statusDao.delete(status);
-            System.out.println("Status '" + status + "' deleted successfully");
+            if(statusDao.delete(status)) {
+                System.out.println("Status '" + status + "' deleted successfully");
+            } else {
+                System.out.println("Element '" + status + "' not found");
+            }
         } else{
             System.out.println("Status should not be NULL or empty");
         }

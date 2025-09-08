@@ -106,7 +106,7 @@ public class CrewRolesDao {
     }
 
     // Delete role
-    public void delete(String role) {
+    public boolean delete(String role) {
         String sql =
                 """
                 DELETE FROM crew_roles
@@ -115,7 +115,8 @@ public class CrewRolesDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, role);
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

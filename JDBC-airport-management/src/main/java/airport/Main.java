@@ -53,7 +53,7 @@ public class Main {
             //crewRolesService.updateRole("manager", "mAnAgEr");
             //crewRolesService.deleteRole("mAnAgEr");
 
-            // 4.Control types
+            // 5.Control types
             ControlTypesDao controlTypesDao = new ControlTypesDao(connection);
             ControlTypeService controlTypeService = new ControlTypeService(controlTypesDao);
             // Call appropriate methods

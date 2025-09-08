@@ -57,8 +57,11 @@ public class TypeService {
 
     public void deleteType(String type) {
         if(type != null && !type.isEmpty()) {
-            typeDao.delete(type);
-            System.out.println("Type '" + type + "' deleted successfully");
+            if(typeDao.delete(type)) {
+                System.out.println("Type '" + type + "' deleted successfully");
+            } else {
+                System.out.println("Element '" + type + "' not found");
+            }
         } else{
             System.out.println("Type should not be NULL or empty");
         }

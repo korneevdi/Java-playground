@@ -57,8 +57,11 @@ public class CrewRolesService {
 
     public void deleteRole(String role) {
         if(role != null && !role.isEmpty()) {
-            crewRolesDao.delete(role);
-            System.out.println("Role '" + role + "' deleted successfully");
+            if(crewRolesDao.delete(role)) {
+                System.out.println("Crew role '" + role + "' deleted successfully");
+            } else {
+                System.out.println("Element '" + role + "' not found");
+            }
         } else{
             System.out.println("Role should not be NULL or empty");
         }

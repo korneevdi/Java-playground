@@ -57,8 +57,11 @@ public class PersonSexService {
 
     public void deleteSex(String sex) {
         if(sex != null && !sex.isEmpty()) {
-            personSexDao.delete(sex);
-            System.out.println("Sex '" + sex + "' deleted successfully");
+            if(personSexDao.delete(sex)) {
+                System.out.println("Sex '" + sex + "' deleted successfully");
+            } else {
+                System.out.println("Element '" + sex + "' not found");
+            }
         } else{
             System.out.println("Sex should not be NULL or empty");
         }

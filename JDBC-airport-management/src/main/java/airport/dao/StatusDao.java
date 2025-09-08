@@ -106,7 +106,7 @@ public class StatusDao {
     }
 
     // Delete status
-    public void delete(String status) {
+    public boolean delete(String status) {
         String sql =
                 """
                 DELETE FROM statuses
@@ -115,7 +115,8 @@ public class StatusDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, status);
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

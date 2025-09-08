@@ -106,7 +106,7 @@ public class TypeDao {
     }
 
     // Delete type
-    public void delete(String type) {
+    public boolean delete(String type) {
         String sql =
                 """
                 DELETE FROM types
@@ -115,7 +115,8 @@ public class TypeDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, type);
-            ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
