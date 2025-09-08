@@ -1,12 +1,8 @@
 package airport;
 
-import airport.dao.PersonSexDao;
-import airport.dao.StatusDao;
-import airport.dao.TypeDao;
+import airport.dao.*;
 import airport.database.DbInitializer;
-import airport.service.PersonSexService;
-import airport.service.StatusService;
-import airport.service.TypeService;
+import airport.service.*;
 import airport.utils.ConnectionManager;
 
 import java.sql.Connection;
@@ -17,7 +13,7 @@ public class Main {
         try(Connection connection = ConnectionManager.openConnection()) {
 
             // Create objects of DAO classes and services
-            // Person sex
+            // 1.Person sex
             PersonSexDao personSexDao = new PersonSexDao(connection);
             PersonSexService personSexService = new PersonSexService(personSexDao);
             // Call appropriate methods
@@ -27,7 +23,7 @@ public class Main {
             //personSexService.updateSex("male", "ololo");
             //personSexService.deleteSex("new sex");
 
-            // Types (of flights & airplanes)
+            // 2.Types (of flights & airplanes)
             TypeDao typeDao = new TypeDao(connection);
             TypeService typeService = new TypeService(typeDao);
             // Call appropriate methods
@@ -37,7 +33,7 @@ public class Main {
             //typeService.updateType("public", "private");
             //typeService.deleteType("new type");
 
-            // Statuses of flights
+            // 3.Statuses of flights
             StatusDao statusDao = new StatusDao(connection);
             StatusService statusService = new StatusService(statusDao);
             // Call appropriate methods
@@ -46,6 +42,26 @@ public class Main {
             //statusService.addStatus("new status");
             //statusService.updateStatus("boarding_complete", "boarding complete");
             //statusService.deleteStatus("new status");
+
+            // 4.Crew roles
+            CrewRolesDao crewRolesDao = new CrewRolesDao(connection);
+            CrewRolesService crewRolesService = new CrewRolesService(crewRolesDao);
+            // Call appropriate methods
+            //crewRolesService.showAllRoles();
+            //crewRolesService.findRole(2);
+            //crewRolesService.addRole("manager");
+            //crewRolesService.updateRole("manager", "mAnAgEr");
+            //crewRolesService.deleteRole("mAnAgEr");
+
+            // 4.Control types
+            ControlTypesDao controlTypesDao = new ControlTypesDao(connection);
+            ControlTypeService controlTypeService = new ControlTypeService(controlTypesDao);
+            // Call appropriate methods
+            //controlTypeService.showAllTypes();
+            //controlTypeService.findType(2);
+            //controlTypeService.addType("strict control");
+            //controlTypeService.updateType("strict control", "not really strict control");
+            //controlTypeService.deleteType("not really strict control");
 
         } catch(Exception e) {
             throw new RuntimeException(e);
