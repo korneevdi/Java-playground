@@ -1,51 +1,49 @@
-// This class corresponds to the 'person_sex' table in the database.
-
 package airport.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonSexDao {
+public class StatusDao {
 
     private final Connection connection;
 
-    public PersonSexDao(Connection connection) {
+    public StatusDao(Connection connection) {
         this.connection = connection;
     }
 
-    // Show the list of sexes
+    // Show the list of statuses
     public List<String> findAll() {
         String sql =
                 """
-                SELECT sex_name FROM person_sex
+                SELECT status_name FROM statuses
                 """;
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
-            List<String> allSexes = new ArrayList<>();
+            List<String> allStatuses = new ArrayList<>();
             while (resultSet.next()) {
-                String sex = resultSet.getString("sex_name");
-                allSexes.add(sex);
+                String status = resultSet.getString("status_name");
+                allStatuses.add(status);
             }
-            return allSexes;
+            return allStatuses;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Find sex by id
+    // Find status by id
     public String findById(int id) {
         String sql =
                 """
-                SELECT sex_name FROM person_sex
-                WHERE sex_id = %s
+                SELECT status_name FROM statuses
+                WHERE status_id = %s
                 """.formatted(id);
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
-                return resultSet.getString("sex_name");
+                return resultSet.getString("status_name");
             } else {
                 return "";
             }
@@ -54,17 +52,17 @@ public class PersonSexDao {
         }
     }
 
-    // Find id by sex_name
-    public int findId(String sex) {
+    // Find id by status_name
+    public int findId(String status) {
         String sql =
                 """
-                SELECT sex_id FROM person_sex
-                WHERE sex_name = '%s'
-                """.formatted(sex);
+                SELECT status_id FROM statuses
+                WHERE status_name = '%s'
+                """.formatted(status);
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
-                return resultSet.getInt("sex_id");
+                return resultSet.getInt("status_id");
             } else {
                 return -1;
             }
@@ -73,33 +71,33 @@ public class PersonSexDao {
         }
     }
 
-    // Add new sex
-    public void insert(String newSex) {
+    // Add new status
+    public void insert(String newStatus) {
         String sql =
                 """
-                INSERT INTO person_sex (sex_name) VALUES
+                INSERT INTO statuses (status_name) VALUES
                 (?)
                 """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newSex);
+            ps.setString(1, newStatus);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Update sex
-    public void update(int id, String newSex) {
+    // Update status
+    public void update(int id, String newStatus) {
         String sql =
                 """
-                UPDATE person_sex
-                SET sex_name = ?
-                WHERE sex_id = ?
+                UPDATE statuses
+                SET status_name = ?
+                WHERE status_id = ?
                 """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newSex);
+            ps.setString(1, newStatus);
             ps.setInt(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -107,16 +105,16 @@ public class PersonSexDao {
         }
     }
 
-    // Delete sex
-    public void delete(String sex) {
+    // Delete status
+    public void delete(String status) {
         String sql =
                 """
-                DELETE FROM person_sex
-                WHERE sex_name = ?
+                DELETE FROM statuses
+                WHERE status_name = ?
                 """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, sex);
+            ps.setString(1, status);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
