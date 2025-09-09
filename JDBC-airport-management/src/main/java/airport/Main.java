@@ -73,6 +73,16 @@ public class Main {
             //checkInCountersService.updateCounter("С1", "D5");
             //checkInCountersService.deleteCounter("D5");
 
+            // 7.Baggage claims
+            BaggageClaimsDao baggageClaimsDao = new BaggageClaimsDao(connection);
+            BaggageClaimsService baggageClaimsService = new BaggageClaimsService(baggageClaimsDao);
+            // Call appropriate methods
+            //baggageClaimsService.showAllClaims();
+            //baggageClaimsService.findClaim(8);
+            //baggageClaimsService.addClaim("С1");
+            //baggageClaimsService.updateClaim("С1", "D5");
+            //baggageClaimsService.deleteClaim("D5");
+
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
