@@ -35,8 +35,13 @@ public class TypeService {
 
     public void addType(String type) {
         if(type != null && !type.isEmpty()) {
-            typeDao.insert(type);
-            System.out.println("New element '" + type + "' inserted successfully");
+            List<String> allTypes = typeDao.findAll();
+            if(!allTypes.contains(type)) {
+                typeDao.insert(type);
+                System.out.println("New element '" + type + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + type + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

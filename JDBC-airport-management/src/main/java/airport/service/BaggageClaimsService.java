@@ -35,8 +35,13 @@ public class BaggageClaimsService {
 
     public void addClaim(String claim) {
         if(claim != null && !claim.isEmpty()) {
-            baggageClaimsDao.insert(claim);
-            System.out.println("New element '" + claim + "' inserted successfully");
+            List<String> allClaims = baggageClaimsDao.findAll();
+            if(!allClaims.contains(claim)) {
+                baggageClaimsDao.insert(claim);
+                System.out.println("New element '" + claim + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + claim + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

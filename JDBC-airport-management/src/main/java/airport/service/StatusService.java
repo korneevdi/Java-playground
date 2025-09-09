@@ -35,8 +35,13 @@ public class StatusService {
 
     public void addStatus(String status) {
         if(status != null && !status.isEmpty()) {
-            statusDao.insert(status);
-            System.out.println("New element '" + status + "' inserted successfully");
+            List<String> allStatuses = statusDao.findAll();
+            if(!allStatuses.contains(status)) {
+                statusDao.insert(status);
+                System.out.println("New element '" + status + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + status + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

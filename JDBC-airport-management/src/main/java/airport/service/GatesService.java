@@ -50,8 +50,13 @@ public class GatesService {
 
     public void addGate(String gate) {
         if(gate != null && !gate.isEmpty()) {
-            gatesDao.insert(gate);
-            System.out.println("New element '" + gate + "' inserted successfully");
+            List<String> allGates = gatesDao.findAll();
+            if(!allGates.contains(gate)) {
+                gatesDao.insert(gate);
+                System.out.println("New element '" + gate + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + gate + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

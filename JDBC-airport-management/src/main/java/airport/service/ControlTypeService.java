@@ -35,8 +35,13 @@ public class ControlTypeService {
 
     public void addType(String type) {
         if(type != null && !type.isEmpty()) {
-            controlTypesDao.insert(type);
-            System.out.println("New element '" + type + "' inserted successfully");
+            List<String> allTypes = controlTypesDao.findAll();
+            if(!allTypes.contains(type)) {
+                controlTypesDao.insert(type);
+                System.out.println("New element '" + type + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + type + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

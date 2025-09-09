@@ -35,8 +35,13 @@ public class CrewRolesService {
 
     public void addRole(String role) {
         if(role != null && !role.isEmpty()) {
-            crewRolesDao.insert(role);
-            System.out.println("New element '" + role + "' inserted successfully");
+            List<String> allRoles = crewRolesDao.findAll();
+            if(!allRoles.contains(role)) {
+                crewRolesDao.insert(role);
+                System.out.println("New element '" + role + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + role + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

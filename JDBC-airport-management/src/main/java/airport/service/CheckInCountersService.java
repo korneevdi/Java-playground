@@ -50,8 +50,13 @@ public class CheckInCountersService {
 
     public void addCounter(String counter) {
         if(counter != null && !counter.isEmpty()) {
-            checkInCountersDao.insert(counter);
-            System.out.println("New element '" + counter + "' inserted successfully");
+            List<String> allCounters = checkInCountersDao.findAll();
+            if(!allCounters.contains(counter)) {
+                checkInCountersDao.insert(counter);
+                System.out.println("New element '" + counter + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + counter + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }

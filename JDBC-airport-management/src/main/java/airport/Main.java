@@ -19,7 +19,7 @@ public class Main {
             // Call appropriate methods
             //personSexService.showAllSexes();
             //personSexService.findSex(2);
-            //personSexService.addSex("new sex");
+            //personSexService.addSex("male");
             //personSexService.updateSex("male", "ololo");
             //personSexService.deleteSex("new sex");
 
@@ -29,7 +29,7 @@ public class Main {
             // Call appropriate methods
             //typeService.showAllTypes();
             //typeService.findType(3);
-            //typeService.addType("new type");
+            //typeService.addType("private");
             //typeService.updateType("public", "private");
             //typeService.deleteType("new type");
 
@@ -39,7 +39,7 @@ public class Main {
             // Call appropriate methods
             //statusService.showAllStatuses();
             //statusService.findStatus(2);
-            //statusService.addStatus("new status");
+            //statusService.addStatus("in air");
             //statusService.updateStatus("boarding_complete", "boarding complete");
             //statusService.deleteStatus("new status");
 
@@ -49,7 +49,7 @@ public class Main {
             // Call appropriate methods
             //crewRolesService.showAllRoles();
             //crewRolesService.findRole(2);
-            //crewRolesService.addRole("manager");
+            //crewRolesService.addRole("pilot");
             //crewRolesService.updateRole("manager", "mAnAgEr");
             //crewRolesService.deleteRole("mAnAgEr");
 
@@ -59,7 +59,7 @@ public class Main {
             // Call appropriate methods
             //controlTypeService.showAllTypes();
             //controlTypeService.findType(2);
-            //controlTypeService.addType("strict control");
+            //controlTypeService.addType("standard");
             //controlTypeService.updateType("strict control", "not really strict control");
             //controlTypeService.deleteType("not really strict control");
 
@@ -69,7 +69,7 @@ public class Main {
             // Call appropriate methods
             //checkInCountersService.showAllCounters();
             //checkInCountersService.findCounter(51);
-            //checkInCountersService.addCounter("С1");
+            //checkInCountersService.addCounter("C1");
             //checkInCountersService.updateCounter("С1", "D5");
             //checkInCountersService.deleteCounter("D5");
 
@@ -79,8 +79,8 @@ public class Main {
             // Call appropriate methods
             //baggageClaimsService.showAllClaims();
             //baggageClaimsService.findClaim(8);
-            //baggageClaimsService.addClaim("С1");
-            //baggageClaimsService.updateClaim("С1", "D5");
+            //baggageClaimsService.addClaim("11");
+            //baggageClaimsService.updateClaim("75", "D5");
             //baggageClaimsService.deleteClaim("D5");
 
             // 7.Gates
@@ -89,7 +89,7 @@ public class Main {
             // Call appropriate methods
             //gatesService.showAllGates();
             //gatesService.findGate(8);
-            //gatesService.addGate("C11");
+            //gatesService.addGate("C8");
             //gatesService.updateGate("C11", "R25");
             //gatesService.deleteGate("R25");
 

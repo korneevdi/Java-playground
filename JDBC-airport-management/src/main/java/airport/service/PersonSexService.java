@@ -35,8 +35,13 @@ public class PersonSexService {
 
     public void addSex(String sex) {
         if(sex != null && !sex.isEmpty()) {
-            personSexDao.insert(sex);
-            System.out.println("New element '" + sex + "' inserted successfully");
+            List<String> allSexes = personSexDao.findAll();
+            if(!allSexes.contains(sex)) {
+                personSexDao.insert(sex);
+                System.out.println("New element '" + sex + "' inserted successfully");
+            } else {
+                System.out.println("Element '" + sex + "' already exists");
+            }
         } else {
             System.out.println("New element should not be NULL or empty");
         }
