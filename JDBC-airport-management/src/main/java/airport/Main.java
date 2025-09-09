@@ -83,6 +83,16 @@ public class Main {
             //baggageClaimsService.updateClaim("С1", "D5");
             //baggageClaimsService.deleteClaim("D5");
 
+            // 7.Gates
+            GatesDao gatesDao = new GatesDao(connection);
+            GatesService gatesService = new GatesService(gatesDao);
+            // Call appropriate methods
+            //gatesService.showAllGates();
+            //gatesService.findGate(8);
+            //gatesService.addGate("C11");
+            //gatesService.updateGate("C11", "R25");
+            //gatesService.deleteGate("R25");
+
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
