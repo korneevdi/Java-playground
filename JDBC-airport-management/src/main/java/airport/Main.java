@@ -63,6 +63,16 @@ public class Main {
             //controlTypeService.updateType("strict control", "not really strict control");
             //controlTypeService.deleteType("not really strict control");
 
+            // 6.Check-in counters
+            CheckInCountersDao checkInCountersDao = new CheckInCountersDao(connection);
+            CheckInCountersService checkInCountersService = new CheckInCountersService(checkInCountersDao);
+            // Call appropriate methods
+            //checkInCountersService.showAllCounters();
+            //checkInCountersService.findCounter(51);
+            //checkInCountersService.addCounter("С1");
+            //checkInCountersService.updateCounter("С1", "D5");
+            //checkInCountersService.deleteCounter("D5");
+
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
