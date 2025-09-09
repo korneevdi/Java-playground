@@ -15,11 +15,12 @@ public class ControlTypeService {
     public void showAllTypes() {
         List<String> allTypes = controlTypesDao.findAll();
         System.out.println("List of control types:");
-        if(allTypes == null || allTypes.size() == 0) {
+        if(allTypes != null && allTypes.size() != 0) {
+            for(int i = 0; i < allTypes.size(); i++) {
+                System.out.println((i + 1) + ": " + allTypes.get(i));
+            }
+        } else {
             System.out.println("No data found");
-        }
-        for(int i = 0; i < allTypes.size(); i++) {
-            System.out.println((i + 1) + ": " + allTypes.get(i));
         }
     }
 
@@ -33,7 +34,7 @@ public class ControlTypeService {
     }
 
     public void addType(String type) {
-        if(type != null || !type.isEmpty()) {
+        if(type != null && !type.isEmpty()) {
             controlTypesDao.insert(type);
             System.out.println("New element '" + type + "' inserted successfully");
         } else {

@@ -15,11 +15,12 @@ public class PersonSexService {
     public void showAllSexes() {
         List<String> allSexes = personSexDao.findAll();
         System.out.println("List of sexes:");
-        if(allSexes == null || allSexes.size() == 0) {
+        if(allSexes != null && allSexes.size() != 0) {
+            for(int i = 0; i < allSexes.size(); i++) {
+                System.out.println((i + 1) + ": " + allSexes.get(i));
+            }
+        } else {
             System.out.println("No data found");
-        }
-        for(int i = 0; i < allSexes.size(); i++) {
-            System.out.println((i + 1) + ": " + allSexes.get(i));
         }
     }
 
@@ -33,7 +34,7 @@ public class PersonSexService {
     }
 
     public void addSex(String sex) {
-        if(sex != null || !sex.isEmpty()) {
+        if(sex != null && !sex.isEmpty()) {
             personSexDao.insert(sex);
             System.out.println("New element '" + sex + "' inserted successfully");
         } else {

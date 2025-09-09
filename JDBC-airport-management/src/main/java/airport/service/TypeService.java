@@ -15,11 +15,12 @@ public class TypeService {
     public void showAllTypes() {
         List<String> allTypes = typeDao.findAll();
         System.out.println("List of types:");
-        if(allTypes == null || allTypes.size() == 0) {
+        if(allTypes != null && allTypes.size() != 0) {
+            for(int i = 0; i < allTypes.size(); i++) {
+                System.out.println((i + 1) + ": " + allTypes.get(i));
+            }
+        } else {
             System.out.println("No data found");
-        }
-        for(int i = 0; i < allTypes.size(); i++) {
-            System.out.println((i + 1) + ": " + allTypes.get(i));
         }
     }
 
@@ -33,7 +34,7 @@ public class TypeService {
     }
 
     public void addType(String type) {
-        if(type != null || !type.isEmpty()) {
+        if(type != null && !type.isEmpty()) {
             typeDao.insert(type);
             System.out.println("New element '" + type + "' inserted successfully");
         } else {

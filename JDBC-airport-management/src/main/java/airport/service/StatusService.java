@@ -15,11 +15,12 @@ public class StatusService {
     public void showAllStatuses() {
         List<String> allStatuses = statusDao.findAll();
         System.out.println("List of statuses:");
-        if(allStatuses == null || allStatuses.size() == 0) {
+        if(allStatuses != null && allStatuses.size() != 0) {
+            for(int i = 0; i < allStatuses.size(); i++) {
+                System.out.println((i + 1) + ": " + allStatuses.get(i));
+            }
+        } else {
             System.out.println("No data found");
-        }
-        for(int i = 0; i < allStatuses.size(); i++) {
-            System.out.println((i + 1) + ": " + allStatuses.get(i));
         }
     }
 
@@ -33,7 +34,7 @@ public class StatusService {
     }
 
     public void addStatus(String status) {
-        if(status != null || !status.isEmpty()) {
+        if(status != null && !status.isEmpty()) {
             statusDao.insert(status);
             System.out.println("New element '" + status + "' inserted successfully");
         } else {

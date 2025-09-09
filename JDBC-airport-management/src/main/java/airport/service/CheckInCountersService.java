@@ -49,7 +49,7 @@ public class CheckInCountersService {
     }
 
     public void addCounter(String counter) {
-        if(counter != null || !counter.isEmpty()) {
+        if(counter != null && !counter.isEmpty()) {
             checkInCountersDao.insert(counter);
             System.out.println("New element '" + counter + "' inserted successfully");
         } else {

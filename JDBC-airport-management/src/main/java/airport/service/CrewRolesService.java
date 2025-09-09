@@ -15,11 +15,12 @@ public class CrewRolesService {
     public void showAllRoles() {
         List<String> allRoles = crewRolesDao.findAll();
         System.out.println("List of crew roles:");
-        if(allRoles == null || allRoles.size() == 0) {
+        if(allRoles != null && allRoles.size() != 0) {
+            for(int i = 0; i < allRoles.size(); i++) {
+                System.out.println((i + 1) + ": " + allRoles.get(i));
+            }
+        } else {
             System.out.println("No data found");
-        }
-        for(int i = 0; i < allRoles.size(); i++) {
-            System.out.println((i + 1) + ": " + allRoles.get(i));
         }
     }
 
@@ -33,7 +34,7 @@ public class CrewRolesService {
     }
 
     public void addRole(String role) {
-        if(role != null || !role.isEmpty()) {
+        if(role != null && !role.isEmpty()) {
             crewRolesDao.insert(role);
             System.out.println("New element '" + role + "' inserted successfully");
         } else {
