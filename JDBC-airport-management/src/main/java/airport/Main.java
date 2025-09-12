@@ -1,7 +1,7 @@
 package airport;
 
 import airport.dao.*;
-import airport.database.DbInitializer;
+import airport.dao.dictionary.BaggageClaimsDao;
 import airport.service.*;
 import airport.utils.ConnectionManager;
 
@@ -78,10 +78,10 @@ public class Main {
             BaggageClaimsService baggageClaimsService = new BaggageClaimsService(baggageClaimsDao);
             // Call appropriate methods
             //baggageClaimsService.showAllClaims();
-            //baggageClaimsService.findClaim(8);
-            //baggageClaimsService.addClaim("11");
-            //baggageClaimsService.updateClaim("75", "D5");
-            //baggageClaimsService.deleteClaim("D5");
+            //baggageClaimsService.findClaimByName("3");
+            //baggageClaimsService.addClaim("4-4");
+            //baggageClaimsService.updateClaim("7", "D+5");
+            //baggageClaimsService.deleteClaim("D+5");
 
             // 8.Gates
             GatesDao gatesDao = new GatesDao(connection);

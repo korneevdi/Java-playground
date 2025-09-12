@@ -28,7 +28,7 @@ public class BaggageClaim {
 
     @Override
     public String toString() {
-        return "BaggageClaim{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';
