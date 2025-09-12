@@ -83,7 +83,7 @@ public class Main {
             //baggageClaimsService.updateClaim("75", "D5");
             //baggageClaimsService.deleteClaim("D5");
 
-            // 7.Gates
+            // 8.Gates
             GatesDao gatesDao = new GatesDao(connection);
             GatesService gatesService = new GatesService(gatesDao);
             // Call appropriate methods
@@ -92,6 +92,26 @@ public class Main {
             //gatesService.addGate("C8");
             //gatesService.updateGate("C11", "R25");
             //gatesService.deleteGate("R25");
+
+            // 9.Terminals
+            TerminalsDao terminalsDao = new TerminalsDao(connection);
+            TerminalsService terminalsService = new TerminalsService(terminalsDao);
+            // Call appropriate methods
+            //terminalsService.showAllTerminals();
+            //terminalsService.findTerminal(3);
+            //terminalsService.addTerminal("C8");
+            //terminalsService.updateTerminal("C8", "EE");
+            //terminalsService.deleteTerminal("EE");
+
+            // 10.Flight runways
+            RunwaysDao runwaysDao = new RunwaysDao(connection);
+            RunwaysService runwaysService = new RunwaysService(runwaysDao);
+            // Call appropriate methods
+            //runwaysService.showAllRunways();
+            //runwaysService.findRunway(-3);
+            //runwaysService.addRunway("C8");
+            //runwaysService.updateRunway("C8", "EE");
+            //runwaysService.deleteRunway("EE");
 
         } catch(Exception e) {
             throw new RuntimeException(e);
