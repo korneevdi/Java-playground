@@ -3,6 +3,7 @@ package airport;
 import airport.dao.*;
 import airport.dao.dictionary.BaggageClaimsDao;
 import airport.service.*;
+import airport.service.dictionary.BaggageClaimsService;
 import airport.utils.ConnectionManager;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.Connection;
 public class Main {
     public static void main(String[] args) {
 
-        try(Connection connection = ConnectionManager.openConnection()) {
+        try (Connection connection = ConnectionManager.openConnection()) {
 
             // Create objects of DAO classes and services
             // 1.Person sex
@@ -77,11 +78,11 @@ public class Main {
             BaggageClaimsDao baggageClaimsDao = new BaggageClaimsDao(connection);
             BaggageClaimsService baggageClaimsService = new BaggageClaimsService(baggageClaimsDao);
             // Call appropriate methods
-            //baggageClaimsService.showAllClaims();
-            //baggageClaimsService.findClaimByName("3");
-            //baggageClaimsService.addClaim("4-4");
-            //baggageClaimsService.updateClaim("7", "D+5");
-            //baggageClaimsService.deleteClaim("D+5");
+            //baggageClaimsService.showAll();
+            //baggageClaimsService.findByName("8");
+            //baggageClaimsService.add("4-4");
+            //baggageClaimsService.update("D+5", "98");
+            //baggageClaimsService.delete("66");
 
             // 8.Gates
             GatesDao gatesDao = new GatesDao(connection);
@@ -113,7 +114,7 @@ public class Main {
             //runwaysService.updateRunway("C8", "EE");
             //runwaysService.deleteRunway("EE");
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
