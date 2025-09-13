@@ -28,7 +28,7 @@ public class Terminal {
 
     @Override
     public String toString() {
-        return "Terminal{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

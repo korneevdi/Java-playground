@@ -28,7 +28,7 @@ public class Runway {
 
     @Override
     public String toString() {
-        return "Runway{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

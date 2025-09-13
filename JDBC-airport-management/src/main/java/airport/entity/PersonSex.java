@@ -28,7 +28,7 @@ public class PersonSex {
 
     @Override
     public String toString() {
-        return "PersonSex{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

@@ -28,7 +28,7 @@ public class CrewRole {
 
     @Override
     public String toString() {
-        return "CrewRole{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

@@ -28,7 +28,7 @@ public class ControlType {
 
     @Override
     public String toString() {
-        return "ControlType{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

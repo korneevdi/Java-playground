@@ -28,7 +28,7 @@ public class CheckInCounter {
 
     @Override
     public String toString() {
-        return "CheckInCounter{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';

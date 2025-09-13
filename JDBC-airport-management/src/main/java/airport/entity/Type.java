@@ -28,7 +28,7 @@ public class Type {
 
     @Override
     public String toString() {
-        return "Type{" +
+        return "{" +
                 "id = " + id +
                 ", name = '" + name + '\'' +
                 '}';
