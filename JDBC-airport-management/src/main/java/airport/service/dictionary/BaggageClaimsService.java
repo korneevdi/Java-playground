@@ -1,7 +1,7 @@
 package airport.service.dictionary;
 
 import airport.dao.dictionary.BaggageClaimsDao;
-import airport.entity.BaggageClaim;
+import airport.entity.dictionary.BaggageClaim;
 
 public class BaggageClaimsService extends AbstractDictionaryService<BaggageClaim> {
 

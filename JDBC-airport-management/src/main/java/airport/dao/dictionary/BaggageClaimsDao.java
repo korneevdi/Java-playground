@@ -1,6 +1,6 @@
 package airport.dao.dictionary;
 
-import airport.entity.BaggageClaim;
+import airport.entity.dictionary.BaggageClaim;
 
 import java.sql.*;
 

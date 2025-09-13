@@ -1,11 +1,11 @@
-package airport.entity;
+package airport.entity.dictionary;
 
-public class Status {
+public class ControlType {
 
     private int id;
     private String name;
 
-    public Status(int id, String name) {
+    public ControlType(int id, String name) {
         this.id = id;
         this.name = name;
     }

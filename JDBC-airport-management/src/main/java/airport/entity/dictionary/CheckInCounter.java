@@ -1,11 +1,11 @@
-package airport.entity;
+package airport.entity.dictionary;
 
-public class Gate {
+public class CheckInCounter {
 
     private int id;
     private String name;
 
-    public Gate(int id, String name) {
+    public CheckInCounter(int id, String name) {
         this.id = id;
         this.name = name;
     }

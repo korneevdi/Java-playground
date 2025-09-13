@@ -1,11 +1,11 @@
-package airport.entity;
+package airport.entity.dictionary;
 
-public class PersonSex {
+public class Gate {
 
     private int id;
     private String name;
 
-    public PersonSex(int id, String name) {
+    public Gate(int id, String name) {
         this.id = id;
         this.name = name;
     }
