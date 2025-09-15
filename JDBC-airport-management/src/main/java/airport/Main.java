@@ -1,9 +1,7 @@
 package airport;
 
-import airport.dao.*;
-import airport.dao.dictionary.BaggageClaimsDao;
-import airport.service.*;
-import airport.service.dictionary.BaggageClaimsService;
+import airport.dao.dictionary.*;
+import airport.service.dictionary.*;
 import airport.utils.ConnectionManager;
 
 import java.sql.Connection;
@@ -18,61 +16,61 @@ public class Main {
             PersonSexDao personSexDao = new PersonSexDao(connection);
             PersonSexService personSexService = new PersonSexService(personSexDao);
             // Call appropriate methods
-            //personSexService.showAllSexes();
-            //personSexService.findSex(2);
-            //personSexService.addSex("male");
-            //personSexService.updateSex("male", "ololo");
-            //personSexService.deleteSex("new sex");
+            //personSexService.showAll();
+            //personSexService.findByName("male");
+            //personSexService.add("malefs");
+            //personSexService.update("mal", "ololo");
+            //personSexService.delete("malefs");
 
             // 2.Types (of flights & airplanes)
             TypeDao typeDao = new TypeDao(connection);
             TypeService typeService = new TypeService(typeDao);
             // Call appropriate methods
-            //typeService.showAllTypes();
-            //typeService.findType(3);
-            //typeService.addType("private");
-            //typeService.updateType("public", "private");
-            //typeService.deleteType("new type");
+            //typeService.showAll();
+            //typeService.findByName("private");
+            //typeService.add("private");
+            //typeService.update("public", "private");
+            //typeService.delete("new type");
 
             // 3.Statuses of flights
             StatusDao statusDao = new StatusDao(connection);
             StatusService statusService = new StatusService(statusDao);
             // Call appropriate methods
-            //statusService.showAllStatuses();
-            //statusService.findStatus(2);
-            //statusService.addStatus("in air");
-            //statusService.updateStatus("boarding_complete", "boarding complete");
-            //statusService.deleteStatus("new status");
+            //statusService.showAll();
+            //statusService.findByName(2);
+            //statusService.add("in air");
+            //statusService.update("boarding_complete", "boarding complete");
+            //statusService.delete("new status");
 
             // 4.Crew roles
             CrewRolesDao crewRolesDao = new CrewRolesDao(connection);
             CrewRolesService crewRolesService = new CrewRolesService(crewRolesDao);
             // Call appropriate methods
-            //crewRolesService.showAllRoles();
-            //crewRolesService.findRole(2);
-            //crewRolesService.addRole("pilot");
-            //crewRolesService.updateRole("manager", "mAnAgEr");
-            //crewRolesService.deleteRole("mAnAgEr");
+            //crewRolesService.showAll();
+            //crewRolesService.findByName(2);
+            //crewRolesService.add("pilot");
+            //crewRolesService.update("manager", "mAnAgEr");
+            //crewRolesService.delete("mAnAgEr");
 
             // 5.Control types
             ControlTypesDao controlTypesDao = new ControlTypesDao(connection);
             ControlTypeService controlTypeService = new ControlTypeService(controlTypesDao);
             // Call appropriate methods
-            //controlTypeService.showAllTypes();
-            //controlTypeService.findType(2);
-            //controlTypeService.addType("standard");
-            //controlTypeService.updateType("strict control", "not really strict control");
-            //controlTypeService.deleteType("not really strict control");
+            //controlTypeService.showAll();
+            //controlTypeService.findByName(2);
+            //controlTypeService.add("standard");
+            //controlTypeService.update("strict control", "not really strict control");
+            //controlTypeService.delete("not really strict control");
 
             // 6.Check-in counters
             CheckInCountersDao checkInCountersDao = new CheckInCountersDao(connection);
             CheckInCountersService checkInCountersService = new CheckInCountersService(checkInCountersDao);
             // Call appropriate methods
-            //checkInCountersService.showAllCounters();
-            //checkInCountersService.findCounter(51);
-            //checkInCountersService.addCounter("C1");
-            //checkInCountersService.updateCounter("С1", "D5");
-            //checkInCountersService.deleteCounter("D5");
+            //checkInCountersService.showAll();
+            //checkInCountersService.findByName("C1");
+            //checkInCountersService.add("C881");
+            //checkInCountersService.update("C881", "D55");
+            //checkInCountersService.delete("C1");
 
             // 7.Baggage claims
             BaggageClaimsDao baggageClaimsDao = new BaggageClaimsDao(connection);
@@ -88,31 +86,31 @@ public class Main {
             GatesDao gatesDao = new GatesDao(connection);
             GatesService gatesService = new GatesService(gatesDao);
             // Call appropriate methods
-            //gatesService.showAllGates();
-            //gatesService.findGate(8);
-            //gatesService.addGate("C8");
-            //gatesService.updateGate("C11", "R25");
-            //gatesService.deleteGate("R25");
+            //gatesService.showAll();
+            //gatesService.findByName(8);
+            //gatesService.add("C8");
+            //gatesService.update("C11", "R25");
+            //gatesService.delete("R25");
 
             // 9.Terminals
             TerminalsDao terminalsDao = new TerminalsDao(connection);
             TerminalsService terminalsService = new TerminalsService(terminalsDao);
             // Call appropriate methods
-            //terminalsService.showAllTerminals();
-            //terminalsService.findTerminal(3);
-            //terminalsService.addTerminal("C8");
-            //terminalsService.updateTerminal("C8", "EE");
-            //terminalsService.deleteTerminal("EE");
+            //terminalsService.showAll();
+            //terminalsService.findByName(3);
+            //terminalsService.add("C8");
+            //terminalsService.update("C8", "EE");
+            //terminalsService.delete("EE");
 
             // 10.Flight runways
             RunwaysDao runwaysDao = new RunwaysDao(connection);
             RunwaysService runwaysService = new RunwaysService(runwaysDao);
             // Call appropriate methods
-            //runwaysService.showAllRunways();
-            //runwaysService.findRunway(-3);
-            //runwaysService.addRunway("C8");
-            //runwaysService.updateRunway("C8", "EE");
-            //runwaysService.deleteRunway("EE");
+            //runwaysService.showAll();
+            //runwaysService.findByName(-3);
+            //runwaysService.add("C8");
+            //runwaysService.update("C8", "EE");
+            //runwaysService.delete("EE");
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -8,8 +8,11 @@ public abstract class AbstractDictionaryService<T> {
 
     protected final AbstractDictionaryDao<T> dao;
 
-    public AbstractDictionaryService(AbstractDictionaryDao<T> dao) {
+    private final int maxLength;
+
+    public AbstractDictionaryService(AbstractDictionaryDao<T> dao, int maxLength) {
         this.dao = dao;
+        this.maxLength = maxLength;
     }
 
     public void showAll() {
@@ -34,54 +37,59 @@ public abstract class AbstractDictionaryService<T> {
     }
 
     public void add(String name) {
-        if (name != null && !name.isEmpty()) {
-            if (dao.findByName(name) != null) {
-                System.out.println("Element '" + name + "' already exists");
-                return;
-            }
-            dao.insert(name);
-            System.out.println("New element '" + name + "' inserted successfully");
-        } else {
-            System.out.println("New element should not be NULL or empty");
+        if(!isNameValid(name)) return;
+
+        if (dao.findByName(name) != null) {
+            System.out.println("Element '" + name + "' already exists");
+            return;
         }
+        dao.insert(name);
+        System.out.println("New element '" + name + "' inserted successfully");
     }
 
     public void update(String oldName, String newName) {
-        if (oldName != null && newName != null && !oldName.isEmpty() && !newName.isEmpty()) {
-            if (dao.findByName(newName) == null) {
-                T elementToUpdate = dao.findByName(oldName);
-                if (elementToUpdate != null) {
-                    int id = getId(elementToUpdate);
-                    dao.update(id, newName);
-                    System.out.println("Element updated successfully");
-                } else {
-                    System.out.println("Element '" + oldName + "' not found");
-                }
-            } else {
-                System.out.println("Element '" + newName + "' already exists");
-            }
+        if(!isNameValid(newName)) return;
+
+        if(dao.findByName(newName) != null) {
+            System.out.println("Element '" + newName + "' already exists");
+            return;
+        }
+        T elementToUpdate = dao.findByName(oldName);
+        if (elementToUpdate != null) {
+            int id = getId(elementToUpdate);
+            dao.update(id, newName);
+            System.out.println("Element updated successfully");
         } else {
-            System.out.println("'oldClaim' and 'newClaim' should not be NULL or empty");
+            System.out.println("Element '" + oldName + "' not found");
         }
     }
 
     public void delete(String name) {
-        if (name != null && !name.isEmpty()) {
-            T elementToDelete = dao.findByName(name);
-            if (elementToDelete != null) {
-                int id = getId(elementToDelete);
-                if (dao.deleteById(id)) {
-                    System.out.println("Element '" + name + "' deleted successfully");
-                } else {
-                    System.out.println("Element '" + name + "' not found");
-                }
+        if(!isNameValid(name)) return;
+        T elementToDelete = dao.findByName(name);
+        if (elementToDelete != null) {
+            int id = getId(elementToDelete);
+            if (dao.deleteById(id)) {
+                System.out.println("Element '" + name + "' deleted successfully");
             } else {
                 System.out.println("Element '" + name + "' not found");
             }
         } else {
-            System.out.println("Name should not be NULL or empty");
+            System.out.println("Element '" + name + "' not found");
         }
     }
 
     protected abstract int getId(T entity);
+
+    protected boolean isNameValid(String name) {
+        if(name == null || name.isEmpty()) {
+            System.out.println("The element name should not be NULL or empty");
+            return false;
+        }
+        if(name.length() > maxLength) {
+            System.out.println("The name entered is too long: max length is " + maxLength + " symbols");
+            return false;
+        }
+        return true;
+    }
 }
