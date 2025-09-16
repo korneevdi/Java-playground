@@ -113,6 +113,16 @@ public class Main {
             //runwaysService.update("C8", "EE");
             //runwaysService.delete("EE");
 
+            // 11.Airport employee roles
+            EmployeeRolesDao employeeRolesDao = new EmployeeRolesDao(connection);
+            EmployeeRolesService employeeRolesService = new EmployeeRolesService(employeeRolesDao);
+            // Call appropriate methods
+            //employeeRolesService.showAll();
+            //employeeRolesService.findByName(-3);
+            //employeeRolesService.add("C8");
+            //employeeRolesService.update("C8", "EE");
+            //employeeRolesService.delete("EE");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
