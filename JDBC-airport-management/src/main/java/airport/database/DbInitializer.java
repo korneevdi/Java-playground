@@ -40,7 +40,7 @@ public class DbInitializer {
                 }
             }
 
-            System.out.println("Script " + filename + "executed successfully.");
+            System.out.println("Script " + filename + " executed successfully.");
         } catch(Exception e) {
             throw new RuntimeException(e);
         }

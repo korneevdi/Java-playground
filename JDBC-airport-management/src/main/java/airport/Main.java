@@ -1,6 +1,7 @@
 package airport;
 
 import airport.dao.dictionary.*;
+import airport.database.DbInitializer;
 import airport.service.dictionary.*;
 import airport.utils.ConnectionManager;
 

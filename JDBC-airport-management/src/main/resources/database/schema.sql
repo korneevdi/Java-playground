@@ -70,10 +70,17 @@ CREATE TABLE flight_runways
     runway_number VARCHAR (4) UNIQUE NOT NULL
 );
 
+-- 11
+CREATE TABLE airport_employee_roles
+(
+    role_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    role_name VARCHAR (100) UNIQUE NOT NULL
+);
+
 
 -- Contact tables --
 
--- 11
+-- 12
 CREATE TABLE airline_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -84,7 +91,7 @@ CREATE TABLE airline_contacts
     notes TEXT
 );
 
--- 12
+-- 13
 CREATE TABLE customer_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -95,7 +102,7 @@ CREATE TABLE customer_contacts
     notes TEXT
 );
 
--- 13
+-- 14
 CREATE TABLE employee_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -106,7 +113,7 @@ CREATE TABLE employee_contacts
     notes TEXT
 );
 
--- 14
+-- 15
 CREATE TABLE emergency_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -118,7 +125,7 @@ CREATE TABLE emergency_contacts
 
 -- Basic entity tables --
 
--- 15
+-- 16
 CREATE TABLE airports
 (
     airport_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -130,7 +137,7 @@ CREATE TABLE airports
     timezone VARCHAR (40) NOT NULL
 );
 
--- 16
+-- 17
 CREATE TABLE airlines
 (
     airline_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -143,7 +150,7 @@ CREATE TABLE airlines
         REFERENCES airline_contacts(contact_id)
 );
 
--- 17
+-- 18
 CREATE TABLE customers
 (
     customer_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -158,7 +165,7 @@ CREATE TABLE customers
     CONSTRAINT unique_passport_customers UNIQUE (passport_country, passport_number)
 );
 
--- 18
+-- 19
 CREATE TABLE crews
 (
     employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -175,19 +182,22 @@ CREATE TABLE crews
     CONSTRAINT unique_passport_crews UNIQUE (passport_country, passport_number)
 );
 
--- 19
+-- 20
 CREATE TABLE airport_employees
 (
     employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     first_name VARCHAR (50) NOT NULL,
     last_name VARCHAR (50) NOT NULL,
+    role INT NOT NULL,
     sex SMALLINT NOT NULL,
     birth_date DATE NOT NULL,
     passport_country VARCHAR (20) NOT NULL,
     passport_number VARCHAR (20) NOT NULL,
-    contact INT NOT NULL,
+    contact SMALLINT NOT NULL,
     emergency_contact BIGINT NOT NULL,
 
+    CONSTRAINT employee_role_fk FOREIGN KEY (role)
+            REFERENCES airport_employee_roles(role_id),
     CONSTRAINT sex_fk FOREIGN KEY (sex)
         REFERENCES person_sex(sex_id),
     CONSTRAINT employee_contacts_fk FOREIGN KEY (contact)
@@ -197,7 +207,7 @@ CREATE TABLE airport_employees
     CONSTRAINT unique_passport_airport_employees UNIQUE (passport_country, passport_number)
 );
 
--- 20
+-- 21
 CREATE TABLE passengers
 (
     passenger_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -213,7 +223,7 @@ CREATE TABLE passengers
     CONSTRAINT unique_passport_passengers UNIQUE (passport_country, passport_number)
 );
 
--- 21
+-- 22
 CREATE TABLE airplanes
 (
     airplane_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -232,7 +242,7 @@ CREATE TABLE airplanes
 
 -- Central table --
 
--- 22
+-- 23
 CREATE TABLE flights
 (
     flight_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -291,7 +301,7 @@ CREATE TABLE flights
 
 -- Linking tables (many-to-many) --
 
--- 23
+-- 24
 CREATE TABLE flight_check_in
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -305,7 +315,7 @@ CREATE TABLE flight_check_in
     CONSTRAINT unique_flight_counter UNIQUE (flight_id, counter_id)
 );
 
--- 24
+-- 25
 CREATE TABLE flight_bag_claims
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -319,7 +329,7 @@ CREATE TABLE flight_bag_claims
     CONSTRAINT unique_flight_claim UNIQUE (flight_id, claim_id)
 );
 
--- 25
+-- 26
 CREATE TABLE flight_crew
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -331,12 +341,12 @@ CREATE TABLE flight_crew
         REFERENCES flights(flight_id),
     CONSTRAINT crew_fk FOREIGN KEY (crew_id)
         REFERENCES crews(employee_id),
-    CONSTRAINT role_fk FOREIGN KEY (role)
+    CONSTRAINT crew_role_fk FOREIGN KEY (role)
         REFERENCES crew_roles(role_id),
     CONSTRAINT unique_flight_crew_role UNIQUE (flight_id, crew_id, role)
 );
 
--- 26
+-- 27
 CREATE TABLE flight_passenger
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

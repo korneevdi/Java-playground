@@ -30,7 +30,7 @@ INSERT INTO crew_roles (role_name) VALUES
 ('flight engineer'),
 ('purser'),             -- lead flight attendant
 ('flight attendant'),
-('relief pilot');        -- for long flights
+('relief pilot');       -- for long flights
 
 -- 5. Control types for passengers
 INSERT INTO control_types (control_type) VALUES
@@ -78,7 +78,19 @@ INSERT INTO terminals (terminal_number) VALUES
 INSERT INTO flight_runways (runway_number) VALUES
 ('09L'), ('09R'), ('18L'), ('18R'), ('27L'), ('27R');
 
--- 11. Airline contacts
+-- 11. Airport employee roles
+INSERT INTO airport_employee_roles (role_name) VALUES
+('Administrator'),      -- full access to the system (technical admin)
+('Director'),           -- strategic management, can manage roles and personnel
+('Dispatcher'),         -- flight dispatcher
+('Check-in Agent'),     -- check-in counter employee
+('Security Officer'),
+('Customs Officer'),    -- for long flights
+('Baggage Handler'),
+('Technician'),         -- technical personnel (aircraft maintenance)
+('Manager');            -- middle manager (e.g. flight or ground operations manager)
+
+-- 12. Airline contacts
 INSERT INTO airline_contacts (contact_name, email, phone, headquarter_city, notes) VALUES
 ('American Airlines Contact', 'contact@aa.com', '+1-800-433-7300', 'Fort Worth', 'Major US carrier'),
 ('Delta Airlines Contact', 'contact@delta.com', '+1-800-221-1212', 'Atlanta', 'Major US carrier'),
@@ -101,7 +113,7 @@ INSERT INTO airline_contacts (contact_name, email, phone, headquarter_city, note
 ('Korean Air Contact', 'contact@koreanair.com', '+82-2-2656-2001', 'Seoul', 'Asian international carrier'),
 ('Japan Airlines Contact', 'contact@jal.com', '+81-3-5460-0511', 'Tokyo', 'Asian international carrier');
 
--- 12. Customer contacts
+-- 13. Customer contacts
 INSERT INTO customer_contacts (email, phone, city, address, notes) VALUES
 ('john.doe@example.com', '+1-310-555-0101', 'Los Angeles', '123 Sunset Blvd', 'Private jet client'),
 ('jane.smith@example.com', '+1-310-555-0102', 'Los Angeles', '456 Hollywood Blvd', 'Frequent flyer, private'),
@@ -114,7 +126,7 @@ INSERT INTO customer_contacts (email, phone, city, address, notes) VALUES
 ('noah.wilson@example.com', '+1-310-555-0109', 'Los Angeles', '333 Maple St', 'Cargo logistics'),
 ('ava.moore@example.com', '+1-310-555-0110', 'Burbank', '444 Elm St', 'Private flights');
 
--- 13. Employee contacts
+-- 14. Employee contacts
 INSERT INTO employee_contacts (email, phone, city, address, notes) VALUES
 ('alice.turner@airport.com', '+1-310-555-1001', 'Los Angeles', '100 Airport Rd', 'Dispatcher'),
 ('bob.harris@airport.com', '+1-310-555-1002', 'Los Angeles', '101 Airport Rd', 'Dispatcher'),
@@ -132,7 +144,7 @@ INSERT INTO employee_contacts (email, phone, city, address, notes) VALUES
 ('noah.smith@airport.com', '+1-310-555-1014', 'Los Angeles', '113 Airport Rd', 'Administration'),
 ('olivia.johnson@airport.com', '+1-310-555-1015', 'Los Angeles', '114 Airport Rd', 'Administration');
 
--- 14. Emergency contacts
+-- 15. Emergency contacts
 INSERT INTO emergency_contacts (contact_name, relation, phone) VALUES
 ('Mike Turner', 'Husband', '+1-310-555-2002'),
 ('Laura Harris', 'Wife', '+1-310-555-2001'),
@@ -150,7 +162,7 @@ INSERT INTO emergency_contacts (contact_name, relation, phone) VALUES
 ('Sophia Smith', 'Mother', '+1-310-555-2014'),
 ('Paul Johnson', 'Father', '+1-310-555-2015');
 
--- 15. Airports
+-- 16. Airports
 INSERT INTO airports (iata, icao, name, city, country, timezone) VALUES
 ('LAX', 'KLAX', 'Los Angeles International Airport', 'Los Angeles', 'USA', 'America/Los_Angeles'),
 ('JFK', 'KJFK', 'John F. Kennedy International Airport', 'New York', 'USA', 'America/New_York'),
@@ -183,7 +195,7 @@ INSERT INTO airports (iata, icao, name, city, country, timezone) VALUES
 ('MCO', 'KMCO', 'Orlando International Airport', 'Orlando', 'USA', 'America/New_York'),
 ('LAS', 'KLAS', 'McCarran International Airport', 'Las Vegas', 'USA', 'America/Los_Angeles');
 
--- 16. Airlines
+-- 17. Airlines
 INSERT INTO airlines (iata, icao, name, contact) VALUES
 ('AA', 'AAL', 'American Airlines', 1),
 ('DL', 'DAL', 'Delta Airlines', 2),
@@ -206,7 +218,7 @@ INSERT INTO airlines (iata, icao, name, contact) VALUES
 ('KE', 'KAL', 'Korean Air', 19),
 ('JL', 'JAL', 'Japan Airlines', 20);
 
--- 17. Customers (for cargo & private flights)
+-- 18. Customers (for cargo & private flights)
 INSERT INTO customers (first_name, last_name, passport_country, passport_number, contact) VALUES
 ('John', 'Doe', 'US', 'X1234567', 1),
 ('Jane', 'Smith', 'US', 'X2345678', 2),
@@ -219,7 +231,7 @@ INSERT INTO customers (first_name, last_name, passport_country, passport_number,
 ('Noah', 'Wilson', 'US', 'X9012345', 9),
 ('Ava', 'Moore', 'US', 'X0123456', 10);
 
--- 18. Crews
+-- 19. Crews
 INSERT INTO crews (pilot_license_number, first_name, last_name, sex, birth_date, passport_country, passport_number) VALUES
 ('PILOT001', 'James', 'Smith', 1, '1978-04-15', 'USA', 'A12345678'),     -- pilots
 ('PILOT002', 'Emily', 'Johnson', 2, '1982-09-10', 'USA', 'B23456789'),
@@ -242,25 +254,25 @@ INSERT INTO crews (pilot_license_number, first_name, last_name, sex, birth_date,
 (NULL, 'Jacob', 'Clark', 1, '1984-07-07', 'USA', 'S90123456'),
 (NULL, 'Abigail', 'Rodriguez', 2, '1990-09-30', 'USA', 'T01234567');
 
--- 19. Airport employees
-INSERT INTO airport_employees (first_name, last_name, sex, birth_date, passport_country, passport_number, contact, emergency_contact) VALUES
-('Alice', 'Turner', 2, '1980-05-15', 'US', 'E1234567', 1, 1),
-('Bob', 'Harris', 1, '1978-08-22', 'US', 'E2345678', 2, 2),
-('Carol', 'Lee', 2, '1985-11-02', 'US', 'E3456789', 3, 3),
-('David', 'King', 1, '1982-03-18', 'US', 'E4567890', 4, 4),
-('Emma', 'Clark', 2, '1990-07-12', 'US', 'E5678901', 5, 5),
-('Frank', 'Martin', 1, '1979-01-25', 'US', 'E6789012', 6, 6),
-('Grace', 'Evans', 2, '1983-09-30', 'US', 'E7890123', 7, 7),
-('Harry', 'Adams', 1, '1981-12-05', 'US', 'E8901234', 8, 8),
-('Isabel', 'Brown', 2, '1986-04-17', 'US', 'E9012345', 9, 9),
-('Jack', 'Wilson', 1, '1984-06-20', 'US', 'E0123456', 10, 10),
-('Karen', 'Moore', 2, '1991-02-28', 'US', 'E1123456', 11, 11),
-('Leo', 'Miller', 1, '1987-10-10', 'US', 'E2123456', 12, 12),
-('Mia', 'Davis', 2, '1989-08-08', 'US', 'E3123456', 13, 13),
-('Noah', 'Smith', 1, '1980-11-11', 'US', 'E4123456', 14, 14),
-('Olivia', 'Johnson', 2, '1985-03-03', 'US', 'E5123456', 15, 15);
+-- 20. Airport employees
+INSERT INTO airport_employees (first_name, last_name, role, sex, birth_date, passport_country, passport_number, contact, emergency_contact) VALUES
+('Alice', 'Turner', 1, 2, '1980-05-15', 'US', 'E1234567', 1, 1),
+('Bob', 'Harris', 2, 1, '1978-08-22', 'US', 'E2345678', 2, 2),
+('Carol', 'Lee', 3, 2, '1985-11-02', 'US', 'E3456789', 3, 3),
+('David', 'King', 3, 1, '1982-03-18', 'US', 'E4567890', 4, 4),
+('Emma', 'Clark', 3, 2, '1990-07-12', 'US', 'E5678901', 5, 5),
+('Frank', 'Martin', 3, 1, '1979-01-25', 'US', 'E6789012', 6, 6),
+('Grace', 'Evans', 4, 2, '1983-09-30', 'US', 'E7890123', 7, 7),
+('Harry', 'Adams', 5, 1, '1981-12-05', 'US', 'E8901234', 8, 8),
+('Isabel', 'Brown', 4, 2, '1986-04-17', 'US', 'E9012345', 9, 9),
+('Jack', 'Wilson', 6, 1, '1984-06-20', 'US', 'E0123456', 10, 10),
+('Karen', 'Moore', 7, 2, '1991-02-28', 'US', 'E1123456', 11, 11),
+('Leo', 'Miller', 8, 1, '1987-10-10', 'US', 'E2123456', 12, 12),
+('Mia', 'Davis', 9, 2, '1989-08-08', 'US', 'E3123456', 13, 13),
+('Noah', 'Smith', 8, 1, '1980-11-11', 'US', 'E4123456', 14, 14),
+('Olivia', 'Johnson', 7, 2, '1985-03-03', 'US', 'E5123456', 15, 15);
 
--- 20. Passengers
+-- 21. Passengers
 INSERT INTO passengers (first_name, last_name, sex, age, passport_country, passport_number) VALUES
 ('James', 'Anderson', 1, 34, 'USA', 'P0012345'),
 ('Emily', 'Brown', 2, 28, 'UK', 'P0012346'),
@@ -288,7 +300,7 @@ INSERT INTO passengers (first_name, last_name, sex, age, passport_country, passp
 ('Sofia', 'Turner', 2, 28, 'Australia', 'P0012368'),
 ('Joseph', 'Phillips', 1, 31, 'UK', 'P0012369');
 
--- 21. Airplanes
+-- 22. Airplanes
 INSERT INTO airplanes (airline, registration_number, model, total_capacity, type) VALUES
 (1, 'N123AA', 'Boeing 737-800', 160, 1),
 (2, 'N124AA', 'Airbus A320', 150, 1),
@@ -311,7 +323,7 @@ INSERT INTO airplanes (airline, registration_number, model, total_capacity, type
 (19, 'N141AA', 'Airbus A321', 185, 1),
 (20, 'N142AA', 'Cessna 208 Caravan', 9, 2);
 
--- 22. Flights
+-- 23. Flights
 INSERT INTO flights
 (flight_number, service_date, airline, departure_airport, arrival_airport,
  scheduled_departure_time, actual_departure_time, scheduled_arrival_time, actual_arrival_time,
@@ -320,11 +332,11 @@ INSERT INTO flights
 VALUES
 ('LA100', '2025-09-05', 1, 1, 5,
  '2025-09-05 08:00:00-07', '2025-09-05 08:05:00-07', '2025-09-05 16:00:00+12', '2025-09-05 16:10:00+12',
- 1, 1, 1, NULL, 1, 2,
+ 1, 3, 1, NULL, 1, 2,
  1, 6, 1, 2, 1),
 ('LA101', '2025-09-05', 2, 1, 6,
  '2025-09-05 09:30:00-07', NULL, '2025-09-05 17:30:00+12', NULL,
- 2, 2, 1, NULL, 2, 2,
+ 2, 5, 1, NULL, 2, 2,
  2, 7, 1, 2, 2),
 ('LA200', '2025-09-06', 3, 1, 7,
  '2025-09-06 10:00:00-07', NULL, '2025-09-06 18:00:00+12', NULL,
@@ -344,62 +356,62 @@ VALUES
  6, 11, 1, 2, 1),
 ('LA103', '2025-09-05', 7, 1, 11,
  '2025-09-05 09:15:00-07', NULL, '2025-09-05 19:30:00+12', NULL,
- 7, 7, 1, NULL, 2, 2,
+ 7, 5, 1, NULL, 2, 2,
  7, 12, 1, 2, 2),
 ('LA104', '2025-09-05', 8, 1, 12,
  '2025-09-05 10:00:00-07', NULL, '2025-09-05 20:30:00+12', NULL,
- 8, 8, 1, NULL, 1, 2,
+ 8, 3, 1, NULL, 1, 2,
  8, 13, 1, 2, 3),
 ('LA105', '2025-09-06', 9, 1, 13,
  '2025-09-06 11:00:00-07', NULL, '2025-09-06 21:00:00+12', NULL,
- 9, 9, 2, 4, 3, 2,
+ 9, 5, 2, 4, 3, 2,
  9, 14, 1, 2, 4),
 ('LA106', '2025-09-06', 10, 1, 14,
  '2025-09-06 12:30:00-07', NULL, '2025-09-06 22:30:00+12', NULL,
- 10, 10, 2, 5, 2, 2,
+ 10, 6, 2, 5, 2, 2,
  10, 15, 1, 2, 5),
 ('LA107', '2025-09-06', 11, 1, 15,
  '2025-09-06 13:15:00-07', NULL, '2025-09-06 23:15:00+12', NULL,
- 11, 11, 1, NULL, 1, 1,
+ 11, 4, 1, NULL, 1, 1,
  11, 16, 1, 2, 1),
 ('LA108', '2025-09-07', 12, 1, 16,
  '2025-09-07 07:30:00-07', NULL, '2025-09-07 17:30:00+12', NULL,
- 12, 12, 3, 6, 3, 2,
+ 12, 3, 3, 6, 3, 2,
  12, 17, 1, 2, 2),
 ('LA109', '2025-09-07', 13, 1, 17,
  '2025-09-07 08:00:00-07', NULL, '2025-09-07 18:00:00+12', NULL,
- 13, 13, 1, NULL, 2, 1,
+ 13, 4, 1, NULL, 2, 1,
  13, 18, 1, 2, 3),
 ('LA110', '2025-09-07', 14, 1, 18,
  '2025-09-07 09:30:00-07', NULL, '2025-09-07 19:30:00+12', NULL,
- 14, 14, 2, 7, 1, 2,
+ 14, 4, 2, 7, 1, 2,
  14, 19, 1, 2, 4),
 ('LA111', '2025-09-08', 15, 1, 19,
  '2025-09-08 10:00:00-07', NULL, '2025-09-08 20:00:00+12', NULL,
- 15, 15, 1, NULL, 1, 2,
+ 15, 5, 1, NULL, 1, 2,
  15, 20, 1, 2, 5),
 ('LA112', '2025-09-08', 16, 1, 20,
  '2025-09-08 11:15:00-07', NULL, '2025-09-08 21:15:00+12', NULL,
- 16, 13, 2, 8, 3, 2,
+ 16, 3, 2, 8, 3, 2,
  16, 1, 1, 2, 1),
 ('LA113', '2025-09-08', 17, 1, 21,
  '2025-09-08 12:00:00-07', NULL, '2025-09-08 22:00:00+12', NULL,
- 17, 14, 3, 9, 2, 2,
+ 17, 4, 3, 9, 2, 2,
  17, 2, 1, 2, 2),
 ('LA114', '2025-09-09', 18, 1, 22,
  '2025-09-09 07:45:00-07', NULL, '2025-09-09 17:45:00+12', NULL,
- 18, 8, 1, NULL, 1, 1,
+ 18, 6, 1, NULL, 1, 1,
  18, 3, 1, 2, 3),
 ('LA115', '2025-09-09', 19, 1, 23,
  '2025-09-09 08:30:00-07', NULL, '2025-09-09 18:30:00+12', NULL,
- 19, 10, 2, 10, 3, 2,
+ 19, 6, 2, 10, 3, 2,
  19, 4, 1, 2, 4),
 ('LA116', '2025-09-09', 20, 1, 24,
  '2025-09-09 09:00:00-07', NULL, '2025-09-09 19:00:00+12', NULL,
- 20, 2, 1, NULL, 2, 1,
+ 20, 5, 1, NULL, 2, 1,
  20, 5, 1, 2, 5);
 
--- 23. Flight - check-in relations
+-- 24. Flight - check-in relations
 INSERT INTO flight_check_in (flight_id, counter_id) VALUES
 (1, 1),
 (1, 2),
@@ -412,7 +424,7 @@ INSERT INTO flight_check_in (flight_id, counter_id) VALUES
 (8, 3),
 (9, 4);
 
--- 24. Flight - baggage claim relations
+-- 25. Flight - baggage claim relations
 INSERT INTO flight_bag_claims (flight_id, claim_id) VALUES
 (1, 1),
 (2, 2),
@@ -425,7 +437,7 @@ INSERT INTO flight_bag_claims (flight_id, claim_id) VALUES
 (9, 4),
 (10, 5);
 
--- 25. Flight - crew relations
+-- 26. Flight - crew relations
 INSERT INTO flight_crew (flight_id, crew_id, role) VALUES
 (1, 1, 1),
 (1, 2, 2),
@@ -444,7 +456,7 @@ INSERT INTO flight_crew (flight_id, crew_id, role) VALUES
 (5, 15, 2),
 (5, 16, 3);
 
--- 26. Flight - passenger relations
+-- 27. Flight - passenger relations
 INSERT INTO flight_passenger
 (flight_id, passenger_id, checked_in, passed_control, boarded, boarding_group, boarding_time, seat_number)
 VALUES
