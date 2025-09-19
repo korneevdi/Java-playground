@@ -1,7 +1,15 @@
 package airport;
 
+import airport.dao.contact.AirlineContactsDao;
+import airport.dao.contact.CustomerContactsDao;
+import airport.dao.contact.EmergencyContactsDao;
+import airport.dao.contact.EmployeeContactsDao;
 import airport.dao.dictionary.*;
 import airport.database.DbInitializer;
+import airport.service.contact.AirlineContactsService;
+import airport.service.contact.CustomerContactsService;
+import airport.service.contact.EmergencyContactsService;
+import airport.service.contact.EmployeeContactsService;
 import airport.service.dictionary.*;
 import airport.utils.ConnectionManager;
 
@@ -122,6 +130,60 @@ public class Main {
             //employeeRolesService.add("C8");
             //employeeRolesService.update("C8", "EE");
             //employeeRolesService.delete("EE");
+
+            // 12.Airline contacts
+            AirlineContactsDao airlineContactsDao = new AirlineContactsDao(connection);
+            AirlineContactsService airlineContactsService = new AirlineContactsService(airlineContactsDao);
+            // Call appropriate methods
+            //airlineContactsService.showAll();
+            //airlineContactsService.findAllElementsByName("Hawaiian Airlines Contact");
+            //airlineContactsService.findElementByEmail("contact@fijiairways.com.fj");
+            //airlineContactsService.findAllElementsByPhone("+852-2747-3333");
+            //airlineContactsService.findAllElementsByCity("Paris");
+            //airlineContactsService.add("contact_name", "email", "phone", "city", "");
+            //airlineContactsService.update("contact_name", "email", "phone", "city", "notes",
+            //        "contact_name", "email", "phone", "city", "notes");
+            //airlineContactsService.delete("contact_name", "email", "phone", "city");
+
+            // 13.Customer contacts
+            CustomerContactsDao customerContactsDao = new CustomerContactsDao(connection);
+            CustomerContactsService customerContactsService = new CustomerContactsService(customerContactsDao);
+            // Call appropriate methods
+            //customerContactsService.showAll();
+            //customerContactsService.findElementByEmail("jane.smith@example.com");
+            //customerContactsService.findAllElementsByPhone("+1-310-555-0103");
+            //customerContactsService.findAllElementsByCity("Los Angeles");
+            //customerContactsService.findAllElementsByAddress("111 Wilshire Blvd");
+            //customerContactsService.add("email", "phone", "city", "address", "");
+            //customerContactsService.update("email", "phone", "city", "address", "notes",
+            //        "email", "phone", "Tuvalu", "address", "note");
+            //customerContactsService.delete("email", "phone", "Tuvalu", "address");
+
+            // 14.Employee contacts
+            EmployeeContactsDao employeeContactsDao = new EmployeeContactsDao(connection);
+            EmployeeContactsService employeeContactsService = new EmployeeContactsService(employeeContactsDao);
+            // Call appropriate methods
+            //employeeContactsService.showAll();
+            //employeeContactsService.findElementByEmail("bob.harris@airport.com");
+            //employeeContactsService.findAllElementsByPhone("+1-310-555-1006");
+            //employeeContactsService.findAllElementsByCity("Los Angeles");
+            //employeeContactsService.findAllElementsByAddress("108 Airport Rd");
+            //employeeContactsService.add("email", "phone", "city", "address", "__");
+            //employeeContactsService.update("email", "phone", "city", "address", "notes",
+            //        "email", "phone", "Tuvalu", "address", "note");
+            //employeeContactsService.delete("email", "phone", "Tuvalu", "address");
+
+            // 15.Employee contacts
+            EmergencyContactsDao emergencyContactsDao = new EmergencyContactsDao(connection);
+            EmergencyContactsService emergencyContactsService = new EmergencyContactsService(emergencyContactsDao);
+            // Call appropriate methods
+            //emergencyContactsService.showAll();
+            //emergencyContactsService.findAllElementsByName("Sam Clark");
+            //emergencyContactsService.findAllElementsByPhone("+1-310-555-2011");
+            //emergencyContactsService.add("name", "relation", "phone");
+            //emergencyContactsService.update("name", "relatin", "phone",
+            //        "name", "relation", "phone");
+            //emergencyContactsService.delete("name", "relatin", "phone");
 
         } catch (Exception e) {
             throw new RuntimeException(e);

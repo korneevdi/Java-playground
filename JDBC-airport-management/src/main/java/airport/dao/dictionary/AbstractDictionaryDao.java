@@ -43,7 +43,7 @@ public abstract class AbstractDictionaryDao<T> {
     public T findById(int id) {
         String sql =
                 """
-                SELECT %sб %s FROM %s
+                SELECT %s, %s FROM %s
                 WHERE %s = ?
                 """.formatted(idColumn, nameColumn, tableName, idColumn);
 
