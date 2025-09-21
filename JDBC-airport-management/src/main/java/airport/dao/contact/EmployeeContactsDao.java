@@ -3,59 +3,17 @@ package airport.dao.contact;
 import airport.entity.contact.EmployeeContact;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class EmployeeContactsDao {
-
-    private final Connection connection;
+public class EmployeeContactsDao extends AbstractContactDao<EmployeeContact> {
 
     private final static String TABLE_NAME = "employee_contacts";
 
     private final static String SELECTED_FIELDS = "contact_id, email, phone, city, address, notes";
 
     public EmployeeContactsDao(Connection connection) {
-        this.connection = connection;
-    }
-
-    // Show the list of elements
-    public List<EmployeeContact> findAll() {
-        String sql =
-                """
-                SELECT %s FROM %s
-                """.formatted(SELECTED_FIELDS, TABLE_NAME);
-
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sql);
-            List<EmployeeContact> allElements = new ArrayList<>();
-            while (resultSet.next()) {
-                allElements.add(mapRow(resultSet));
-            }
-            return allElements;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Find element by id
-    public EmployeeContact findById(int id) {
-        String sql =
-                """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(SELECTED_FIELDS, TABLE_NAME, "contact_id");
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return mapRow(resultSet);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        super(connection, TABLE_NAME, SELECTED_FIELDS);
     }
 
     // Find element by email
@@ -78,86 +36,60 @@ public class EmployeeContactsDao {
         return findByField("address", address);
     }
 
-    // Add new element
-    public void insert(EmployeeContact contact) {
-        String sql =
-                """
+    @Override
+    protected String buildInsertSql() {
+        return """
                 INSERT INTO %s (email, phone, city, address, notes) VALUES
                 (?, ?, ?, ?, ?)
                 """.formatted(TABLE_NAME);
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, contact.getEmail());
-            ps.setString(2, contact.getPhone());
-            ps.setString(3, contact.getCity());
-            ps.setString(4, contact.getAddress());
-            ps.setString(5, contact.getNotes());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    // Update element
-    // TODO: update only those fields that have actually changed
-    public void update(EmployeeContact contact) {
-        String sql =
-                """
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, EmployeeContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
+        ps.setString(5, contact.getNotes());
+    }
+
+    @Override
+    protected String buildUpdateSql() {
+        return """
                 UPDATE %s
                 SET email = ?, phone = ?, city = ?, address = ?, notes = ?
                 WHERE contact_id = ?
                 """.formatted(TABLE_NAME);
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, contact.getEmail());
-            ps.setString(2, contact.getPhone());
-            ps.setString(3, contact.getCity());
-            ps.setString(4, contact.getAddress());
-            ps.setString(5, contact.getNotes());
-            ps.setInt(6, contact.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    // Delete element by id
-    public boolean deleteById(int id) {
-        String sql =
-                """
-                DELETE FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, "contact_id");
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, EmployeeContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
+        ps.setString(5, contact.getNotes());
+        ps.setInt(6, contact.getId());
     }
 
-    // Check duplicates (via service)
-    public boolean exists(EmployeeContact contact) {
-        String sql =
-                """
+    @Override
+    protected String buildExistsSql() {
+        return """
                 SELECT 1 FROM %S
                 WHERE email = ? AND phone = ? AND city = ? AND address = ?
                 """.formatted(TABLE_NAME);
-
-        try(PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, contact.getEmail());
-            ps.setString(2, contact.getPhone());
-            ps.setString(3, contact.getCity());
-            ps.setString(4, contact.getAddress());
-            ResultSet resultSet = ps.executeQuery();
-            return resultSet.next(); // 'true' if something found, 'false' otherwise
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    private EmployeeContact mapRow(ResultSet resultSet) throws SQLException {
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, EmployeeContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
+    }
+
+    @Override
+    protected EmployeeContact mapRow(ResultSet resultSet) throws SQLException {
         return new EmployeeContact(
                 resultSet.getInt("contact_id"),
                 resultSet.getString("email"),
@@ -166,25 +98,5 @@ public class EmployeeContactsDao {
                 resultSet.getString("address"),
                 resultSet.getString("notes")
         );
-    }
-
-    private List<EmployeeContact> findByField(String fieldName, String fieldValue) {
-        String sql =
-                """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(SELECTED_FIELDS, TABLE_NAME, fieldName);
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, fieldValue);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<EmployeeContact> allContacts = new ArrayList<>();
-            while (resultSet.next()) {
-                allContacts.add(mapRow(resultSet));
-            }
-            return allContacts;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

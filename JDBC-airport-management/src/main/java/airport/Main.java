@@ -141,7 +141,7 @@ public class Main {
             //airlineContactsService.findAllElementsByPhone("+852-2747-3333");
             //airlineContactsService.findAllElementsByCity("Paris");
             //airlineContactsService.add("contact_name", "email", "phone", "city", "");
-            //airlineContactsService.update("contact_name", "email", "phone", "city", "notes",
+            //airlineContactsService.update("contact_name", "email", "phone", "city", "",
             //        "contact_name", "email", "phone", "city", "notes");
             //airlineContactsService.delete("contact_name", "email", "phone", "city");
 
