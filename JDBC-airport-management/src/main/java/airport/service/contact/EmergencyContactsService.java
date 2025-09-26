@@ -1,33 +1,23 @@
 package airport.service.contact;
 
 import airport.dao.contact.EmergencyContactsDao;
-import airport.entity.contact.AirlineContact;
-import airport.entity.contact.CustomerContact;
 import airport.entity.contact.EmergencyContact;
 
 import java.util.List;
 import java.util.Optional;
 
-public class EmergencyContactsService {
+public class EmergencyContactsService extends AbstractContactService<EmergencyContact> {
 
-    private EmergencyContactsDao emergencyContactsDao;
-    private final static int CONTACT_NAME_MAX_LENGTH = 100;
-    private final static int RELATION_MAX_LENGTH = 30;
-    private final static int PHONE_MAX_LENGTH = 30;
+    private final EmergencyContactsDao emergencyContactsDao;
 
-    public EmergencyContactsService(EmergencyContactsDao emergencyContactsDao) {
-        this.emergencyContactsDao = emergencyContactsDao;
-    }
+    public EmergencyContactsService(EmergencyContactsDao dao) {
+        super(dao);
+        this.emergencyContactsDao = dao;
 
-    // Show all saved contacts
-    public void showAll() {
-        List<EmergencyContact> allElements = emergencyContactsDao.findAll();
-        System.out.println("List of elements:");
-        if (!allElements.isEmpty()) {
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
+        // Set the map of the fields and max lengths
+        fieldMaxLengths.put("contact_name", 100);
+        fieldMaxLengths.put("relation", 30);
+        fieldMaxLengths.put("phone", 30);
     }
 
     // All contacts with certain contact name
@@ -55,141 +45,66 @@ public class EmergencyContactsService {
     // Add new contact
     public void add(String contactName, String relation, String phone) {
         EmergencyContact contact = new EmergencyContact(0, contactName, relation, phone);
-
-        if(!isValidContact(contact)) return;
-
-        if (emergencyContactsDao.exists(contact)) {
-            String output =
-                    """
-                    Element with the following properties
-                    
-                    contact name: %s,
-                    relation: %s,
-                    phone: %s
-                    
-                    already exists.
-                    """.formatted(contact.getContactName(), contact.getRelation(), contact.getPhone());
-            System.out.println(output);
-            return;
-        }
-
-        emergencyContactsDao.insert(contact);
-        System.out.println("New element inserted successfully");
+        addContact(contact);
     }
 
     // Update contact
     public void update(String oldContactName, String oldRelation, String oldPhone,
                        String newContactName, String newRelation, String newPhone) {
 
-        // ищем старый контакт по уникальной комбинации
-        Optional<EmergencyContact> optOldContact = emergencyContactsDao.findSingle(oldContactName, oldRelation, oldPhone);
-        if (optOldContact.isEmpty()) {
-            String output = """
-                Element with the following properties
-                
-                contact name: %s,
-                relation: %s,
-                phone: %s
-                
-                does not exist.
-                """.formatted(oldContactName, oldRelation, oldPhone);
-            System.out.println(output);
-            return;
-        }
+        EmergencyContact oldContact = new EmergencyContact(0, oldContactName, oldRelation, oldPhone);
 
-        EmergencyContact oldContact = optOldContact.get();
+        int id = emergencyContactsDao.findSingle(
+                oldContact.getContactName(), oldContact.getRelation(), oldContact.getPhone())
+                .orElseThrow(() -> new RuntimeException("Contact to update is not found"))
+                .getId();
 
-        // проверяем, есть ли вообще изменения
-        if (oldContact.getContactName().equals(newContactName)
-                && oldContact.getRelation().equals(newRelation)
-                && oldContact.getPhone().equals(newPhone)) {
-            System.out.println("The old and new properties are identical. Nothing to update.");
-            return;
-        }
+        EmergencyContact newContact = new EmergencyContact(id, newContactName, newRelation, newPhone);
 
-        // формируем обновлённый объект с тем же id
-        EmergencyContact newContact = new EmergencyContact(
-                oldContact.getId(),
-                newContactName,
-                newRelation,
-                newPhone
-        );
-
-        if (!isValidContact(newContact)) return;
-
-        emergencyContactsDao.update(newContact);
-        System.out.println("Element updated successfully");
+        updateContact(oldContact, newContact);
     }
 
     // Delete contact
     public void delete(String contactName, String relation, String phone) {
-
         EmergencyContact contact = new EmergencyContact(0, contactName, relation, phone);
-        if(!emergencyContactsDao.exists(contact)) {
-            String output =
-                    """
-                    Element with the following properties
-                    
-                    contact name: %s,
-                    relation: %s,
-                    phone: %s
-                    
-                    does not exist.
-                    """.formatted(contactName, relation, phone);
-            System.out.println(output);
-            return;
-        }
+        deleteContact(contact);
+    }
 
-        int id = emergencyContactsDao.findSingle(contactName, relation, phone)
-                .orElseThrow(() -> new RuntimeException("No element found"))
-                .getId();
+    @Override
+    protected boolean isValidContact(EmergencyContact contact) {
+        return validateField("contact_name", contact.getContactName()) &&
+                validateField("relation", contact.getRelation()) &&
+                validateField("phone", contact.getPhone());
+    }
 
-        boolean deleted = emergencyContactsDao.deleteById(id);
+    @Override
+    protected void existsOrNotOutput(EmergencyContact contact, boolean isExists) {
+        String output =
+                """
+                Element with the following properties
 
-        if(deleted) {
-            System.out.println("Element deleted successfully");
+                contact name: %s,
+                relation: %s,
+                phone: %s
+                """.formatted(contact.getContactName(), contact.getRelation(), contact.getPhone());
+
+        if(isExists) {
+            output = output + "\nalready exists.";
         } else {
-            System.out.println("Failed to delete element");
+            output = output + "\ndoes not exist.";
         }
+        System.out.println(output);
     }
 
-    private void printList(List<EmergencyContact> list) {
-        for(int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ": " + list.get(i));
-        }
+    @Override
+    protected boolean areContactsIdentical(EmergencyContact oldContact, EmergencyContact newContact) {
+        return oldContact.equals(newContact);
     }
 
-    private boolean isValidContact(EmergencyContact contact) {
-        String contactName = contact.getContactName();
-        String relation = contact.getRelation();
-        String phone = contact.getPhone();
-
-        if(contactName == null || contactName.isEmpty()) {
-            System.out.println("Element name should not be NULL or empty");
-            return false;
-        }
-        if(contactName.length() > CONTACT_NAME_MAX_LENGTH) {
-            System.out.println("The contact name entered is too long: max length is " + CONTACT_NAME_MAX_LENGTH + " symbols");
-            return false;
-        }
-
-        if(relation == null || relation.isEmpty()) {
-            System.out.println("Email should not be NULL or empty");
-            return false;
-        }
-        if(relation.length() > RELATION_MAX_LENGTH) {
-            System.out.println("The email entered is too long: max length is " + RELATION_MAX_LENGTH + " symbols");
-            return false;
-        }
-
-        if(phone == null || phone.isEmpty()) {
-            System.out.println("Phone should not be NULL or empty");
-            return false;
-        }
-        if(phone.length() > PHONE_MAX_LENGTH) {
-            System.out.println("The phone entered is too long: max length is " + PHONE_MAX_LENGTH + " symbols");
-            return false;
-        }
-        return true;
+    @Override
+    protected Optional<Integer> findId(EmergencyContact contact) {
+        return emergencyContactsDao.findSingle(
+                contact.getContactName(), contact.getRelation(), contact.getPhone()
+        ).map(EmergencyContact::getId);
     }
 }

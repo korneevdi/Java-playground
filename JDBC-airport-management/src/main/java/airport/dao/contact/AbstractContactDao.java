@@ -83,12 +83,12 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
-    public void update(T entity) {
+    public boolean update(T entity) {
         String sql = buildUpdateSql();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             setUpdateStatement(ps, entity);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

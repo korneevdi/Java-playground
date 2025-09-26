@@ -157,7 +157,7 @@ public class Main {
             //customerContactsService.add("email", "phone", "city", "address", "");
             //customerContactsService.update("email", "phone", "city", "address", "notes",
             //        "email", "phone", "Tuvalu", "address", "note");
-            //customerContactsService.delete("email", "phone", "Tuvalu", "address");
+            //customerContactsService.delete("email", "phone", "city", "address");
 
             // 14.Employee contacts
             EmployeeContactsDao employeeContactsDao = new EmployeeContactsDao(connection);

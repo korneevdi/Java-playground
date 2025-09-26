@@ -6,27 +6,19 @@ import airport.entity.contact.AirlineContact;
 import java.util.List;
 import java.util.Optional;
 
-public class AirlineContactsService {
+public class AirlineContactsService extends AbstractContactService<AirlineContact> {
 
     private final AirlineContactsDao airlineContactsDao;
-    private final static int CONTACT_NAME_MAX_LENGTH = 100;
-    private final static int EMAIL_MAX_LENGTH = 100;
-    private final static int PHONE_MAX_LENGTH = 30;
-    private final static int CITY_MAX_LENGTH = 25;
 
-    public AirlineContactsService(AirlineContactsDao airlineContactsDao) {
-        this.airlineContactsDao = airlineContactsDao;
-    }
+    public AirlineContactsService(AirlineContactsDao dao) {
+        super(dao);
+        this.airlineContactsDao = dao;
 
-    // Show all saved contacts
-    public void showAll() {
-        List<AirlineContact> allElements = airlineContactsDao.findAll();
-        System.out.println("List of elements:");
-        if (!allElements.isEmpty()) {
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
+        // Set the map of the fields and max lengths
+        fieldMaxLengths.put("contact_name", 100);
+        fieldMaxLengths.put("email", 100);
+        fieldMaxLengths.put("phone", 30);
+        fieldMaxLengths.put("headquarter_city", 25);
     }
 
     // All contacts with certain contact name
@@ -76,27 +68,7 @@ public class AirlineContactsService {
     // Add new contact
     public void add(String contactName, String email, String phone, String city, String notes) {
         AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, notes);
-
-        if(!isValidContact(contact)) return;
-
-        if (airlineContactsDao.exists(contact)) {
-            String output =
-                    """
-                    Element with the following properties
-                    
-                    contact name: %s,
-                    email: %s,
-                    phone: %s,
-                    headquarter city: %s
-                    
-                    already exists.
-                    """.formatted(contact.getContactName(), contact.getEmail(), contact.getPhone(), contact.getCity());
-            System.out.println(output);
-            return;
-        }
-
-        airlineContactsDao.insert(contact);
-        System.out.println("New element inserted successfully");
+        addContact(contact);
     }
 
     // Update contact
@@ -104,118 +76,57 @@ public class AirlineContactsService {
                        String newContactName, String newEmail, String newPhone, String newCity, String newNotes) {
 
         AirlineContact oldContact = new AirlineContact(0, oldContactName, oldEmail, oldPhone, oldCity, oldNotes);
-        if (!airlineContactsDao.exists(oldContact)) {
-            String output =
-                    """
-                    Element with the following properties
-                    
-                    contact name: %s,
-                    email: %s,
-                    phone: %s,
-                    headquarter city: %s
-                    
-                    does not exist.
-                    """.formatted(oldContactName, oldEmail, oldPhone, oldCity);
-            System.out.println(output);
-            return;
-        }
-
-        if(oldContactName.equals(newContactName) && oldEmail.equals(newEmail) &&
-        oldPhone.equals(newPhone) && oldCity.equals(newCity) && oldNotes.equals(newNotes)) {
-            System.out.println("The old and new properties are identical. Nothing to update.");
-            return;
-        }
 
         int id = airlineContactsDao.findByEmail(oldEmail).
                 orElseThrow(() -> new RuntimeException("Contact to update is not found"))
                 .getId();
-        AirlineContact newContact = new AirlineContact(id, newContactName, newEmail, newPhone, newCity, newNotes);
-        if(!isValidContact(newContact)) return;
 
-        airlineContactsDao.update(newContact);
-        System.out.println("Element updated successfully");
+        AirlineContact newContact = new AirlineContact(id, newContactName, newEmail, newPhone, newCity, newNotes);
+
+        updateContact(oldContact, newContact);
     }
 
     // Delete contact
     public void delete(String contactName, String email, String phone, String city) {
-
         AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, "");
-        if(!airlineContactsDao.exists(contact)) {
-            String output =
-                    """
-                    Element with the following properties
-                    
-                    contact name: %s,
-                    email: %s,
-                    phone: %s,
-                    headquarter city: %s
-                    
-                    does not exist.
-                    """.formatted(contactName, email, phone, city);
-            System.out.println(output);
-            return;
-        }
+        deleteContact(contact);
+    }
 
-        int id = airlineContactsDao.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Could not find element"))
-                .getId();
+    @Override
+    protected boolean isValidContact(AirlineContact contact) {
+        return validateField("contact_name", contact.getContactName()) &&
+                validateField("email", contact.getEmail()) &&
+                validateField("phone", contact.getPhone()) &&
+                validateField("headquarter_city", contact.getCity());
+    }
 
-        boolean deleted = airlineContactsDao.deleteById(id);
+    @Override
+    protected void existsOrNotOutput(AirlineContact contact, boolean isExists) {
+        String output =
+                """
+                Element with the following properties
 
-        if(deleted) {
-            System.out.println("Element deleted successfully");
+                contact name: %s,
+                email: %s,
+                phone: %s,
+                headquarter city: %s
+                """.formatted(contact.getContactName(), contact.getEmail(), contact.getPhone(), contact.getCity());
+
+        if(isExists) {
+            output = output + "\nalready exists.";
         } else {
-            System.out.println("Failed to delete element");
+            output = output + "\ndoes not exist.";
         }
+        System.out.println(output);
     }
 
-    private void printList(List<AirlineContact> list) {
-        for(int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ": " + list.get(i));
-        }
+    @Override
+    protected boolean areContactsIdentical(AirlineContact oldContact, AirlineContact newContact) {
+        return oldContact.equals(newContact);
     }
 
-    private boolean isValidContact(AirlineContact contact) {
-        String contactName = contact.getContactName();
-        String email = contact.getEmail();
-        String phone = contact.getPhone();
-        String city = contact.getCity();
-
-        if(contactName == null || contactName.isEmpty()) {
-            System.out.println("Element name should not be NULL or empty");
-            return false;
-        }
-        if(contactName.length() > CONTACT_NAME_MAX_LENGTH) {
-            System.out.println("The contact name entered is too long: max length is " + CONTACT_NAME_MAX_LENGTH + " symbols");
-            return false;
-        }
-
-        if(email == null || email.isEmpty()) {
-            System.out.println("Email should not be NULL or empty");
-            return false;
-        }
-        if(email.length() > EMAIL_MAX_LENGTH) {
-            System.out.println("The email entered is too long: max length is " + EMAIL_MAX_LENGTH + " symbols");
-            return false;
-        }
-
-        if(phone == null || phone.isEmpty()) {
-            System.out.println("Phone should not be NULL or empty");
-            return false;
-        }
-        if(phone.length() > PHONE_MAX_LENGTH) {
-            System.out.println("The phone entered is too long: max length is " + PHONE_MAX_LENGTH + " symbols");
-            return false;
-        }
-
-        if(city == null || city.isEmpty()) {
-            System.out.println("City name should not be NULL or empty");
-            return false;
-        }
-        if(city.length() > CITY_MAX_LENGTH) {
-            System.out.println("The city entered is too long: max length is " + CITY_MAX_LENGTH + " symbols");
-            return false;
-        }
-        return true;
+    @Override
+    protected Optional<Integer> findId(AirlineContact contact) {
+        return airlineContactsDao.findByEmail(contact.getEmail()).map(AirlineContact::getId);
     }
 }
