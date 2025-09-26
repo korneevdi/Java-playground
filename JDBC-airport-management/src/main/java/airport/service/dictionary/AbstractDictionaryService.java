@@ -19,9 +19,7 @@ public abstract class AbstractDictionaryService<T> {
         List<T> allElements = dao.findAll();
         System.out.println("List of elements:");
         if (!allElements.isEmpty()) {
-            for (int i = 0; i < allElements.size(); i++) {
-                System.out.println((i + 1) + ": " + allElements.get(i));
-            }
+            printList(allElements);
         } else {
             System.out.println("No data found");
         }
@@ -80,6 +78,12 @@ public abstract class AbstractDictionaryService<T> {
     }
 
     protected abstract int getId(T entity);
+
+    protected void printList(List<T> list) {
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ": " + list.get(i));
+        }
+    }
 
     protected boolean isNameValid(String name) {
         if(name == null || name.isEmpty()) {
