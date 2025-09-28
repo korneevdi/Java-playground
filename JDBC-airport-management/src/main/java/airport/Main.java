@@ -1,11 +1,13 @@
 package airport;
 
+import airport.dao.basic.AirportDao;
 import airport.dao.contact.AirlineContactsDao;
 import airport.dao.contact.CustomerContactsDao;
 import airport.dao.contact.EmergencyContactsDao;
 import airport.dao.contact.EmployeeContactsDao;
 import airport.dao.dictionary.*;
 import airport.database.DbInitializer;
+import airport.service.basic.AirportService;
 import airport.service.contact.AirlineContactsService;
 import airport.service.contact.CustomerContactsService;
 import airport.service.contact.EmergencyContactsService;
@@ -184,6 +186,22 @@ public class Main {
             //emergencyContactsService.update("name", "relatin", "phone",
             //        "name", "relation", "phone");
             //emergencyContactsService.delete("name", "relatin", "phone");
+
+            // 16.Airports
+            AirportDao airportDao = new AirportDao(connection);
+            AirportService airportService = new AirportService(airportDao);
+            // Call appropriate methods
+            //airportService.showAll();
+            //airportService.findElementByIata("SYD");
+            //airportService.findElementByIcao("VHHH");
+            //airportService.findElementByName("Faa'a International Airport");
+            //airportService.findAllElementsByCity("Seattle");
+            //airportService.findAllElementsByCountry("Fiji");
+            //airportService.findAllElementsByTimezone("Pacific/Auckland");
+            //airportService.add("iat", "icao", "Name", "City", "Country", "timezone");
+            //airportService.update("iat", "icao", "Name", "City", "Country", "timezone",
+            //        "itt", "icao", "Name", "City", "Country", "timezone");
+            //airportService.delete("itt", "icao", "Name", "City", "Country", "timezone");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
