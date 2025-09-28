@@ -1,5 +1,7 @@
 package airport.entity.contact;
 
+import java.util.Objects;
+
 public class AirlineContact {
 
     private int id;
@@ -81,5 +83,18 @@ public class AirlineContact {
                 ", city='" + city + '\'' +
                 ", notes='" + notes + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirlineContact contact = (AirlineContact) o;
+        return Objects.equals(contactName, contact.contactName) && Objects.equals(email, contact.email) && Objects.equals(phone, contact.phone) && Objects.equals(city, contact.city) && Objects.equals(notes, contact.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactName, email, phone, city, notes);
     }
 }

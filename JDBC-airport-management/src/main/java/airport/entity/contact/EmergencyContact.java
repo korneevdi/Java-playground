@@ -1,5 +1,7 @@
 package airport.entity.contact;
 
+import java.util.Objects;
+
 public class EmergencyContact {
 
     private int id;
@@ -57,5 +59,18 @@ public class EmergencyContact {
                 ", relation='" + relation + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmergencyContact that = (EmergencyContact) o;
+        return Objects.equals(contactName, that.contactName) && Objects.equals(relation, that.relation) && Objects.equals(phone, that.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactName, relation, phone);
     }
 }
