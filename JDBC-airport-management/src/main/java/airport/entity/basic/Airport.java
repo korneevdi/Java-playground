@@ -102,7 +102,12 @@ public class Airport {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Airport airport = (Airport) o;
-        return Objects.equals(iata, airport.iata) && Objects.equals(icao, airport.icao) && Objects.equals(name, airport.name) && Objects.equals(city, airport.city) && Objects.equals(country, airport.country) && Objects.equals(timezone, airport.timezone);
+        return Objects.equals(iata, airport.iata) &&
+                Objects.equals(icao, airport.icao) &&
+                Objects.equals(name, airport.name) &&
+                Objects.equals(city, airport.city) &&
+                Objects.equals(country, airport.country) &&
+                Objects.equals(timezone, airport.timezone);
     }
 
     @Override
