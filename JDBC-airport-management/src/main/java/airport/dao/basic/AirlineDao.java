@@ -17,10 +17,20 @@ public class AirlineDao extends AbstractBasicDao<Airline> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT airline_id, iata, icao, name, contact_id,  contact_name, email, phone, headquarter_city, notes
-                FROM airlines
+                SELECT *
+                FROM %s
                 JOIN airline_contacts ON airlines.airline_id = airline_contacts.contact_id
-                """;
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT *
+                FROM %s
+                JOIN airline_contacts ON airlines.airline_id = airline_contacts.contact_id
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

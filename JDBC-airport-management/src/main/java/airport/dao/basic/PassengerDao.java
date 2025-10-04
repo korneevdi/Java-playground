@@ -21,9 +21,20 @@ public class PassengerDao extends AbstractBasicDao<Passenger> {
         return """
                 SELECT passenger_id, first_name, last_name, sex_id, sex_name, age,
                        passport_country, passport_number
-                FROM passengers
+                FROM %s
                 JOIN person_sex ON passengers.sex = person_sex.sex_id
-                """;
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT passenger_id, first_name, last_name, sex_id, sex_name, age,
+                       passport_country, passport_number
+                FROM %s
+                JOIN person_sex ON passengers.sex = person_sex.sex_id
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

@@ -22,9 +22,20 @@ public class CrewDao extends AbstractBasicDao<Crew> {
         return """
                 SELECT employee_id, pilot_license_number, first_name, last_name, sex_id, sex_name,
                        birth_date, passport_country, passport_number
-                FROM crews
+                FROM %s
                 JOIN person_sex ON crews.sex = person_sex.sex_id
-                """;
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT employee_id, pilot_license_number, first_name, last_name, sex_id, sex_name,
+                       birth_date, passport_country, passport_number
+                FROM %s
+                JOIN person_sex ON crews.sex = person_sex.sex_id
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

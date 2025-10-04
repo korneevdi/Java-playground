@@ -21,9 +21,20 @@ public class CustomerDao extends AbstractBasicDao<Customer> {
         return """
                 SELECT customer_id, first_name, last_name, passport_country, passport_number,
                        contact_id, email, phone, city, address, notes
-                FROM customers
+                FROM %s
                 JOIN customer_contacts ON customers.contact = customer_contacts.contact_id
-                """;
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT customer_id, first_name, last_name, passport_country, passport_number,
+                       contact_id, email, phone, city, address, notes
+                FROM %s
+                JOIN customer_contacts ON customers.contact = customer_contacts.contact_id
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

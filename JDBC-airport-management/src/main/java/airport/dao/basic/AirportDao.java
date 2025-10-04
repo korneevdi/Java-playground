@@ -16,9 +16,18 @@ public class AirportDao extends AbstractBasicDao<Airport> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT airport_id, iata, icao, name, city, country, timezone
-                FROM airports
-                """;
+                SELECT *
+                FROM %s
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT *
+                FROM %s
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

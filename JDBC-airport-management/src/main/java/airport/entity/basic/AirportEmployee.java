@@ -119,7 +119,7 @@ public class AirportEmployee {
     @Override
     public String toString() {
         return """
-                Airplane
+                AirportEmployee
                     ID: %s,
                     first name: %s,
                     last name: %s,

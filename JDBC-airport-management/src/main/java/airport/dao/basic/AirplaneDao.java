@@ -21,27 +21,24 @@ public class AirplaneDao extends AbstractBasicDao<Airplane> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT ap.airplane_id,
-                       ap.registration_number,
-                       ap.model,
-                       ap.total_capacity,
-                       a.airline_id,
-                       a.iata,
-                       a.icao,
-                       a.name,
-                       ac.contact_id,
-                       ac.contact_name,
-                       ac.email,
-                       ac.phone,
-                       ac.headquarter_city,
-                       ac.notes,
-                       t.type_id,
-                       t.type_name
-                FROM airplanes ap
-                JOIN airlines a ON ap.airline = a.airline_id
-                JOIN types t ON ap.type = t.type_id
-                JOIN airline_contacts ac ON a.contact = ac.contact_id
-                """;
+                SELECT *
+                FROM %s
+                JOIN airlines ON airplanes.airline = airlines.airline_id
+                JOIN types ON airplanes.type = types.type_id
+                JOIN airline_contacts ON airlines.contact = airline_contacts.contact_id
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT *
+                FROM %s
+                JOIN airlines ON airplanes.airline = airlines.airline_id
+                JOIN types ON airplanes.type = types.type_id
+                JOIN airline_contacts ON airlines.contact = airline_contacts.contact_id
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
 
     private final static String TABLE_NAME = "airport_employees";
-    private final static String ID_NAME = "airport_employees";
+    private final static String ID_NAME = "employee_id";
 
     public AirportEmployeeDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
@@ -49,6 +49,38 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
                 JOIN employee_contacts ec     ON e.contact = ec.contact_id
                 JOIN emergency_contacts emc   ON e.emergency_contact = emc.contact_id;
                 """;
+    }
+
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT e.employee_id,
+                       e.first_name,
+                       e.last_name,
+                       r.role_id,
+                       r.role_name,
+                       s.sex_id,
+                       s.sex_name,
+                       e.birth_date,
+                       e.passport_country,
+                       e.passport_number,
+                       ec.contact_id    AS emp_contact_id,
+                       ec.email         AS emp_email,
+                       ec.phone         AS emp_phone,
+                       ec.city          AS emp_city,
+                       ec.address       AS emp_address,
+                       ec.notes         AS emp_notes,
+                       emc.contact_id   AS emerg_contact_id,
+                       emc.contact_name AS emerg_name,
+                       emc.relation     AS emerg_relation,
+                       emc.phone        AS emerg_phone
+                FROM airport_employees e
+                JOIN airport_employee_roles r ON e.role = r.role_id
+                JOIN person_sex s             ON e.sex = s.sex_id
+                JOIN employee_contacts ec     ON e.contact = ec.contact_id
+                JOIN emergency_contacts emc   ON e.emergency_contact = emc.contact_id;
+                WHERE %s = ?
+                """.formatted(ID_NAME);
     }
 
     @Override

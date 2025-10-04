@@ -1,10 +1,7 @@
 package airport.dao.basic;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractBasicDao<T> {
@@ -38,7 +35,7 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    // Find ID by unique field
+    // Find ID by unique field(s)
     public OptionalInt findId(Map<String, String> uniqueFields) {
         String where = uniqueFields.keySet().stream()
                 .map(s -> s + " = ?")
@@ -62,29 +59,33 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-
-
-    // Each child DAO class must describe how to map a table row to a Java object
-    protected abstract String buildFindAllSql();
-
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
-/*
     // Find element by id
-    public T findById(int id) {
+    public Optional<T> findById(int id) {
         String sql = buildFindByIdSql();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return mapRow(resultSet);
+                return Optional.of(mapRow(resultSet));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+
+
+
+    protected abstract String buildFindAllSql();
+
+    protected abstract String buildFindByIdSql();
+
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+
+    /*
     protected List<T> findByField(String fieldName, String fieldValue) {
         String sql = buildFindByFieldSql(fieldName);
 
@@ -148,7 +149,6 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
-    protected abstract String buildFindByIdSql();
 
     protected abstract String buildFindByFieldSql(String fieldName);
 
