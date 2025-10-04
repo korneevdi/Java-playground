@@ -3,13 +3,14 @@ package airport.dao.basic;
 import airport.entity.basic.Airport;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AirportDao extends AbstractBasicDao<Airport> {
 
+    private final static String TABLE_NAME = "airports";
+    private final static String ID_NAME = "airport_id";
+
     public AirportDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

@@ -10,8 +10,11 @@ import java.time.LocalDate;
 
 public class CrewDao extends AbstractBasicDao<Crew> {
 
+    private final static String TABLE_NAME = "crews";
+    private final static String ID_NAME = "employee_id";
+
     public CrewDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

@@ -9,15 +9,15 @@ import airport.entity.dictionary.PersonSex;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
 
+    private final static String TABLE_NAME = "airport_employees";
+    private final static String ID_NAME = "airport_employees";
+
     public AirportEmployeeDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

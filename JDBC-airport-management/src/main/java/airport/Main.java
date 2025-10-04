@@ -231,7 +231,7 @@ public class Main {
             PassengerDao passengerDao = new PassengerDao(connection);
             PassengerService passengerService = new PassengerService(passengerDao);
             // Call appropriate methods
-            passengerService.showAll();
+            //passengerService.showAll();
 
             // 22.Airplanes
             AirplaneDao airplaneDao = new AirplaneDao(connection);

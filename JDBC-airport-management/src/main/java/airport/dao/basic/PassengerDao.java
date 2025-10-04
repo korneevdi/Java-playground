@@ -6,14 +6,14 @@ import airport.entity.dictionary.PersonSex;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PassengerDao extends AbstractBasicDao<Passenger> {
 
+    private final static String TABLE_NAME = "passengers";
+    private final static String ID_NAME = "passenger_id";
+
     public PassengerDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

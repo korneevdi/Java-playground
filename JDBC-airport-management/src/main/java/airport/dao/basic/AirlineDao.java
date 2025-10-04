@@ -4,13 +4,14 @@ import airport.entity.basic.Airline;
 import airport.entity.contact.AirlineContact;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AirlineDao extends AbstractBasicDao<Airline> {
 
+    private final static String TABLE_NAME = "airlines";
+    private final static String ID_NAME = "airline_id";
+
     public AirlineDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

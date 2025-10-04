@@ -8,14 +8,14 @@ import airport.entity.dictionary.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AirplaneDao extends AbstractBasicDao<Airplane> {
 
+    private final static String TABLE_NAME = "airplanes";
+    private final static String ID_NAME = "airplane_id";
+
     public AirplaneDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

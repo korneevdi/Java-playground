@@ -9,8 +9,11 @@ import java.sql.SQLException;
 
 public class CustomerDao extends AbstractBasicDao<Customer> {
 
+    private final static String TABLE_NAME = "customers";
+    private final static String ID_NAME = "customer_id";
+
     public CustomerDao(Connection connection) {
-        super(connection);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override

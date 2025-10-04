@@ -3,17 +3,23 @@ package airport.dao.basic;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 public abstract class AbstractBasicDao<T> {
 
     protected final Connection connection;
-    /*private final String tableName;
-    private final String selectedFields;
 
-    private final String idName;*/
+    private final String tableName;
+    private final String idName;
 
-    public AbstractBasicDao(Connection connection) {
+    //private final String selectedFields;
+
+    public AbstractBasicDao(Connection connection, String tableName, String idName) {
         this.connection = connection;
+        this.idName = idName;
+        this.tableName = tableName;
     }
 
     // Show the list of elements
@@ -31,6 +37,37 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
+
+    // Find ID by unique field
+    public OptionalInt findId(Map<String, String> uniqueFields) {
+        String where = uniqueFields.keySet().stream()
+                .map(s -> s + " = ?")
+                .collect(Collectors.joining(" AND "));
+
+        String sql = "SELECT " + idName + " FROM " + tableName + " WHERE " + where;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int i = 1;
+            for (String value : uniqueFields.values()) {
+                ps.setString(i++, value);
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return OptionalInt.of(rs.getInt(idName));
+            } else {
+                return OptionalInt.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    // Each child DAO class must describe how to map a table row to a Java object
+    protected abstract String buildFindAllSql();
+
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 /*
     // Find element by id
     public T findById(int id) {
@@ -111,18 +148,10 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
-*/
-    // Each child DAO class must describe how to map a table row to a Java object
-    protected abstract String buildFindAllSql();
-/*
     protected abstract String buildFindByIdSql();
 
     protected abstract String buildFindByFieldSql(String fieldName);
-    */
 
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
-
-    /*
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
