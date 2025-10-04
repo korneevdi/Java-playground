@@ -94,16 +94,18 @@ public class Crew {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", pilotLicenseNumber='" + pilotLicenseNumber + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", sex=" + sex.getName() +
-                ", birthDate=" + birthDate +
-                ", passportCountry='" + passportCountry + '\'' +
-                ", passportNumber='" + passportNumber + '\'' +
-                '}';
+        return """
+                Crew
+                    ID: %s,
+                    pilot license number: %s,
+                    first name: %s,
+                    last name: %s,
+                    sex: %s,
+                    birth date: %s,
+                    passport country: %s,
+                    passport number: %s
+                """.formatted(id, pilotLicenseNumber, firstName, lastName, sex.getName(),
+                birthDate, passportCountry, passportNumber);
     }
 
     @Override

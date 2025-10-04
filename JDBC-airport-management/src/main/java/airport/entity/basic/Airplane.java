@@ -72,14 +72,15 @@ public class Airplane {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", airline='" + airline.getName() + '\'' +
-                ", registrationNumber='" + registrationNumber + '\'' +
-                ", model='" + model + '\'' +
-                ", capacity=" + capacity +
-                ", type='" + type.getName() + '\'' +
-                '}';
+        return """
+                Airplane
+                    ID: %s,
+                    airline: %s,
+                    registration number: %s,
+                    model: %s,
+                    total capacity: %s,
+                    type: %s
+                """.formatted(id, airline.getName(), registrationNumber, model, capacity, type.getName());
     }
 
     @Override

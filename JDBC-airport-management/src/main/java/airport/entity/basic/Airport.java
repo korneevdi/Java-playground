@@ -86,15 +86,16 @@ public class Airport {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", iata='" + iata + '\'' +
-                ", icao='" + icao + '\'' +
-                ", name='" + name + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", timezone='" + timezone + '\'' +
-                '}';
+        return """
+                Airport
+                    ID: %s,
+                    IATA: %s,
+                    ICAO: %s,
+                    name: %s,
+                    city: %s,
+                    country: %s,
+                    timezone: %s
+                """.formatted(id, iata, icao, name, city, country, timezone);
     }
 
     @Override

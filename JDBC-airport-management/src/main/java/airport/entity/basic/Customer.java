@@ -73,18 +73,20 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", passportCountry='" + passportCountry + '\'' +
-                ", passportNumber='" + passportNumber + '\'' +
-                ", contact_email=" + contact.getEmail() + '\'' +
-                ", contact_phone=" + contact.getPhone() + '\'' +
-                ", city=" + contact.getCity() + '\'' +
-                ", address=" + contact.getAddress() + '\'' +
-                ", notes=" + contact.getNotes() + '\'' +
-                '}';
+        return """
+                Customer
+                    ID: %s,
+                    first name: %s,
+                    last name: %s,
+                    passport country: %s,
+                    passport number: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    address: %s,
+                    notes: %s
+                """.formatted(id, firstName, lastName, passportCountry, passportNumber,
+                contact.getEmail(), contact.getPhone(), contact.getCity(), contact.getAddress(), contact.getNotes());
     }
 
     @Override

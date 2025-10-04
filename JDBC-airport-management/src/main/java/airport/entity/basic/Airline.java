@@ -66,17 +66,19 @@ public class Airline {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", iata='" + iata + '\'' +
-                ", icao='" + icao + '\'' +
-                ", name='" + name + '\'' +
-                ", contact_name='" + contact.getContactName() + '\'' +
-                ", contact_email='" + contact.getEmail() + '\'' +
-                ", contact_phone='" + contact.getPhone() + '\'' +
-                ", city='" + contact.getCity() + '\'' +
-                ", notes='" + contact.getNotes() + '\'' +
-                '}';
+        return """
+                Airline
+                    ID: %s,
+                    IATA: %s,
+                    ICAO: %s,
+                    name: %s,
+                    contact name: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    notes: %s
+                """.formatted(id, iata, icao, name, contact.getContactName(), contact.getEmail(),
+                contact.getPhone(), contact.getCity(), contact.getNotes());
     }
 
     @Override

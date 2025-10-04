@@ -118,24 +118,28 @@ public class AirportEmployee {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", role='" + role.getName() + '\'' +
-                ", sex='" + sex.getName() + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", passportCountry='" + passportCountry + '\'' +
-                ", passportNumber='" + passportNumber + '\'' +
-                ", contact_email='" + contact.getEmail() + '\'' +
-                ", contact_phone='" + contact.getPhone() + '\'' +
-                ", city='" + contact.getCity() + '\'' +
-                ", address='" + contact.getAddress() + '\'' +
-                ", notes='" + contact.getNotes() + '\'' +
-                ", emergency_contact_name='" + emergencyContact.getContactName() + '\'' +
-                ", emergency_contact_relation='" + emergencyContact.getRelation() + '\'' +
-                ", emergency_contact_phone='" + emergencyContact.getPhone() + '\'' +
-                '}';
+        return """
+                Airplane
+                    ID: %s,
+                    first name: %s,
+                    last name: %s,
+                    role: %s,
+                    sex: %s,
+                    birth date: %s,
+                    passport country: %s,
+                    passport number: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    address: %s,
+                    notes: %s,
+                    emergency contact name: %s,
+                    emergency contact relation: %s,
+                    emergency contact phone: %s
+                """.formatted(id, firstName, lastName, role.getName(), sex.getName(), birthDate,
+                passportCountry, passportNumber, contact.getEmail(), contact.getPhone(),
+                contact.getCity(), contact.getAddress(), contact.getNotes(),
+                emergencyContact.getContactName(), emergencyContact.getRelation(), emergencyContact.getPhone());
     }
 
     @Override

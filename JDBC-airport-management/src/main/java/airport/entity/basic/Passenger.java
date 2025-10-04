@@ -83,15 +83,16 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", sex='" + sex.getName() + '\'' +
-                ", age=" + age +
-                ", passportCountry='" + passportCountry + '\'' +
-                ", passportNumber='" + passportNumber + '\'' +
-                '}';
+        return """
+                Passenger
+                    ID: %s,
+                    first name: %s,
+                    last name: %s,
+                    sex: %s,
+                    age: %s,
+                    passport country: %s,
+                    passport number: %s
+                """.formatted(id, firstName, lastName, sex.getName(), age, passportCountry, passportNumber);
     }
 
     @Override
