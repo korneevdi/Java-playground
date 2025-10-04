@@ -9,11 +9,11 @@ import java.util.Optional;
 public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
 
     private final static String TABLE_NAME = "customer_contacts";
-
     private final static String SELECTED_FIELDS = "contact_id, email, phone, city, address, notes";
+    private final static String ID_NAME = "contact_id";
 
     public CustomerContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS);
+        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
     }
 
     // Find element by email
@@ -101,5 +101,21 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
                 resultSet.getString("address"),
                 resultSet.getString("notes")
         );
+    }
+
+    @Override
+    protected String buildFindIdSql() {
+        return """
+                SELECT %s FROM %s
+                WHERE email = ? AND phone = ? AND city = ? AND address = ?
+                """.formatted(ID_NAME, TABLE_NAME);
+    }
+
+    @Override
+    protected void setFindIdStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
     }
 }

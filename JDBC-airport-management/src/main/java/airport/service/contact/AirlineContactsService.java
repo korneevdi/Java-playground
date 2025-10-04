@@ -93,7 +93,7 @@ public class AirlineContactsService extends AbstractContactService<AirlineContac
     }
 
     @Override
-    protected boolean isValidContact(AirlineContact contact) {
+    public boolean isValidContact(AirlineContact contact) {
         return validateField("contact_name", contact.getContactName()) &&
                 validateField("email", contact.getEmail()) &&
                 validateField("phone", contact.getPhone()) &&

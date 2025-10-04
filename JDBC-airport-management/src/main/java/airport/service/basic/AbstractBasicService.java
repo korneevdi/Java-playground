@@ -2,16 +2,13 @@ package airport.service.basic;
 
 import airport.dao.basic.AbstractBasicDao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public abstract class AbstractBasicService<T> {
 
     protected final AbstractBasicDao<T> dao;
 
-    protected final Map<String, Integer> fieldMaxLengths = new HashMap<>();
+    //protected final Map<String, Integer> fieldMaxLengths = new HashMap<>();
 
     public AbstractBasicService(AbstractBasicDao<T> dao) {
         this.dao = dao;
@@ -28,6 +25,12 @@ public abstract class AbstractBasicService<T> {
         }
     }
 
+    protected void printList(List<T> list) {
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ": " + list.get(i));
+        }
+    }
+/*
     // Add new contact
     public void addContact(T entity) {
         if(!isValidContact(entity)) return;
@@ -42,7 +45,7 @@ public abstract class AbstractBasicService<T> {
     }
 
     // Update contact
-    public void updateContact(T oldEntity, T newEntity) {
+    public void updateElement(T oldEntity, T newEntity) {
         if (!dao.exists(oldEntity)) {
             existsOrNotOutput(oldEntity, false);
             return;
@@ -82,12 +85,6 @@ public abstract class AbstractBasicService<T> {
         }
     }
 
-    protected void printList(List<T> list) {
-        for(int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ": " + list.get(i));
-        }
-    }
-
     protected boolean validateField(String fieldName, String value) {
         if(value == null || value.isBlank()) {
             System.out.printf("Field '%s' must not be null or empty%n", fieldName);
@@ -107,5 +104,5 @@ public abstract class AbstractBasicService<T> {
 
     protected abstract boolean areContactsIdentical(T oldEntity, T newEntity);
 
-    protected abstract Optional<Integer> findId(T entity);
+    protected abstract Optional<Integer> findId(T entity);*/
 }

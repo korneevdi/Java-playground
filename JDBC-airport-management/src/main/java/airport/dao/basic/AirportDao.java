@@ -2,16 +2,38 @@ package airport.dao.basic;
 
 import airport.entity.basic.Airport;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AirportDao extends AbstractBasicDao<Airport> {
 
-    private final static String TABLE_NAME = "airports";
+    public AirportDao(Connection connection) {
+        super(connection);
+    }
+
+    @Override
+    protected String buildFindAllSql(){
+        return """
+                SELECT airport_id, iata, icao, name, city, country, timezone
+                FROM airports
+                """;
+    }
+
+    @Override
+    protected Airport mapRow(ResultSet resultSet) throws SQLException {
+        return new Airport(
+                resultSet.getInt("airport_id"),
+                resultSet.getString("iata"),
+                resultSet.getString("icao"),
+                resultSet.getString("name"),
+                resultSet.getString("city"),
+                resultSet.getString("country"),
+                resultSet.getString("timezone")
+        );
+    }
+
+    /*private final static String TABLE_NAME = "airports";
 
     private final static String SELECTED_FIELDS = "airport_id, iata, icao, name, city, country, timezone";
 
@@ -43,6 +65,29 @@ public class AirportDao extends AbstractBasicDao<Airport> {
 
     public List<Airport> findAllByTimezone(String timezone) {
         return findByField("timezone", timezone);
+    }
+
+    @Override
+    protected String buildFindAllSql() {
+        return """
+                SELECT %s FROM %s
+                """.formatted(SELECTED_FIELDS, TABLE_NAME);
+    }
+
+    @Override
+    protected String buildFindByIdSql() {
+        return """
+                SELECT %s FROM %s
+                WHERE %s = ?
+                """.formatted(SELECTED_FIELDS, TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT %s FROM %s
+                WHERE %s = ?
+                """.formatted(SELECTED_FIELDS, TABLE_NAME, fieldName);
     }
 
     // Add new element
@@ -102,21 +147,5 @@ public class AirportDao extends AbstractBasicDao<Airport> {
         ps.setString(4, airport.getCity());
         ps.setString(5, airport.getCountry());
         ps.setString(6, airport.getTimezone());
-    }
-
-
-
-
-    @Override
-    protected Airport mapRow(ResultSet resultSet) throws SQLException {
-        return new Airport(
-                resultSet.getInt("airport_id"),
-                resultSet.getString("iata"),
-                resultSet.getString("icao"),
-                resultSet.getString("name"),
-                resultSet.getString("city"),
-                resultSet.getString("country"),
-                resultSet.getString("timezone")
-        );
-    }
+    }*/
 }

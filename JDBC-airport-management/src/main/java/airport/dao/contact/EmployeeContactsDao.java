@@ -1,5 +1,6 @@
 package airport.dao.contact;
 
+import airport.entity.contact.EmergencyContact;
 import airport.entity.contact.EmployeeContact;
 
 import java.sql.*;
@@ -9,11 +10,11 @@ import java.util.Optional;
 public class EmployeeContactsDao extends AbstractContactDao<EmployeeContact> {
 
     private final static String TABLE_NAME = "employee_contacts";
-
     private final static String SELECTED_FIELDS = "contact_id, email, phone, city, address, notes";
+    private final static String ID_NAME = "contact_id";
 
     public EmployeeContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS);
+        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
     }
 
     // Find element by email
@@ -98,5 +99,21 @@ public class EmployeeContactsDao extends AbstractContactDao<EmployeeContact> {
                 resultSet.getString("address"),
                 resultSet.getString("notes")
         );
+    }
+
+    @Override
+    protected String buildFindIdSql() {
+        return """
+                SELECT %s FROM %s
+                WHERE email = ? AND phone = ? AND city = ? AND address = ?
+                """.formatted(ID_NAME, TABLE_NAME);
+    }
+
+    @Override
+    protected void setFindIdStatement(PreparedStatement ps, EmployeeContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
     }
 }

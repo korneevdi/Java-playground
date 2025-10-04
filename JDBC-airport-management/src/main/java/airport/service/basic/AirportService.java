@@ -8,21 +8,23 @@ import java.util.Optional;
 
 public class AirportService extends AbstractBasicService<Airport> {
 
-    private final AirportDao airportDao;
+    public AirportService(AirportDao airportDao) {
+        super(airportDao);
+    }
 
-    public AirportService(AirportDao dao) {
+    /*public AirportService(AirportDao dao) {
         super(dao);
         this.airportDao = dao;
 
         // Set the map of the fields and max lengths
-        fieldMaxLengths.put("iata", 3);
+        *//*fieldMaxLengths.put("iata", 3);
         fieldMaxLengths.put("icao", 4);
         fieldMaxLengths.put("name", 100);
         fieldMaxLengths.put("city", 25);
         fieldMaxLengths.put("country", 25);
-        fieldMaxLengths.put("timezone", 40);
-    }
-
+        fieldMaxLengths.put("timezone", 40);*//*
+    }*/
+/*
     // Airport with certain IATA
     public void findElementByIata(String iata) {
         Optional<Airport> airport = airportDao.findByIata(iata);
@@ -107,7 +109,7 @@ public class AirportService extends AbstractBasicService<Airport> {
 
         Airport newAirport = new Airport(id, newIata, newIcao, newName, newCity, newCountry, newTimezone);
 
-        updateContact(oldAirport, newAirport);
+        updateElement(oldAirport, newAirport);
     }
 
     // Delete airport
@@ -157,5 +159,5 @@ public class AirportService extends AbstractBasicService<Airport> {
     @Override
     protected Optional<Integer> findId(Airport airport) {
         return airportDao.findByIata(airport.getIata()).map(Airport::getId);
-    }
+    }*/
 }

@@ -12,8 +12,10 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
 
     private final static String SELECTED_FIELDS = "contact_id, contact_name, email, phone, headquarter_city, notes";
 
+    private final static String ID_NAME = "contact_id";
+
     public AirlineContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS);
+        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
     }
 
     // Find element by name
@@ -101,5 +103,21 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
                 resultSet.getString("headquarter_city"),
                 resultSet.getString("notes")
         );
+    }
+
+    @Override
+    protected String buildFindIdSql() {
+        return """
+                SELECT %s FROM %s
+                WHERE contact_name = ? AND email = ? AND phone = ? AND headquarter_city = ?
+                """.formatted(ID_NAME, TABLE_NAME);
+    }
+
+    @Override
+    protected void setFindIdStatement(PreparedStatement ps, AirlineContact contact) throws SQLException {
+        ps.setString(1, contact.getContactName());
+        ps.setString(2, contact.getEmail());
+        ps.setString(3, contact.getPhone());
+        ps.setString(4, contact.getCity());
     }
 }

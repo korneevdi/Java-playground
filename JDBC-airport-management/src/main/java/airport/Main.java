@@ -1,13 +1,13 @@
 package airport;
 
-import airport.dao.basic.AirportDao;
+import airport.dao.basic.*;
 import airport.dao.contact.AirlineContactsDao;
 import airport.dao.contact.CustomerContactsDao;
 import airport.dao.contact.EmergencyContactsDao;
 import airport.dao.contact.EmployeeContactsDao;
 import airport.dao.dictionary.*;
 import airport.database.DbInitializer;
-import airport.service.basic.AirportService;
+import airport.service.basic.*;
 import airport.service.contact.AirlineContactsService;
 import airport.service.contact.CustomerContactsService;
 import airport.service.contact.EmergencyContactsService;
@@ -202,6 +202,42 @@ public class Main {
             //airportService.update("iat", "icao", "Name", "City", "Country", "timezone",
             //        "itt", "icao", "Name", "City", "Country", "timezone");
             //airportService.delete("itt", "icao", "Name", "City", "Country", "timezone");
+
+            // 17.Airlines
+            AirlineDao airlineDao = new AirlineDao(connection);
+            AirlineService airlineService = new AirlineService(airlineDao);
+            // Call appropriate methods
+            //airlineService.showAll();
+
+            // 18.Customers
+            CustomerDao customerDao = new CustomerDao(connection);
+            CustomerService customerService = new CustomerService(customerDao);
+            // Call appropriate methods
+            //customerService.showAll();
+
+            // 19.Crews
+            CrewDao crewDao = new CrewDao(connection);
+            CrewService crewService = new CrewService(crewDao);
+            // Call appropriate methods
+            //crewService.showAll();
+
+            // 20.Airport employees
+            AirportEmployeeDao airportEmployeeDao = new AirportEmployeeDao(connection);
+            AirportEmployeeService airportEmployeeService = new AirportEmployeeService(airportEmployeeDao);
+            // Call appropriate methods
+            //airportEmployeeService.showAll();
+
+            // 21.Passengers
+            PassengerDao passengerDao = new PassengerDao(connection);
+            PassengerService passengerService = new PassengerService(passengerDao);
+            // Call appropriate methods
+            passengerService.showAll();
+
+            // 22.Airplanes
+            AirplaneDao airplaneDao = new AirplaneDao(connection);
+            AirplaneService airplaneService = new AirplaneService(airplaneDao);
+            // Call appropriate methods
+            //airplaneService.showAll();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

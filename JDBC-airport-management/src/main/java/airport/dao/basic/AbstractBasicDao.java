@@ -7,23 +7,18 @@ import java.util.List;
 public abstract class AbstractBasicDao<T> {
 
     protected final Connection connection;
-    private final String tableName;
+    /*private final String tableName;
     private final String selectedFields;
 
-    private final String idName;
+    private final String idName;*/
 
-    public AbstractBasicDao(Connection connection, String tableName, String selectedFields, String idName) {
+    public AbstractBasicDao(Connection connection) {
         this.connection = connection;
-        this.tableName = tableName;
-        this.selectedFields = selectedFields;
-        this.idName = idName;
     }
 
     // Show the list of elements
     public List<T> findAll() {
-        String sql = """
-                SELECT %s FROM %s
-                """.formatted(selectedFields, tableName);
+        String sql = buildFindAllSql();
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
@@ -36,13 +31,10 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
-
+/*
     // Find element by id
     public T findById(int id) {
-        String sql = """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(selectedFields, tableName, idName);
+        String sql = buildFindByIdSql();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
@@ -57,10 +49,7 @@ public abstract class AbstractBasicDao<T> {
     }
 
     protected List<T> findByField(String fieldName, String fieldValue) {
-        String sql = """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(selectedFields, tableName, fieldName);
+        String sql = buildFindByFieldSql(fieldName);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, fieldValue);
@@ -122,10 +111,18 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
-
+*/
     // Each child DAO class must describe how to map a table row to a Java object
+    protected abstract String buildFindAllSql();
+/*
+    protected abstract String buildFindByIdSql();
+
+    protected abstract String buildFindByFieldSql(String fieldName);
+    */
+
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 
+    /*
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
@@ -136,5 +133,5 @@ public abstract class AbstractBasicDao<T> {
 
     protected abstract String buildExistsSql();
 
-    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
+    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;*/
 }

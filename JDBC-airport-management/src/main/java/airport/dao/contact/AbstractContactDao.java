@@ -9,11 +9,13 @@ public abstract class AbstractContactDao<T> {
     protected final Connection connection;
     private final String tableName;
     private final String selectedFields;
+    private final String idName;
 
-    public AbstractContactDao(Connection connection, String tableName, String selectedFields) {
+    public AbstractContactDao(Connection connection, String tableName, String selectedFields, String idName) {
         this.connection = connection;
         this.tableName = tableName;
         this.selectedFields = selectedFields;
+        this.idName = idName;
     }
 
     // Show the list of elements
@@ -49,6 +51,17 @@ public abstract class AbstractContactDao<T> {
             }
             return null;
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int findId(T entity) {
+        String sql = buildFindIdSql();
+        try(PreparedStatement ps = connection.prepareStatement(sql)) {
+            setFindIdStatement(ps, entity);
+            ResultSet rs = ps.executeQuery();
+            return rs.getInt(idName);
+        } catch(SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -134,4 +147,8 @@ public abstract class AbstractContactDao<T> {
     protected abstract String buildExistsSql();
 
     protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
+
+    protected abstract String buildFindIdSql();
+
+    protected abstract void setFindIdStatement(PreparedStatement ps, T entity) throws SQLException;
 }

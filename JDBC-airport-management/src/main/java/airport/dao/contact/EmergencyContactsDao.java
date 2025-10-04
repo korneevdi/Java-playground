@@ -9,11 +9,11 @@ import java.util.Optional;
 public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
 
     private final static String TABLE_NAME = "emergency_contacts";
-
     private final static String SELECTED_FIELDS = "contact_id, contact_name, relation, phone";
+    private final static String ID_NAME = "contact_id";
 
     public EmergencyContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS);
+        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
     }
 
     // Find element by name
@@ -115,5 +115,20 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
                 resultSet.getString("relation"),
                 resultSet.getString("phone")
         );
+    }
+
+    @Override
+    protected String buildFindIdSql() {
+        return """
+                SELECT %s FROM %s
+                WHERE contact_name = ? AND relation = ? AND phone = ?
+                """.formatted(ID_NAME, TABLE_NAME);
+    }
+
+    @Override
+    protected void setFindIdStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
+        ps.setString(1, contact.getContactName());
+        ps.setString(2, contact.getRelation());
+        ps.setString(3, contact.getPhone());
     }
 }
