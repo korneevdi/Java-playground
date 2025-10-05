@@ -21,64 +21,34 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
     }
 
     @Override
-    protected String buildFindAllSql(){
+    protected String buildFindAllSql() {
         return """
-                SELECT e.employee_id,
-                       e.first_name,
-                       e.last_name,
-                       r.role_id,
-                       r.role_name,
-                       s.sex_id,
-                       s.sex_name,
-                       e.birth_date,
-                       e.passport_country,
-                       e.passport_number,
-                       ec.contact_id    AS emp_contact_id,
-                       ec.email         AS emp_email,
-                       ec.phone         AS emp_phone,
-                       ec.city          AS emp_city,
-                       ec.address       AS emp_address,
-                       ec.notes         AS emp_notes,
-                       emc.contact_id   AS emerg_contact_id,
-                       emc.contact_name AS emerg_name,
-                       emc.relation     AS emerg_relation,
-                       emc.phone        AS emerg_phone
-                FROM airport_employees e
-                JOIN airport_employee_roles r ON e.role = r.role_id
-                JOIN person_sex s             ON e.sex = s.sex_id
-                JOIN employee_contacts ec     ON e.contact = ec.contact_id
-                JOIN emergency_contacts emc   ON e.emergency_contact = emc.contact_id;
+                SELECT ae.airport_employee_id, ae.first_name, ae.last_name, ae.birth_date, ae.passport_country, ae.passport_number,
+                       aer.role_id, aer.role_name,
+                       s.sex_id, s.sex_name,
+                       aec.contact_id AS emp_contact_id, aec.contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
+                       ec.contact_id AS emerg_contact_id, ec.contact_name, ec.relation, ec.contact_phone AS emerg_contact_phone
+                FROM airport_employees ae
+                JOIN airport_employee_roles aer ON ae.role = aer.role_id
+                JOIN sexes s ON ae.sex = s.sex_id
+                JOIN airport_employee_contacts aec ON ae.contact = aec.contact_id
+                JOIN emergency_contacts ec ON ae.emergency_contact = ec.contact_id
                 """;
     }
 
     @Override
-    protected String buildFindByIdSql(){
+    protected String buildFindByIdSql() {
         return """
-                SELECT e.employee_id,
-                       e.first_name,
-                       e.last_name,
-                       r.role_id,
-                       r.role_name,
-                       s.sex_id,
-                       s.sex_name,
-                       e.birth_date,
-                       e.passport_country,
-                       e.passport_number,
-                       ec.contact_id    AS emp_contact_id,
-                       ec.email         AS emp_email,
-                       ec.phone         AS emp_phone,
-                       ec.city          AS emp_city,
-                       ec.address       AS emp_address,
-                       ec.notes         AS emp_notes,
-                       emc.contact_id   AS emerg_contact_id,
-                       emc.contact_name AS emerg_name,
-                       emc.relation     AS emerg_relation,
-                       emc.phone        AS emerg_phone
-                FROM airport_employees e
-                JOIN airport_employee_roles r ON e.role = r.role_id
-                JOIN person_sex s             ON e.sex = s.sex_id
-                JOIN employee_contacts ec     ON e.contact = ec.contact_id
-                JOIN emergency_contacts emc   ON e.emergency_contact = emc.contact_id;
+                SELECT ae.airport_employee_id, ae.first_name, ae.last_name, ae.birth_date, ae.passport_country, ae.passport_number,
+                       aer.role_id, aer.role_name,
+                       s.sex_id, s.sex_name,
+                       aec.contact_id AS emp_contact_id, aec.contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
+                       ec.contact_id AS emerg_contact_id, ec.contact_name, ec.relation, ec.contact_phone AS emerg_contact_phone
+                FROM airport_employees ae
+                JOIN airport_employee_roles aer ON ae.role = aer.role_id
+                JOIN sexes s ON ae.sex = s.sex_id
+                JOIN airport_employee_contacts aec ON ae.contact = aec.contact_id
+                JOIN emergency_contacts ec ON ae.emergency_contact = ec.contact_id
                 WHERE %s = ?
                 """.formatted(ID_NAME);
     }
@@ -87,18 +57,18 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
     protected AirportEmployee mapRow(ResultSet rs) throws SQLException {
         EmployeeContact empContact = new EmployeeContact(
                 rs.getInt("emp_contact_id"),
-                rs.getString("emp_email"),
-                rs.getString("emp_phone"),
-                rs.getString("emp_city"),
-                rs.getString("emp_address"),
-                rs.getString("emp_notes")
+                rs.getString("contact_email"),
+                rs.getString("emp_contact_phone"),
+                rs.getString("city"),
+                rs.getString("address"),
+                rs.getString("notes")
         );
 
         EmergencyContact emergContact = new EmergencyContact(
                 rs.getInt("emerg_contact_id"),
-                rs.getString("emerg_name"),
-                rs.getString("emerg_relation"),
-                rs.getString("emerg_phone")
+                rs.getString("contact_name"),
+                rs.getString("relation"),
+                rs.getString("emerg_contact_phone")
         );
 
         EmployeeRole role = new EmployeeRole(
@@ -112,7 +82,7 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
         );
 
         return new AirportEmployee(
-                rs.getInt("employee_id"),
+                rs.getInt("airport_employee_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 role,
@@ -124,6 +94,4 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
                 emergContact
         );
     }
-
-
 }

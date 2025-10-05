@@ -17,20 +17,22 @@ public class AirlineDao extends AbstractBasicDao<Airline> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT *
-                FROM %s
-                JOIN airline_contacts ON airlines.airline_id = airline_contacts.contact_id
-                """.formatted(TABLE_NAME);
+                SELECT a.airline_id, a.iata, a.icao, a.name,
+                       ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airlines a
+                JOIN airline_contacts ac ON a.airline_id = ac.contact_id
+                """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT *
-                FROM %s
-                JOIN airline_contacts ON airlines.airline_id = airline_contacts.contact_id
+                SELECT a.airline_id, a.iata, a.icao, a.name,
+                       ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airlines a
+                JOIN airline_contacts ac ON a.airline_id = ac.contact_id
                 WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
+                """.formatted(ID_NAME);
     }
 
     @Override
@@ -38,9 +40,9 @@ public class AirlineDao extends AbstractBasicDao<Airline> {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),
                 resultSet.getString("contact_name"),
-                resultSet.getString("email"),
-                resultSet.getString("phone"),
-                resultSet.getString("headquarter_city"),
+                resultSet.getString("contact_email"),
+                resultSet.getString("contact_phone"),
+                resultSet.getString("city"),
                 resultSet.getString("notes")
         );
         return new Airline(

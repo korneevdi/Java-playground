@@ -19,30 +19,30 @@ public class CustomerDao extends AbstractBasicDao<Customer> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT customer_id, first_name, last_name, passport_country, passport_number,
-                       contact_id, email, phone, city, address, notes
-                FROM %s
-                JOIN customer_contacts ON customers.contact = customer_contacts.contact_id
-                """.formatted(TABLE_NAME);
+                SELECT c.customer_id, c.first_name, c.last_name, c.passport_country, c.passport_number,
+                       cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
+                FROM customers c
+                JOIN customer_contacts cc ON c.contact = cc.contact_id
+                """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT customer_id, first_name, last_name, passport_country, passport_number,
-                       contact_id, email, phone, city, address, notes
-                FROM %s
-                JOIN customer_contacts ON customers.contact = customer_contacts.contact_id
+                SELECT c.customer_id, c.first_name, c.last_name, c.passport_country, c.passport_number,
+                       cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
+                FROM customers c
+                JOIN customer_contacts cc ON c.contact = cc.contact_id
                 WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
+                """.formatted(ID_NAME);
     }
 
     @Override
     protected Customer mapRow(ResultSet resultSet) throws SQLException {
         CustomerContact contact = new CustomerContact(
                 resultSet.getInt("contact_id"),
-                resultSet.getString("email"),
-                resultSet.getString("phone"),
+                resultSet.getString("contact_email"),
+                resultSet.getString("contact_phone"),
                 resultSet.getString("city"),
                 resultSet.getString("address"),
                 resultSet.getString("notes")

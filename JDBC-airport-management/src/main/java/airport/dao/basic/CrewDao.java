@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 public class CrewDao extends AbstractBasicDao<Crew> {
 
-    private final static String TABLE_NAME = "crews";
-    private final static String ID_NAME = "employee_id";
+    private final static String TABLE_NAME = "flight_crews";
+    private final static String ID_NAME = "flight_crew_id";
 
     public CrewDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
@@ -20,22 +20,22 @@ public class CrewDao extends AbstractBasicDao<Crew> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT employee_id, pilot_license_number, first_name, last_name, sex_id, sex_name,
-                       birth_date, passport_country, passport_number
-                FROM %s
-                JOIN person_sex ON crews.sex = person_sex.sex_id
-                """.formatted(TABLE_NAME);
+                SELECT fc.flight_crew_id, fc.pilot_license_number, fc.first_name, fc.last_name, fc.birth_date, fc.passport_country, fc.passport_number,
+                       s.sex_id, s.sex_name
+                FROM flight_crews fc
+                JOIN sexes s ON fc.sex = s.sex_id
+                """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT employee_id, pilot_license_number, first_name, last_name, sex_id, sex_name,
-                       birth_date, passport_country, passport_number
-                FROM %s
-                JOIN person_sex ON crews.sex = person_sex.sex_id
+                SELECT fc.flight_crew_id, fc.pilot_license_number, fc.first_name, fc.last_name, fc.birth_date, fc.passport_country, fc.passport_number,
+                       s.sex_id, s.sex_name
+                FROM flight_crews fc
+                JOIN sexes s ON fc.sex = s.sex_id
                 WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
+                """.formatted(ID_NAME);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CrewDao extends AbstractBasicDao<Crew> {
                 resultSet.getString("sex_name")
         );
         return new Crew(
-                resultSet.getInt("employee_id"),
+                resultSet.getInt("flight_crew_id"),
                 resultSet.getString("pilot_license_number"),
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"),

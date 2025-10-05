@@ -21,24 +21,30 @@ public class AirplaneDao extends AbstractBasicDao<Airplane> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT *
-                FROM %s
-                JOIN airlines ON airplanes.airline = airlines.airline_id
-                JOIN types ON airplanes.type = types.type_id
-                JOIN airline_contacts ON airlines.contact = airline_contacts.contact_id
-                """.formatted(TABLE_NAME);
+                SELECT ap.airplane_id, ap.registration_number, ap.model, ap.total_capacity, ap.type,
+                       a.airline_id, a.iata, a.icao, a.name,
+                       ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes,
+                       t.type_id, t.type_name
+                FROM airplanes ap
+                JOIN airlines a ON ap.airline = a.airline_id
+                JOIN types t ON ap.type = t.type_id
+                JOIN airline_contacts ac ON a.contact = ac.contact_id
+                """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT *
-                FROM %s
-                JOIN airlines ON airplanes.airline = airlines.airline_id
-                JOIN types ON airplanes.type = types.type_id
-                JOIN airline_contacts ON airlines.contact = airline_contacts.contact_id
+                SELECT ap.airplane_id, ap.registration_number, ap.model, ap.total_capacity, ap.type,
+                       a.airline_id, a.iata, a.icao, a.name,
+                       ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes,
+                       t.type_id, t.type_name
+                FROM airplanes ap
+                JOIN airlines a ON ap.airline = a.airline_id
+                JOIN types t ON ap.type = t.type_id
+                JOIN airline_contacts ac ON a.contact = ac.contact_id
                 WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
+                """.formatted(ID_NAME);
     }
 
     @Override
@@ -46,9 +52,9 @@ public class AirplaneDao extends AbstractBasicDao<Airplane> {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),
                 resultSet.getString("contact_name"),
-                resultSet.getString("email"),
-                resultSet.getString("phone"),
-                resultSet.getString("headquarter_city"),
+                resultSet.getString("contact_email"),
+                resultSet.getString("contact_phone"),
+                resultSet.getString("city"),
                 resultSet.getString("notes")
         );
 
