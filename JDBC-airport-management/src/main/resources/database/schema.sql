@@ -1,7 +1,7 @@
 -- Basic reference tables (nothing depends on anything) --
 
 -- 1
-CREATE TABLE person_sex
+CREATE TABLE sexes
 (
     sex_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     sex_name VARCHAR (20) UNIQUE NOT NULL
@@ -31,8 +31,8 @@ CREATE TABLE crew_roles
 -- 5
 CREATE TABLE control_types
 (
-    control_type_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    control_type VARCHAR (40) UNIQUE NOT NULL
+    type_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    type_name VARCHAR (40) UNIQUE NOT NULL
 );
 
 -- 6
@@ -85,9 +85,9 @@ CREATE TABLE airline_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     contact_name VARCHAR (100) NOT NULL,
-    email VARCHAR (100) UNIQUE NOT NULL,
-    phone VARCHAR (30) NOT NULL,
-    headquarter_city VARCHAR (25) NOT NULL,
+    contact_email VARCHAR (100) UNIQUE NOT NULL,
+    contact_phone VARCHAR (30) NOT NULL,
+    city VARCHAR (25) NOT NULL,
     notes TEXT
 );
 
@@ -95,19 +95,19 @@ CREATE TABLE airline_contacts
 CREATE TABLE customer_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email VARCHAR (100) UNIQUE NOT NULL,
-    phone VARCHAR (30) NOT NULL,
+    contact_email VARCHAR (100) UNIQUE NOT NULL,
+    contact_phone VARCHAR (30) NOT NULL,
     city VARCHAR (25),
     address VARCHAR (200),
     notes TEXT
 );
 
 -- 14
-CREATE TABLE employee_contacts
+CREATE TABLE airport_employee_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    email VARCHAR (100) UNIQUE NOT NULL,
-    phone VARCHAR (30) NOT NULL,
+    contact_email VARCHAR (100) UNIQUE NOT NULL,
+    contact_phone VARCHAR (30) NOT NULL,
     city VARCHAR (25) NOT NULL,
     address VARCHAR (200) NOT NULL,
     notes TEXT
@@ -119,7 +119,7 @@ CREATE TABLE emergency_contacts
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     contact_name VARCHAR (100) NOT NULL,
     relation VARCHAR (30),
-    phone VARCHAR (20) NOT NULL
+    contact_phone VARCHAR (30) NOT NULL
 );
 
 
@@ -143,10 +143,10 @@ CREATE TABLE airlines
     airline_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     iata VARCHAR (2) UNIQUE NOT NULL,
     icao VARCHAR (3) UNIQUE NOT NULL,
-    name VARCHAR (60) NOT NULL,
+    name VARCHAR (60) UNIQUE NOT NULL,
     contact INT NOT NULL,
 
-    CONSTRAINT airline_contacts_fk FOREIGN KEY (contact)
+    CONSTRAINT airlines_contact_fk FOREIGN KEY (contact)
         REFERENCES airline_contacts(contact_id)
 );
 
@@ -160,15 +160,15 @@ CREATE TABLE customers
     passport_number VARCHAR (20) NOT NULL,
     contact INT NOT NULL,
 
-    CONSTRAINT customer_contacts_fk FOREIGN KEY (contact)
+    CONSTRAINT customers_contact_fk FOREIGN KEY (contact)
         REFERENCES customer_contacts(contact_id),
-    CONSTRAINT unique_passport_customers UNIQUE (passport_country, passport_number)
+    CONSTRAINT customers_unique_passport UNIQUE (passport_country, passport_number)
 );
 
 -- 19
-CREATE TABLE crews
+CREATE TABLE flight_crews
 (
-    employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    flight_crew_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     pilot_license_number VARCHAR (20),
     first_name VARCHAR (50) NOT NULL,
     last_name VARCHAR (50) NOT NULL,
@@ -177,15 +177,15 @@ CREATE TABLE crews
     passport_country VARCHAR (20) NOT NULL,
     passport_number VARCHAR (20) NOT NULL,
 
-    CONSTRAINT sex_fk FOREIGN KEY (sex)
-        REFERENCES person_sex(sex_id),
-    CONSTRAINT unique_passport_crews UNIQUE (passport_country, passport_number)
+    CONSTRAINT flight_crews_sex_fk FOREIGN KEY (sex)
+        REFERENCES sexes(sex_id),
+    CONSTRAINT flight_crews_unique_passport UNIQUE (passport_country, passport_number)
 );
 
 -- 20
 CREATE TABLE airport_employees
 (
-    employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    airport_employee_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     first_name VARCHAR (50) NOT NULL,
     last_name VARCHAR (50) NOT NULL,
     role INT NOT NULL,
@@ -196,15 +196,15 @@ CREATE TABLE airport_employees
     contact SMALLINT NOT NULL,
     emergency_contact BIGINT NOT NULL,
 
-    CONSTRAINT employee_role_fk FOREIGN KEY (role)
-            REFERENCES airport_employee_roles(role_id),
-    CONSTRAINT sex_fk FOREIGN KEY (sex)
-        REFERENCES person_sex(sex_id),
-    CONSTRAINT employee_contacts_fk FOREIGN KEY (contact)
-        REFERENCES employee_contacts(contact_id),
-    CONSTRAINT employee_emergency_contacts_fk FOREIGN KEY (emergency_contact)
+    CONSTRAINT airport_employees_role_fk FOREIGN KEY (role)
+        REFERENCES airport_employee_roles(role_id),
+    CONSTRAINT airport_employees_sex_fk FOREIGN KEY (sex)
+        REFERENCES sexes(sex_id),
+    CONSTRAINT airport_employees_contact_fk FOREIGN KEY (contact)
+        REFERENCES airport_employee_contacts(contact_id),
+    CONSTRAINT airport_employees_emergency_contact_fk FOREIGN KEY (emergency_contact)
         REFERENCES emergency_contacts(contact_id),
-    CONSTRAINT unique_passport_airport_employees UNIQUE (passport_country, passport_number)
+    CONSTRAINT airport_employees_unique_passport UNIQUE (passport_country, passport_number)
 );
 
 -- 21
@@ -218,9 +218,9 @@ CREATE TABLE passengers
     passport_country VARCHAR (20) NOT NULL,
     passport_number VARCHAR (20) NOT NULL,
 
-    CONSTRAINT sex_fk FOREIGN KEY (sex)
-        REFERENCES person_sex(sex_id),
-    CONSTRAINT unique_passport_passengers UNIQUE (passport_country, passport_number)
+    CONSTRAINT passengers_sex_fk FOREIGN KEY (sex)
+        REFERENCES sexes(sex_id),
+    CONSTRAINT passengers_unique_passport UNIQUE (passport_country, passport_number)
 );
 
 -- 22
@@ -233,9 +233,9 @@ CREATE TABLE airplanes
     total_capacity SMALLINT NOT NULL,
     type SMALLINT NOT NULL,
 
-    CONSTRAINT airline_fk FOREIGN KEY (airline)
+    CONSTRAINT airplanes_airline_fk FOREIGN KEY (airline)
         REFERENCES airlines(airline_id),
-    CONSTRAINT airplines_type_fk FOREIGN KEY (type)
+    CONSTRAINT airplanes_type_fk FOREIGN KEY (type)
         REFERENCES types(type_id)
 );
 
@@ -267,33 +267,33 @@ CREATE TABLE flights
     arrival_terminal SMALLINT,
     runway SMALLINT NOT NULL,
 
-    CONSTRAINT airline_fk FOREIGN KEY (airline)
+    CONSTRAINT flights_airline_fk FOREIGN KEY (airline)
         REFERENCES airlines(airline_id),
-    CONSTRAINT departure_airport_fk FOREIGN KEY (departure_airport)
+    CONSTRAINT flights_departure_airport_fk FOREIGN KEY (departure_airport)
         REFERENCES airports(airport_id),
-    CONSTRAINT arrival_airport_fk FOREIGN KEY (arrival_airport)
+    CONSTRAINT flights_arrival_airport_fk FOREIGN KEY (arrival_airport)
         REFERENCES airports(airport_id),
-    CONSTRAINT airplane_fk FOREIGN KEY (airplane)
+    CONSTRAINT flights_airplane_fk FOREIGN KEY (airplane)
         REFERENCES airplanes(airplane_id),
-    CONSTRAINT responsible_dispatcher_fk FOREIGN KEY (responsible_dispatcher)
-        REFERENCES airport_employees(employee_id),
+    CONSTRAINT flights_responsible_dispatcher_fk FOREIGN KEY (responsible_dispatcher)
+        REFERENCES airport_employees(airport_employee_id),
     CONSTRAINT flights_type_fk FOREIGN KEY (type)
         REFERENCES types(type_id),
-    CONSTRAINT customer_fk FOREIGN KEY (customer)
+    CONSTRAINT flights_customer_fk FOREIGN KEY (customer)
         REFERENCES customers(customer_id),
-    CONSTRAINT status_fk FOREIGN KEY (status)
+    CONSTRAINT flights_status_fk FOREIGN KEY (status)
         REFERENCES statuses(status_id),
-    CONSTRAINT passport_control_fk FOREIGN KEY (passport_control)
-        REFERENCES control_types(control_type_id),
-    CONSTRAINT departure_gate_fk FOREIGN KEY (departure_gate)
+    CONSTRAINT flights_passport_control_fk FOREIGN KEY (passport_control)
+        REFERENCES control_types(type_id),
+    CONSTRAINT flights_departure_gate_fk FOREIGN KEY (departure_gate)
         REFERENCES gates(gate_id),
-    CONSTRAINT arrival_gate_fk FOREIGN KEY (arrival_gate)
+    CONSTRAINT flights_arrival_gate_fk FOREIGN KEY (arrival_gate)
         REFERENCES gates(gate_id),
-    CONSTRAINT departure_terminal_fk FOREIGN KEY (departure_terminal)
+    CONSTRAINT flights_departure_terminal_fk FOREIGN KEY (departure_terminal)
         REFERENCES terminals(terminal_id),
-    CONSTRAINT arrival_terminal_fk FOREIGN KEY (arrival_terminal)
+    CONSTRAINT flights_arrival_terminal_fk FOREIGN KEY (arrival_terminal)
         REFERENCES terminals(terminal_id),
-    CONSTRAINT runway_fk FOREIGN KEY (runway)
+    CONSTRAINT flights_runway_fk FOREIGN KEY (runway)
         REFERENCES flight_runways(runway_id),
     CONSTRAINT unique_flight UNIQUE (flight_number, service_date)
 );
@@ -302,7 +302,7 @@ CREATE TABLE flights
 -- Linking tables (many-to-many) --
 
 -- 24
-CREATE TABLE flight_check_in
+CREATE TABLE flight_check_in_link
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     flight_id BIGINT NOT NULL,
@@ -316,7 +316,7 @@ CREATE TABLE flight_check_in
 );
 
 -- 25
-CREATE TABLE flight_bag_claims
+CREATE TABLE flight_bag_claims_link
 (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     flight_id BIGINT NOT NULL,
@@ -330,7 +330,7 @@ CREATE TABLE flight_bag_claims
 );
 
 -- 26
-CREATE TABLE flight_crew
+CREATE TABLE flight_crew_link
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     flight_id BIGINT NOT NULL,
@@ -340,14 +340,14 @@ CREATE TABLE flight_crew
     CONSTRAINT flight_fk FOREIGN KEY (flight_id)
         REFERENCES flights(flight_id),
     CONSTRAINT crew_fk FOREIGN KEY (crew_id)
-        REFERENCES crews(employee_id),
+        REFERENCES flight_crews(flight_crew_id),
     CONSTRAINT crew_role_fk FOREIGN KEY (role)
         REFERENCES crew_roles(role_id),
     CONSTRAINT unique_flight_crew_role UNIQUE (flight_id, crew_id, role)
 );
 
 -- 27
-CREATE TABLE flight_passenger
+CREATE TABLE flight_passenger_link
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     flight_id BIGINT NOT NULL,

@@ -1,7 +1,7 @@
 -- Basic reference tables (nothing depends on anything) --
 
--- 1. Person sex
-INSERT INTO person_sex (sex_name) VALUES
+-- 1. Sexes
+INSERT INTO sexes (sex_name) VALUES
 ('male'),
 ('female'),
 ('diverse');
@@ -33,7 +33,7 @@ INSERT INTO crew_roles (role_name) VALUES
 ('relief pilot');       -- for long flights
 
 -- 5. Control types for passengers
-INSERT INTO control_types (control_type) VALUES
+INSERT INTO control_types (type_name) VALUES
 ('none'),
 ('standard'),
 ('EU / Schengen control'),
@@ -91,7 +91,7 @@ INSERT INTO airport_employee_roles (role_name) VALUES
 ('Manager');            -- middle manager (e.g. flight or ground operations manager)
 
 -- 12. Airline contacts
-INSERT INTO airline_contacts (contact_name, email, phone, headquarter_city, notes) VALUES
+INSERT INTO airline_contacts (contact_name, contact_email, contact_phone, city, notes) VALUES
 ('American Airlines Contact', 'contact@aa.com', '+1-800-433-7300', 'Fort Worth', 'Major US carrier'),
 ('Delta Airlines Contact', 'contact@delta.com', '+1-800-221-1212', 'Atlanta', 'Major US carrier'),
 ('United Airlines Contact', 'contact@united.com', '+1-800-864-8331', 'Chicago', 'Major US carrier'),
@@ -114,7 +114,7 @@ INSERT INTO airline_contacts (contact_name, email, phone, headquarter_city, note
 ('Japan Airlines Contact', 'contact@jal.com', '+81-3-5460-0511', 'Tokyo', 'Asian international carrier');
 
 -- 13. Customer contacts
-INSERT INTO customer_contacts (email, phone, city, address, notes) VALUES
+INSERT INTO customer_contacts (contact_email, contact_phone, city, address, notes) VALUES
 ('john.doe@example.com', '+1-310-555-0101', 'Los Angeles', '123 Sunset Blvd', 'Private jet client'),
 ('jane.smith@example.com', '+1-310-555-0102', 'Los Angeles', '456 Hollywood Blvd', 'Frequent flyer, private'),
 ('richard.roe@example.com', '+1-310-555-0103', 'Beverly Hills', '789 Rodeo Dr', 'VIP cargo customer'),
@@ -127,7 +127,7 @@ INSERT INTO customer_contacts (email, phone, city, address, notes) VALUES
 ('ava.moore@example.com', '+1-310-555-0110', 'Burbank', '444 Elm St', 'Private flights');
 
 -- 14. Employee contacts
-INSERT INTO employee_contacts (email, phone, city, address, notes) VALUES
+INSERT INTO airport_employee_contacts (contact_email, contact_phone, city, address, notes) VALUES
 ('alice.turner@airport.com', '+1-310-555-1001', 'Los Angeles', '100 Airport Rd', 'Dispatcher'),
 ('bob.harris@airport.com', '+1-310-555-1002', 'Los Angeles', '101 Airport Rd', 'Dispatcher'),
 ('carol.lee@airport.com', '+1-310-555-1003', 'Los Angeles', '102 Airport Rd', 'Ground staff'),
@@ -145,7 +145,7 @@ INSERT INTO employee_contacts (email, phone, city, address, notes) VALUES
 ('olivia.johnson@airport.com', '+1-310-555-1015', 'Los Angeles', '114 Airport Rd', 'Administration');
 
 -- 15. Emergency contacts
-INSERT INTO emergency_contacts (contact_name, relation, phone) VALUES
+INSERT INTO emergency_contacts (contact_name, relation, contact_phone) VALUES
 ('Mike Turner', 'Husband', '+1-310-555-2002'),
 ('Laura Harris', 'Wife', '+1-310-555-2001'),
 ('Peter Lee', 'Brother', '+1-310-555-2003'),
@@ -232,7 +232,7 @@ INSERT INTO customers (first_name, last_name, passport_country, passport_number,
 ('Ava', 'Moore', 'US', 'X0123456', 10);
 
 -- 19. Crews
-INSERT INTO crews (pilot_license_number, first_name, last_name, sex, birth_date, passport_country, passport_number) VALUES
+INSERT INTO flight_crews (pilot_license_number, first_name, last_name, sex, birth_date, passport_country, passport_number) VALUES
 ('PILOT001', 'James', 'Smith', 1, '1978-04-15', 'USA', 'A12345678'),     -- pilots
 ('PILOT002', 'Emily', 'Johnson', 2, '1982-09-10', 'USA', 'B23456789'),
 ('PILOT003', 'Liam', 'Brown', 1, '1985-06-20', 'USA', 'C34567890'),
@@ -412,7 +412,7 @@ VALUES
  20, 5, 1, 2, 5);
 
 -- 24. Flight - check-in relations
-INSERT INTO flight_check_in (flight_id, counter_id) VALUES
+INSERT INTO flight_check_in_link (flight_id, counter_id) VALUES
 (1, 1),
 (1, 2),
 (2, 3),
@@ -425,7 +425,7 @@ INSERT INTO flight_check_in (flight_id, counter_id) VALUES
 (9, 4);
 
 -- 25. Flight - baggage claim relations
-INSERT INTO flight_bag_claims (flight_id, claim_id) VALUES
+INSERT INTO flight_bag_claims_link (flight_id, claim_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3),
@@ -438,7 +438,7 @@ INSERT INTO flight_bag_claims (flight_id, claim_id) VALUES
 (10, 5);
 
 -- 26. Flight - crew relations
-INSERT INTO flight_crew (flight_id, crew_id, role) VALUES
+INSERT INTO flight_crew_link (flight_id, crew_id, role) VALUES
 (1, 1, 1),
 (1, 2, 2),
 (1, 3, 3),
@@ -457,7 +457,7 @@ INSERT INTO flight_crew (flight_id, crew_id, role) VALUES
 (5, 16, 3);
 
 -- 27. Flight - passenger relations
-INSERT INTO flight_passenger
+INSERT INTO flight_passenger_link
 (flight_id, passenger_id, checked_in, passed_control, boarded, boarding_group, boarding_time, seat_number)
 VALUES
 (1, 1, TRUE, TRUE, TRUE, 1, '2025-09-01 08:15:00-07', '12A'),
