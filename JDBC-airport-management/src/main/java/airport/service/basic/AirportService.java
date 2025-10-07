@@ -3,94 +3,27 @@ package airport.service.basic;
 import airport.dao.basic.AirportDao;
 import airport.entity.basic.Airport;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class AirportService extends AbstractBasicService<Airport> {
 
-    public AirportService(AirportDao airportDao) {
-        super(airportDao);
-    }
+    private final static String ENTITY_NAME = "Airport";
 
-    /*public AirportService(AirportDao dao) {
-        super(dao);
-        this.airportDao = dao;
+    public AirportService(AirportDao airportDao) {
+        super(airportDao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths
-        *//*fieldMaxLengths.put("iata", 3);
-        fieldMaxLengths.put("icao", 4);
-        fieldMaxLengths.put("name", 100);
-        fieldMaxLengths.put("city", 25);
-        fieldMaxLengths.put("country", 25);
-        fieldMaxLengths.put("timezone", 40);*//*
-    }*/
-/*
-    // Airport with certain IATA
-    public void findElementByIata(String iata) {
-        Optional<Airport> airport = airportDao.findByIata(iata);
-        if (airport.isPresent()) {
-            System.out.println("Airport found with IATA '" + iata + "':");
-            System.out.println(airport.get());
-        } else {
-            System.out.println("No data found");
-        }
+        stringFields = Map.of(
+                "iata", 3,
+                "icao", 4,
+                "name", 100,
+                "city", 25,
+                "country", 25,
+                "timezone", 40
+        );
     }
 
-    // Airport with certain ICAO
-    public void findElementByIcao(String icao) {
-        Optional<Airport> airport = airportDao.findByIcao(icao);
-        if (airport.isPresent()) {
-            System.out.println("Airport found with ICAO '" + icao + "':");
-            System.out.println(airport.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // Airport with certain name
-    public void findElementByName(String name) {
-        Optional<Airport> airport = airportDao.findByName(name);
-        if (airport.isPresent()) {
-            System.out.println("Airport found with name '" + name + "':");
-            System.out.println(airport.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airports from certain city
-    public void findAllElementsByCity(String city) {
-        List<Airport> allElements = airportDao.findAllByCity(city);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airports found in city '" + city + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airports from certain city
-    public void findAllElementsByCountry(String country) {
-        List<Airport> allElements = airportDao.findAllByCountry(country);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airports found in country '" + country + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airports from certain city
-    public void findAllElementsByTimezone(String timezone) {
-        List<Airport> allElements = airportDao.findAllByTimezone(timezone);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airports found in timezone '" + timezone + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
+    /*
     // Add new airport
     public void add(String iata, String icao, String name, String city, String country, String timezone) {
         Airport airport = new Airport(0, iata, icao, name, city, country, timezone);

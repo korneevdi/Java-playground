@@ -31,6 +31,15 @@ public class AirportDao extends AbstractBasicDao<Airport> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT a.airport_id, a.iata, a.icao, a.name, a.city, a.country, a.timezone
+                FROM airports a
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected Airport mapRow(ResultSet resultSet) throws SQLException {
         return new Airport(
                 resultSet.getInt("airport_id"),
@@ -43,63 +52,7 @@ public class AirportDao extends AbstractBasicDao<Airport> {
         );
     }
 
-    /*private final static String TABLE_NAME = "airports";
-
-    private final static String SELECTED_FIELDS = "airport_id, iata, icao, name, city, country, timezone";
-
-    private final static String ID_NAME = "airport_id";
-
-    public AirportDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
-    }
-
-    public Optional<Airport> findByIata(String iata) {
-        return findByField("iata", iata).stream().findFirst();
-    }
-
-    public Optional<Airport> findByIcao(String icao) {
-        return findByField("icao", icao).stream().findFirst();
-    }
-
-    public Optional<Airport> findByName(String name) {
-        return findByField("name", name).stream().findFirst();
-    }
-
-    public List<Airport> findAllByCity(String city) {
-        return findByField("city", city);
-    }
-
-    public List<Airport> findAllByCountry(String country) {
-        return findByField("country", country);
-    }
-
-    public List<Airport> findAllByTimezone(String timezone) {
-        return findByField("timezone", timezone);
-    }
-
-    @Override
-    protected String buildFindAllSql() {
-        return """
-                SELECT %s FROM %s
-                """.formatted(SELECTED_FIELDS, TABLE_NAME);
-    }
-
-    @Override
-    protected String buildFindByIdSql() {
-        return """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(SELECTED_FIELDS, TABLE_NAME, ID_NAME);
-    }
-
-    @Override
-    protected String buildFindByFieldSql(String fieldName) {
-        return """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(SELECTED_FIELDS, TABLE_NAME, fieldName);
-    }
-
+    /*
     // Add new element
     @Override
     protected String buildInsertSql() {

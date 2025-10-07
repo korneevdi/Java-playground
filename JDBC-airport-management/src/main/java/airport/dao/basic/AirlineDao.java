@@ -36,6 +36,17 @@ public class AirlineDao extends AbstractBasicDao<Airline> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT a.airline_id, a.iata, a.icao, a.name,
+                       ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airlines a
+                JOIN airline_contacts ac ON a.airline_id = ac.contact_id
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected Airline mapRow(ResultSet resultSet) throws SQLException {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),

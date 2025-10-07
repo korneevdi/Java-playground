@@ -75,6 +75,32 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
+    // Find element by field
+    public List<T> findByField(String fieldName, Object fieldValue) {
+        String sql = buildFindByFieldSql(fieldName);
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            if(fieldValue instanceof String) {
+                preparedStatement.setString(1, (String) fieldValue);
+            } else if(fieldValue instanceof java.sql.Date) {
+                preparedStatement.setDate(1, (java.sql.Date) fieldValue);
+            } else if (fieldValue instanceof Integer) {
+                preparedStatement.setInt(1, (Integer) fieldValue);
+            } else {
+                throw new RuntimeException("Unknown value type for 'fieldValue'");
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<T> allElements = new ArrayList<>();
+            while (resultSet.next()) {
+                allElements.add(mapRow(resultSet));
+            }
+            return allElements;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 
@@ -82,26 +108,12 @@ public abstract class AbstractBasicDao<T> {
 
     protected abstract String buildFindByIdSql();
 
+    protected abstract String buildFindByFieldSql(String fieldName);
+
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 
 
     /*
-    protected List<T> findByField(String fieldName, String fieldValue) {
-        String sql = buildFindByFieldSql(fieldName);
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, fieldValue);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<T> allContacts = new ArrayList<>();
-            while (resultSet.next()) {
-                allContacts.add(mapRow(resultSet));
-            }
-            return allContacts;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void insert(T entity) {
         String sql = buildInsertSql();
 

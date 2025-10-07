@@ -39,6 +39,17 @@ public class CrewDao extends AbstractBasicDao<Crew> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT fc.flight_crew_id, fc.pilot_license_number, fc.first_name, fc.last_name, fc.birth_date, fc.passport_country, fc.passport_number,
+                       s.sex_id, s.sex_name
+                FROM flight_crews fc
+                JOIN sexes s ON fc.sex = s.sex_id
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected Crew mapRow(ResultSet resultSet) throws SQLException {
         PersonSex sex = new PersonSex(
                 resultSet.getInt("sex_id"),

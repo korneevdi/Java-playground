@@ -38,6 +38,17 @@ public class CustomerDao extends AbstractBasicDao<Customer> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT c.customer_id, c.first_name, c.last_name, c.passport_country, c.passport_number,
+                       cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
+                FROM customers c
+                JOIN customer_contacts cc ON c.contact = cc.contact_id
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected Customer mapRow(ResultSet resultSet) throws SQLException {
         CustomerContact contact = new CustomerContact(
                 resultSet.getInt("contact_id"),

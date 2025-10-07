@@ -38,6 +38,17 @@ public class PassengerDao extends AbstractBasicDao<Passenger> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT p.passenger_id, p.first_name, p.last_name, p.age, p.passport_country, p.passport_number,
+                       s.sex_id, s.sex_name
+                FROM passengers p
+                JOIN sexes s ON p.sex = s.sex_id
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected Passenger mapRow(ResultSet resultSet) throws SQLException {
         PersonSex sex = new PersonSex(
                 resultSet.getInt("sex_id"),

@@ -16,6 +16,9 @@ import airport.service.dictionary.*;
 import airport.utils.ConnectionManager;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
@@ -192,52 +195,51 @@ public class Main {
             AirportService airportService = new AirportService(airportDao);
             // Call appropriate methods
             //airportService.showAll();
-            //airportService.findElementByIata("SYD");
-            //airportService.findElementByIcao("VHHH");
-            //airportService.findElementByName("Faa'a International Airport");
-            //airportService.findAllElementsByCity("Seattle");
-            //airportService.findAllElementsByCountry("Fiji");
-            //airportService.findAllElementsByTimezone("Pacific/Auckland");
-            //airportService.add("iat", "icao", "Name", "City", "Country", "timezone");
-            //airportService.update("iat", "icao", "Name", "City", "Country", "timezone",
-            //        "itt", "icao", "Name", "City", "Country", "timezone");
-            //airportService.delete("itt", "icao", "Name", "City", "Country", "timezone");
+            //airportService.findAllByField("country", "USA");
 
             // 17.Airlines
             AirlineDao airlineDao = new AirlineDao(connection);
             AirlineService airlineService = new AirlineService(airlineDao);
             // Call appropriate methods
             //airlineService.showAll();
+            //airlineService.findAllByField("name", "Japan Airlines");
+            //airlineService.findAllByField("contact_email", "contact@jal.com");
 
             // 18.Customers
             CustomerDao customerDao = new CustomerDao(connection);
             CustomerService customerService = new CustomerService(customerDao);
             // Call appropriate methods
             //customerService.showAll();
+            //customerService.findAllByField("firstname", "Frank");
 
-            // 19.Crews
+            // 19.Flight crews
             CrewDao crewDao = new CrewDao(connection);
             CrewService crewService = new CrewService(crewDao);
             // Call appropriate methods
             //crewService.showAll();
+            //crewService.findAllByField("sex_name", "female");
+            //crewService.findAllByField("birth_date", "1982-09-10");
 
             // 20.Airport employees
             AirportEmployeeDao airportEmployeeDao = new AirportEmployeeDao(connection);
             AirportEmployeeService airportEmployeeService = new AirportEmployeeService(airportEmployeeDao);
             // Call appropriate methods
             //airportEmployeeService.showAll();
+            //airportEmployeeService.findAllByField("birth_date", "1985-03-03");
 
             // 21.Passengers
             PassengerDao passengerDao = new PassengerDao(connection);
             PassengerService passengerService = new PassengerService(passengerDao);
             // Call appropriate methods
             //passengerService.showAll();
+            //passengerService.findAllByField("age", 25);
 
             // 22.Airplanes
             AirplaneDao airplaneDao = new AirplaneDao(connection);
             AirplaneService airplaneService = new AirplaneService(airplaneDao);
             // Call appropriate methods
             //airplaneService.showAll();
+            //airplaneService.findAllByField("total_capacity", 99);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

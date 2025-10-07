@@ -26,8 +26,8 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
                 SELECT ae.airport_employee_id, ae.first_name, ae.last_name, ae.birth_date, ae.passport_country, ae.passport_number,
                        aer.role_id, aer.role_name,
                        s.sex_id, s.sex_name,
-                       aec.contact_id AS emp_contact_id, aec.contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
-                       ec.contact_id AS emerg_contact_id, ec.contact_name, ec.relation, ec.contact_phone AS emerg_contact_phone
+                       aec.contact_id AS emp_contact_id, aec.contact_email AS emp_contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
+                       ec.contact_id AS emerg_contact_id, ec.contact_name AS emerg_contact_name, ec.relation AS emerg_contact_relation, ec.contact_phone AS emerg_contact_phone
                 FROM airport_employees ae
                 JOIN airport_employee_roles aer ON ae.role = aer.role_id
                 JOIN sexes s ON ae.sex = s.sex_id
@@ -42,8 +42,8 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
                 SELECT ae.airport_employee_id, ae.first_name, ae.last_name, ae.birth_date, ae.passport_country, ae.passport_number,
                        aer.role_id, aer.role_name,
                        s.sex_id, s.sex_name,
-                       aec.contact_id AS emp_contact_id, aec.contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
-                       ec.contact_id AS emerg_contact_id, ec.contact_name, ec.relation, ec.contact_phone AS emerg_contact_phone
+                       aec.contact_id AS emp_contact_id, aec.contact_email AS emp_contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
+                       ec.contact_id AS emerg_contact_id, ec.contact_name AS emerg_contact_name, ec.relation AS emerg_contact_relation, ec.contact_phone AS emerg_contact_phone
                 FROM airport_employees ae
                 JOIN airport_employee_roles aer ON ae.role = aer.role_id
                 JOIN sexes s ON ae.sex = s.sex_id
@@ -54,10 +54,27 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
     }
 
     @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT ae.airport_employee_id, ae.first_name, ae.last_name, ae.birth_date, ae.passport_country, ae.passport_number,
+                       aer.role_id, aer.role_name,
+                       s.sex_id, s.sex_name,
+                       aec.contact_id AS emp_contact_id, aec.contact_email AS emp_contact_email, aec.contact_phone AS emp_contact_phone, aec.city, aec.address, aec.notes,
+                       ec.contact_id AS emerg_contact_id, ec.contact_name AS emerg_contact_name, ec.relation AS emerg_contact_relation, ec.contact_phone AS emerg_contact_phone
+                FROM airport_employees ae
+                JOIN airport_employee_roles aer ON ae.role = aer.role_id
+                JOIN sexes s ON ae.sex = s.sex_id
+                JOIN airport_employee_contacts aec ON ae.contact = aec.contact_id
+                JOIN emergency_contacts ec ON ae.emergency_contact = ec.contact_id
+                WHERE %s = ?
+                """.formatted(fieldName);
+    }
+
+    @Override
     protected AirportEmployee mapRow(ResultSet rs) throws SQLException {
         EmployeeContact empContact = new EmployeeContact(
                 rs.getInt("emp_contact_id"),
-                rs.getString("contact_email"),
+                rs.getString("emp_contact_email"),
                 rs.getString("emp_contact_phone"),
                 rs.getString("city"),
                 rs.getString("address"),
@@ -66,8 +83,8 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
 
         EmergencyContact emergContact = new EmergencyContact(
                 rs.getInt("emerg_contact_id"),
-                rs.getString("contact_name"),
-                rs.getString("relation"),
+                rs.getString("emerg_contact_name"),
+                rs.getString("emerg_contact_relation"),
                 rs.getString("emerg_contact_phone")
         );
 

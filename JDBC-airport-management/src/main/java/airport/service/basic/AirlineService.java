@@ -1,108 +1,32 @@
 package airport.service.basic;
 
 import airport.dao.basic.AirlineDao;
-import airport.dao.contact.AirlineContactsDao;
 import airport.entity.basic.Airline;
-import airport.entity.basic.Airport;
-import airport.entity.contact.AirlineContact;
-import airport.service.contact.AirlineContactsService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 
 public class AirlineService extends AbstractBasicService<Airline> {
 
-    //private final AirlineContactsDao airlineContactsDao;
-    //private final AirlineContactsService airlineContactsService;
+    private final static String ENTITY_NAME = "Airline";
 
     public AirlineService(AirlineDao airlineDao) {
-        super(airlineDao);
-        //this.airlineContactsDao = airlineContactsDao;
-        //this.airlineContactsService = airlineContactsService;
+        super(airlineDao, ENTITY_NAME);
 
-        //fieldMaxLengths.put("iata", 2);
-        //fieldMaxLengths.put("icao", 3);
-        //fieldMaxLengths.put("name", 60);
+        // Set the maps of the fields
+        stringFields = Map.ofEntries(
+                Map.entry("iata", 2),
+                Map.entry("icao", 3),
+                Map.entry("name", 60),
+                Map.entry("contact_name", 100),
+                Map.entry("contact_email", 100),
+                Map.entry("contact_phone", 30),
+                Map.entry("city", 25),
+                Map.entry("notes", 1000)
+        );
     }
+
 /*
-    // Airline with certain IATA
-    public void findElementByIata(String iata) {
-        Optional<Airline> airline = airlineDao.findByIata(iata);
-        if (airline.isPresent()) {
-            System.out.println("Airline found with IATA '" + iata + "':");
-            System.out.println(airline.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // Airline with certain ICAO
-    public void findElementByIcao(String icao) {
-        Optional<Airline> airline = airlineDao.findByIcao(icao);
-        if (airline.isPresent()) {
-            System.out.println("Airline found with ICAO '" + icao + "':");
-            System.out.println(airline.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // Airline with certain name
-    public void findElementByName(String name) {
-        Optional<Airline> airline = airlineDao.findByName(name);
-        if (airline.isPresent()) {
-            System.out.println("Airline found with name '" + name + "':");
-            System.out.println(airline.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airlines with certain contact name
-    public void findAllElementsByContactName(String contactName) {
-        List<Airline> allElements = airlineDao.findAllByContactName(contactName);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airlines found with contact name '" + contactName + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // Airline with certain email
-    public void findElementByEmail(String email) {
-        Optional<Airline> airline = airlineDao.findByEmail(email);
-        if (airline.isPresent()) {
-            System.out.println("Airline found with email '" + email + "':");
-            System.out.println(airline.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airlines with certain phone
-    public void findAllElementsByPhone(String phone) {
-        List<Airline> allElements = airlineDao.findAllByPhone(phone);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airlines found with contact phone '" + phone + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All airlines in certain city
-    public void findAllElementsByCity(String city) {
-        List<Airline> allElements = airlineDao.findAllByCity(city);
-        if (!allElements.isEmpty()) {
-            System.out.println("All airlines found in city '" + city + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
     // Add new airline
     public void add(String iata, String icao, String name, String contactName,
                     String email, String phone, String city, String notes) {
