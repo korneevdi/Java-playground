@@ -10,15 +10,15 @@ import java.util.TreeMap;
 
 public class GatesService extends AbstractDictionaryService<Gate> {
 
-    private final static int MAX_LENGTH = 5;
+    private final static String ENTITY_NAME = "Gate";
 
     public GatesService(GatesDao gatesDao) {
-        super(gatesDao, MAX_LENGTH);
-    }
+        super(gatesDao, ENTITY_NAME);
 
-    @Override
-    protected int getId(Gate entity) {
-        return entity.getId();
+        // Set the maps of the fields
+        stringFields = Map.ofEntries(
+                Map.entry("gate_number", 5)
+        );
     }
 
     @Override
@@ -28,7 +28,7 @@ public class GatesService extends AbstractDictionaryService<Gate> {
             // Group gates into terminals: use TreeMap, so that terminals are sorted
             Map<Character, List<Gate>> groupedGates = new TreeMap<>();
             for(Gate gate : allGates) {
-                char terminal = gate.getName().charAt(0);
+                char terminal = gate.getNumber().charAt(0);
                 groupedGates.computeIfAbsent(terminal, k -> new ArrayList<>()).add(gate);
             }
 
@@ -37,7 +37,7 @@ public class GatesService extends AbstractDictionaryService<Gate> {
             for(var entry: groupedGates.entrySet()) {
                 System.out.println("Terminal " + entry.getKey() + ":");
                 for(Gate gate : entry.getValue()) {
-                    System.out.print(gate.getName() + " ");
+                    System.out.print(gate.getNumber() + " ");
                 }
                 System.out.println();
             }

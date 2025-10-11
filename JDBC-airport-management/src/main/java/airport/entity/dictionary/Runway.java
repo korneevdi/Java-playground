@@ -3,11 +3,11 @@ package airport.entity.dictionary;
 public class Runway {
 
     private int id;
-    private String name;
+    private String number;
 
-    public Runway(int id, String name) {
+    public Runway(int id, String number) {
         this.id = id;
-        this.name = name;
+        this.number = number;
     }
 
     public int getId() {
@@ -18,19 +18,20 @@ public class Runway {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                Runway
+                    ID: %s,
+                    name: %s
+                """.formatted(id, number);
     }
 }

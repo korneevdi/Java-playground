@@ -28,9 +28,10 @@ public class ControlType {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                ControlType
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }

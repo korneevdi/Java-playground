@@ -3,16 +3,18 @@ package airport.service.dictionary;
 import airport.dao.dictionary.RunwaysDao;
 import airport.entity.dictionary.Runway;
 
+import java.util.Map;
+
 public class RunwaysService extends AbstractDictionaryService<Runway> {
 
-    private final static int MAX_LENGTH = 4;
+    private final static String ENTITY_NAME = "Runway";
 
     public RunwaysService(RunwaysDao runwaysDao) {
-        super(runwaysDao, MAX_LENGTH);
-    }
+        super(runwaysDao, ENTITY_NAME);
 
-    @Override
-    protected int getId(Runway entity) {
-        return entity.getId();
+        // Set the maps of the fields
+        stringFields = Map.ofEntries(
+                Map.entry("runway_number", 4)
+        );
     }
 }

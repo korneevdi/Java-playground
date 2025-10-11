@@ -2,19 +2,27 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.AbstractDictionaryDao;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 public abstract class AbstractDictionaryService<T> {
 
     protected final AbstractDictionaryDao<T> dao;
 
-    private final int maxLength;
+    private final String entityName;
 
-    public AbstractDictionaryService(AbstractDictionaryDao<T> dao, int maxLength) {
+    protected Map<String, Integer> stringFields = new HashMap<>();
+    protected Map<String, AbstractDictionaryService.IntRange> integerFields = new HashMap<>();
+    protected Set<String> dateFields = new HashSet<>();
+
+    public AbstractDictionaryService(AbstractDictionaryDao<T> dao, String entityName) {
         this.dao = dao;
-        this.maxLength = maxLength;
+        this.entityName = entityName;
     }
 
+    // Show all saved contacts
     public void showAll() {
         List<T> allElements = dao.findAll();
         System.out.println("List of elements:");
@@ -25,59 +33,74 @@ public abstract class AbstractDictionaryService<T> {
         }
     }
 
-    public void findByName(String name) {
-        T element = dao.findByName(name);
-        if (element != null) {
-            System.out.println("Found element: " + element);
-        } else {
+    // Find element(s) by field
+    public void findAllByField(String fieldName, Object fieldValue) {
+        if(!validateField(fieldName, fieldValue.toString())) return;
+
+        Object realValue = fieldValue;
+        if (dateFields.contains(fieldName) && fieldValue instanceof String) {
+            LocalDate localDate = LocalDate.parse((String) fieldValue, DateTimeFormatter.ISO_LOCAL_DATE);
+            realValue = java.sql.Date.valueOf(localDate);
+        }
+
+        List<T> allElements = dao.findByField(fieldName, realValue);
+        if(allElements.isEmpty()) {
             System.out.println("No data found");
-        }
-    }
-
-    public void add(String name) {
-        if(!isNameValid(name)) return;
-
-        if (dao.findByName(name) != null) {
-            System.out.println("Element '" + name + "' already exists");
-            return;
-        }
-        dao.insert(name);
-        System.out.println("New element '" + name + "' inserted successfully");
-    }
-
-    public void update(String oldName, String newName) {
-        if(!isNameValid(newName)) return;
-
-        if(dao.findByName(newName) != null) {
-            System.out.println("Element '" + newName + "' already exists");
-            return;
-        }
-        T elementToUpdate = dao.findByName(oldName);
-        if (elementToUpdate != null) {
-            int id = getId(elementToUpdate);
-            dao.update(id, newName);
-            System.out.println("Element updated successfully");
         } else {
-            System.out.println("Element '" + oldName + "' not found");
+            printList(allElements);
         }
     }
 
-    public void delete(String name) {
-        if(!isNameValid(name)) return;
-        T elementToDelete = dao.findByName(name);
-        if (elementToDelete != null) {
-            int id = getId(elementToDelete);
-            if (dao.deleteById(id)) {
-                System.out.println("Element '" + name + "' deleted successfully");
-            } else {
-                System.out.println("Element '" + name + "' not found");
+    protected boolean validateField(String fieldName, String value) {
+        if (stringFields.containsKey(fieldName)) {
+            return validateString(fieldName, value);
+        } else if (integerFields.containsKey(fieldName)) {
+            return validateInt(fieldName, value);
+        } else if (dateFields.contains(fieldName)) {
+            return validateDate(value);
+        } else {
+            System.out.println("The " + entityName + " entity does not contain property '" + fieldName + "'");
+            return false;
+        }
+    }
+
+    private boolean validateString(String fieldName, String value) {
+        int maxLength = stringFields.get(fieldName);
+        if (value == null || value.isEmpty()) {
+            System.out.println("Field '" + fieldName + "' cannot be empty");
+            return false;
+        }
+        if (value.length() > maxLength) {
+            System.out.println("Field '" + fieldName + "' exceeds max length (" + maxLength + ")");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateInt(String fieldName, String value) {
+        try {
+            int intValue = Integer.parseInt(value);
+            AbstractDictionaryService.IntRange range = integerFields.get(fieldName);
+            if (intValue < range.min() || intValue > range.max()) {
+                System.out.println("Field '" + fieldName + "' must be between " + range.min() + " and " + range.max());
+                return false;
             }
-        } else {
-            System.out.println("Element '" + name + "' not found");
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Field '" + fieldName + "' must be a number");
+            return false;
         }
     }
 
-    protected abstract int getId(T entity);
+    private boolean validateDate(String value) {
+        try {
+            LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
+            return true;
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format (expected yyyy-MM-dd)");
+            return false;
+        }
+    }
 
     protected void printList(List<T> list) {
         for(int i = 0; i < list.size(); i++) {
@@ -85,15 +108,6 @@ public abstract class AbstractDictionaryService<T> {
         }
     }
 
-    protected boolean isNameValid(String name) {
-        if(name == null || name.isEmpty()) {
-            System.out.println("The element name should not be NULL or empty");
-            return false;
-        }
-        if(name.length() > maxLength) {
-            System.out.println("The name entered is too long: max length is " + maxLength + " symbols");
-            return false;
-        }
-        return true;
-    }
+    // Auxiliary class for integer range
+    protected record IntRange(int min, int max) {}
 }

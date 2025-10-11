@@ -1,11 +1,11 @@
 package airport.entity.dictionary;
 
-public class PersonSex {
+public class Sex {
 
     private int id;
     private String name;
 
-    public PersonSex(int id, String name) {
+    public Sex(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -28,9 +28,10 @@ public class PersonSex {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                Sex
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }

@@ -39,14 +39,14 @@ CREATE TABLE control_types
 CREATE TABLE check_in_counters
 (
     counter_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    counter_name VARCHAR (5) UNIQUE NOT NULL
+    counter_number VARCHAR (5) UNIQUE NOT NULL
 );
 
 -- 7
 CREATE TABLE baggage_claims
 (
     claim_id SMALLINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    claim_name VARCHAR (3) UNIQUE NOT NULL
+    claim_number VARCHAR (3) UNIQUE NOT NULL
 );
 
 -- 8

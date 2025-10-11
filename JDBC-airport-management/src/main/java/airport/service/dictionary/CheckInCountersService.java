@@ -10,15 +10,17 @@ import java.util.TreeMap;
 
 public class CheckInCountersService extends AbstractDictionaryService<CheckInCounter> {
 
-    private final static int MAX_LENGTH = 5;
+    private final static String ENTITY_NAME = "Check-in counter";
 
     public CheckInCountersService(CheckInCountersDao checkInCountersDao) {
-        super(checkInCountersDao, MAX_LENGTH);
-    }
+        super(checkInCountersDao, ENTITY_NAME);
 
-    @Override
-    protected int getId(CheckInCounter entity) {
-        return entity.getId();
+
+
+        // Set the maps of the fields
+        stringFields = Map.ofEntries(
+                Map.entry("counter_number", 5)
+        );
     }
 
     @Override
@@ -28,7 +30,7 @@ public class CheckInCountersService extends AbstractDictionaryService<CheckInCou
             // Group check-in counters into zones: use TreeMap, so that zones are sorted
             Map<Character, List<CheckInCounter>> groupedCounters = new TreeMap<>();
             for (CheckInCounter counter : allCounters) {
-                char zone = counter.getName().charAt(0);
+                char zone = counter.getNumber().charAt(0);
                 groupedCounters.computeIfAbsent(zone, k -> new ArrayList<>()).add(counter);
             }
 
@@ -37,7 +39,7 @@ public class CheckInCountersService extends AbstractDictionaryService<CheckInCou
             for (var entry : groupedCounters.entrySet()) {
                 System.out.println("Zone " + entry.getKey() + ":");
                 for (CheckInCounter counter : entry.getValue()) {
-                    System.out.print(counter.getName() + " ");
+                    System.out.print(counter.getNumber() + " ");
                 }
                 System.out.println();
             }

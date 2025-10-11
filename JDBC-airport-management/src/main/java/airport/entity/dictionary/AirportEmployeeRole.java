@@ -1,11 +1,11 @@
 package airport.entity.dictionary;
 
-public class EmployeeRole {
+public class AirportEmployeeRole {
 
     private int id;
     private String name;
 
-    public EmployeeRole(int id, String name) {
+    public AirportEmployeeRole(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -28,9 +28,10 @@ public class EmployeeRole {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                AirportEmployeeRole
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }

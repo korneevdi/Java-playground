@@ -1,31 +1,31 @@
 package airport.dao.dictionary;
 
-import airport.entity.dictionary.CrewRole;
+import airport.entity.dictionary.AirportEmployeeRole;
 
 import java.sql.*;
 
-public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
+public class AirportEmployeeRolesDao extends AbstractDictionaryDao<AirportEmployeeRole> {
 
-    private static final String TABLE_NAME = "crew_roles";
+    private static final String TABLE_NAME = "airport_employee_roles";
     private static final String ID_NAME = "role_id";
 
-    public CrewRolesDao(Connection connection) {
+    public AirportEmployeeRolesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT cr.role_id, cr.role_name
-                FROM crew_roles cr
+                SELECT aer.role_id, aer.role_name
+                FROM airport_employee_roles aer
                 """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT cr.role_id, cr.role_name
-                FROM crew_roles cr
+                SELECT aer.role_id, aer.role_name
+                FROM airport_employee_roles aer
                 WHERE %s = ?
                 """.formatted(ID_NAME);
     }
@@ -33,15 +33,15 @@ public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
     @Override
     protected String buildFindByFieldSql(String fieldName) {
         return """
-                SELECT cr.role_id, cr.role_name
-                FROM crew_roles cr
+                SELECT aer.role_id, aer.role_name
+                FROM airport_employee_roles aer
                 WHERE %s = ?
                 """.formatted(fieldName);
     }
 
     @Override
-    protected CrewRole mapRow(ResultSet resultSet) throws SQLException {
-        return new CrewRole(
+    protected AirportEmployeeRole mapRow(ResultSet resultSet) throws SQLException {
+        return new AirportEmployeeRole(
                 resultSet.getInt("role_id"),
                 resultSet.getString("role_name")
         );

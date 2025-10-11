@@ -28,9 +28,10 @@ public class CrewRole {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                CrewRole
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }

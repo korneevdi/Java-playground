@@ -3,16 +3,18 @@ package airport.service.dictionary;
 import airport.dao.dictionary.BaggageClaimsDao;
 import airport.entity.dictionary.BaggageClaim;
 
+import java.util.Map;
+
 public class BaggageClaimsService extends AbstractDictionaryService<BaggageClaim> {
 
-    private final static int MAX_LENGTH = 3;
+    private final static String ENTITY_NAME = "Baggage claim";
 
     public BaggageClaimsService(BaggageClaimsDao baggageClaimsDao) {
-        super(baggageClaimsDao, MAX_LENGTH);
-    }
+        super(baggageClaimsDao, ENTITY_NAME);
 
-    @Override
-    protected int getId(BaggageClaim entity) {
-        return entity.getId();
+        // Set the maps of the fields
+        stringFields = Map.ofEntries(
+                Map.entry("claim_number", 3)
+        );
     }
 }

@@ -28,9 +28,10 @@ public class Type {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                Type
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }

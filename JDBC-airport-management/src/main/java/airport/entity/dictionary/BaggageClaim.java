@@ -3,11 +3,11 @@ package airport.entity.dictionary;
 public class BaggageClaim {
 
     private int id;
-    private String name;
+    private String number;
 
-    public BaggageClaim(int id, String name) {
+    public BaggageClaim(int id, String number) {
         this.id = id;
-        this.name = name;
+        this.number = number;
     }
 
     public int getId() {
@@ -18,19 +18,20 @@ public class BaggageClaim {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                BaggageClaim
+                    ID: %s,
+                    number: %s
+                """.formatted(id, number);
     }
 }

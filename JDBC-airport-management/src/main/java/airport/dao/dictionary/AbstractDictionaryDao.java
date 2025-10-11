@@ -1,31 +1,24 @@
-// This abstract DAO class is used to avoid code duplication, since all 10 dictionary tables have very similar properties.
-
 package airport.dao.dictionary;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractDictionaryDao<T> {
 
     protected final Connection connection;
     private final String tableName;
-    private final String idColumn;
-    private final String nameColumn;
+    private final String idName;
 
-    public AbstractDictionaryDao(Connection connection, String tableName, String idColumn, String nameColumn) {
+    public AbstractDictionaryDao(Connection connection, String tableName, String idName) {
         this.connection = connection;
+        this.idName = idName;
         this.tableName = tableName;
-        this.idColumn = idColumn;
-        this.nameColumn = nameColumn;
     }
 
     // Show the list of elements
     public List<T> findAll() {
-        String sql =
-                """
-                SELECT %s, %s FROM %s
-                """.formatted(idColumn, nameColumn, tableName);
+        String sql = buildFindAllSql();
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
@@ -39,112 +32,77 @@ public abstract class AbstractDictionaryDao<T> {
         }
     }
 
+    // Find ID by unique field(s)
+    public OptionalInt findId(Map<String, String> uniqueFields) {
+        String where = uniqueFields.keySet().stream()
+                .map(s -> s + " = ?")
+                .collect(Collectors.joining(" AND "));
+
+        String sql = "SELECT " + idName + " FROM " + tableName + " WHERE " + where;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int i = 1;
+            for (String value : uniqueFields.values()) {
+                ps.setString(i++, value);
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return OptionalInt.of(rs.getInt(idName));
+            } else {
+                return OptionalInt.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Find element by id
-    public T findById(int id) {
-        String sql =
-                """
-                SELECT %s, %s FROM %s
-                WHERE %s = ?
-                """.formatted(idColumn, nameColumn, tableName, idColumn);
+    public Optional<T> findById(int id) {
+        String sql = buildFindByIdSql();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return mapRow(resultSet);
+                return Optional.of(mapRow(resultSet));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Find element by name (element names are unique)
-    public T findByName(String elementName) {
-        String sql =
-                """
-                SELECT %s, %s FROM %s
-                WHERE %s = ?
-                """.formatted(idColumn, nameColumn, tableName, nameColumn);
+    // Find element(s) by field
+    public List<T> findByField(String fieldName, Object fieldValue) {
+        String sql = buildFindByFieldSql(fieldName);
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, elementName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return mapRow(resultSet);
+            if(fieldValue instanceof String) {
+                preparedStatement.setString(1, (String) fieldValue);
+            } else if(fieldValue instanceof java.sql.Date) {
+                preparedStatement.setDate(1, (java.sql.Date) fieldValue);
+            } else if (fieldValue instanceof Integer) {
+                preparedStatement.setInt(1, (Integer) fieldValue);
             } else {
-                return null;
+                throw new RuntimeException("Unknown value type for 'fieldValue'");
             }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<T> allElements = new ArrayList<>();
+            while (resultSet.next()) {
+                allElements.add(mapRow(resultSet));
+            }
+            return allElements;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // Add new element
-    public void insert(String newElementName) {
-        String sql =
-                """
-                INSERT INTO %s (%s) VALUES
-                (?)
-                """.formatted(tableName, nameColumn);
+    protected abstract String buildFindAllSql();
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newElementName);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    protected abstract String buildFindByIdSql();
 
-    // Update element
-    public void update(int id, String newElementName) {
-        String sql =
-                """
-                UPDATE %s
-                SET %s = ?
-                WHERE %s = ?
-                """.formatted(tableName, nameColumn, idColumn);
+    protected abstract String buildFindByFieldSql(String fieldName);
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, newElementName);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Delete element by id
-    public boolean deleteById(int id) {
-        String sql =
-                """
-                DELETE FROM %s
-                WHERE %s = ?
-                """.formatted(tableName, idColumn);
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Delete element by name
-    public boolean deleteByName(String name) {
-        String sql =
-                """
-                DELETE FROM %s
-                WHERE %s = ?
-                """.formatted(tableName, nameColumn);
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, name);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Each child DAO class must describe how to map a table row to a Java object
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 }

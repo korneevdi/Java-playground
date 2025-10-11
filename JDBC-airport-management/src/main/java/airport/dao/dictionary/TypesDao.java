@@ -1,31 +1,31 @@
 package airport.dao.dictionary;
 
-import airport.entity.dictionary.ControlType;
+import airport.entity.dictionary.Type;
 
 import java.sql.*;
 
-public class ControlTypesDao extends AbstractDictionaryDao<ControlType> {
+public class TypesDao extends AbstractDictionaryDao<Type> {
 
-    private static final String TABLE_NAME = "control_types";
-    private static final String ID_NAME = "control_type_id";
+    private static final String TABLE_NAME = "types";
+    private static final String ID_NAME = "type_id";
 
-    public ControlTypesDao(Connection connection) {
+    public TypesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT cc.type_id, cc.type_name
-                FROM control_types cc
+                SELECT t.type_id, t.type_name
+                FROM types t
                 """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT cc.type_id, cc.type_name
-                FROM control_types cc
+                SELECT t.type_id, t.type_name
+                FROM types t
                 WHERE %s = ?
                 """.formatted(ID_NAME);
     }
@@ -33,15 +33,15 @@ public class ControlTypesDao extends AbstractDictionaryDao<ControlType> {
     @Override
     protected String buildFindByFieldSql(String fieldName) {
         return """
-                SELECT cc.type_id, cc.type_name
-                FROM control_types cc
+                SELECT t.type_id, t.type_name
+                FROM types t
                 WHERE %s = ?
                 """.formatted(fieldName);
     }
 
     @Override
-    protected ControlType mapRow(ResultSet resultSet) throws SQLException {
-        return new ControlType(
+    protected Type mapRow(ResultSet resultSet) throws SQLException {
+        return new Type(
                 resultSet.getInt("type_id"),
                 resultSet.getString("type_name")
         );

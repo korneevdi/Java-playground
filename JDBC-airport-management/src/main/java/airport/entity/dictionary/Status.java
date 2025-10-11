@@ -28,9 +28,10 @@ public class Status {
 
     @Override
     public String toString() {
-        return "{" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                '}';
+        return """
+                Status
+                    ID: %s,
+                    name: %s
+                """.formatted(id, name);
     }
 }
