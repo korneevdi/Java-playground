@@ -1,5 +1,7 @@
 package airport.entity.dictionary;
 
+import java.util.Objects;
+
 public class Terminal {
 
     private int id;
@@ -33,5 +35,18 @@ public class Terminal {
                     ID: %s,
                     number: %s
                 """.formatted(id, number);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Terminal terminal = (Terminal) o;
+        return Objects.equals(number, terminal.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
     }
 }

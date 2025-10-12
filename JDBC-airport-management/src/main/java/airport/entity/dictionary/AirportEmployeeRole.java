@@ -1,5 +1,7 @@
 package airport.entity.dictionary;
 
+import java.util.Objects;
+
 public class AirportEmployeeRole {
 
     private int id;
@@ -33,5 +35,18 @@ public class AirportEmployeeRole {
                     ID: %s,
                     name: %s
                 """.formatted(id, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirportEmployeeRole that = (AirportEmployeeRole) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
