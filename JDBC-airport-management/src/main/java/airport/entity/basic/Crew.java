@@ -1,6 +1,6 @@
 package airport.entity.basic;
 
-import airport.entity.dictionary.PersonSex;
+import airport.entity.dictionary.Sex;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,12 +11,12 @@ public class Crew {
     private String pilotLicenseNumber;
     private String firstName;
     private String lastName;
-    private PersonSex sex;
+    private Sex sex;
     private LocalDate birthDate;
     private String passportCountry;
     private String passportNumber;
 
-    public Crew(int id, String pilotLicenseNumber, String firstName, String lastName, PersonSex sex,
+    public Crew(int id, String pilotLicenseNumber, String firstName, String lastName, Sex sex,
                 LocalDate birthDate, String passportCountry, String passportNumber) {
         this.id = id;
         this.pilotLicenseNumber = pilotLicenseNumber;
@@ -60,11 +60,11 @@ public class Crew {
         this.lastName = lastName;
     }
 
-    public PersonSex getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(PersonSex sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
@@ -113,12 +113,12 @@ public class Crew {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Crew crew = (Crew) o;
-        return Objects.equals(firstName, crew.firstName) &&
-                Objects.equals(lastName, crew.lastName) &&
-                Objects.equals(sex, crew.sex) &&
-                Objects.equals(birthDate, crew.birthDate) &&
-                Objects.equals(passportCountry, crew.passportCountry) &&
-                Objects.equals(passportNumber, crew.passportNumber);
+        return Objects.equals(firstName, crew.firstName)
+                && Objects.equals(lastName, crew.lastName)
+                && Objects.equals(sex, crew.sex)
+                && Objects.equals(birthDate, crew.birthDate)
+                && Objects.equals(passportCountry, crew.passportCountry)
+                && Objects.equals(passportNumber, crew.passportNumber);
     }
 
     @Override

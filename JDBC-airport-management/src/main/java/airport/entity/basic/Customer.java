@@ -94,10 +94,10 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(firstName, customer.firstName) &&
-                Objects.equals(lastName, customer.lastName) &&
-                Objects.equals(passportCountry, customer.passportCountry) &&
-                Objects.equals(passportNumber, customer.passportNumber);
+        return Objects.equals(firstName, customer.firstName)
+                && Objects.equals(lastName, customer.lastName)
+                && Objects.equals(passportCountry, customer.passportCountry)
+                && Objects.equals(passportNumber, customer.passportNumber);
     }
 
     @Override

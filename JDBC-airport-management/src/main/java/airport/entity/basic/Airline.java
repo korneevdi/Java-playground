@@ -86,10 +86,10 @@ public class Airline {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Airline airline = (Airline) o;
-        return Objects.equals(iata, airline.iata) &&
-                Objects.equals(icao, airline.icao) &&
-                Objects.equals(name, airline.name) &&
-                Objects.equals(contact, airline.contact);
+        return Objects.equals(iata, airline.iata)
+                && Objects.equals(icao, airline.icao)
+                && Objects.equals(name, airline.name)
+                && Objects.equals(contact, airline.contact);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package airport.entity.basic;
 
+import airport.entity.contact.AirportEmployeeContact;
 import airport.entity.contact.EmergencyContact;
-import airport.entity.contact.EmployeeContact;
-import airport.entity.dictionary.EmployeeRole;
-import airport.entity.dictionary.PersonSex;
+import airport.entity.dictionary.AirportEmployeeRole;
+import airport.entity.dictionary.Sex;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,17 +13,17 @@ public class AirportEmployee {
     private int id;
     private String firstName;
     private String lastName;
-    private EmployeeRole role;
-    private PersonSex sex;
+    private AirportEmployeeRole role;
+    private Sex sex;
     private LocalDate birthDate;
     private String passportCountry;
     private String passportNumber;
-    private EmployeeContact contact;
+    private AirportEmployeeContact contact;
     private EmergencyContact emergencyContact;
 
-    public AirportEmployee(int id, String firstName, String lastName, EmployeeRole role, PersonSex sex,
+    public AirportEmployee(int id, String firstName, String lastName, AirportEmployeeRole role, Sex sex,
                            LocalDate birthDate, String passportCountry, String passportNumber,
-                           EmployeeContact contact, EmergencyContact emergencyContact) {
+                           AirportEmployeeContact contact, EmergencyContact emergencyContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -60,19 +60,19 @@ public class AirportEmployee {
         this.lastName = lastName;
     }
 
-    public EmployeeRole getRole() {
+    public AirportEmployeeRole getRole() {
         return role;
     }
 
-    public void setRole(EmployeeRole role) {
+    public void setRole(AirportEmployeeRole role) {
         this.role = role;
     }
 
-    public PersonSex getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(PersonSex sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
@@ -100,11 +100,11 @@ public class AirportEmployee {
         this.passportNumber = passportNumber;
     }
 
-    public EmployeeContact getContact() {
+    public AirportEmployeeContact getContact() {
         return contact;
     }
 
-    public void setContact(EmployeeContact contact) {
+    public void setContact(AirportEmployeeContact contact) {
         this.contact = contact;
     }
 
@@ -147,13 +147,13 @@ public class AirportEmployee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AirportEmployee that = (AirportEmployee) o;
-        return Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(role, that.role) &&
-                Objects.equals(sex, that.sex) &&
-                Objects.equals(birthDate, that.birthDate) &&
-                Objects.equals(passportCountry, that.passportCountry) &&
-                Objects.equals(passportNumber, that.passportNumber);
+        return Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(role, that.role)
+                && Objects.equals(sex, that.sex)
+                && Objects.equals(birthDate, that.birthDate)
+                && Objects.equals(passportCountry, that.passportCountry)
+                && Objects.equals(passportNumber, that.passportNumber);
     }
 
     @Override

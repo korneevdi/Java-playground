@@ -88,15 +88,15 @@ public class Airplane {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Airplane airplane = (Airplane) o;
-        return capacity == airplane.capacity &&
-                Objects.equals(airline, airplane.airline) &&
-                Objects.equals(registrationNumber, airplane.registrationNumber) &&
-                Objects.equals(model, airplane.model) &&
-                Objects.equals(type, airplane.type);
+        return capacity == airplane.capacity
+                && Objects.equals(airline.getName(), airplane.airline.getName())
+                && Objects.equals(registrationNumber, airplane.registrationNumber)
+                && Objects.equals(model, airplane.model)
+                && Objects.equals(type, airplane.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(airline, registrationNumber, model, capacity, type);
+        return Objects.hash(airline.getName(), registrationNumber, model, capacity, type);
     }
 }

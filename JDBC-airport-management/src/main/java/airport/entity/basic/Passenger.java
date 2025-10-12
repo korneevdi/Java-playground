@@ -1,6 +1,6 @@
 package airport.entity.basic;
 
-import airport.entity.dictionary.PersonSex;
+import airport.entity.dictionary.Sex;
 
 import java.util.Objects;
 
@@ -9,12 +9,12 @@ public class Passenger {
     private int id;
     private String firstName;
     private String lastName;
-    private PersonSex sex;
+    private Sex sex;
     private int age;
     private String passportCountry;
     private String passportNumber;
 
-    public Passenger(int id, String firstName, String lastName, PersonSex sex, int age,
+    public Passenger(int id, String firstName, String lastName, Sex sex, int age,
                      String passportCountry, String passportNumber) {
         this.id = id;
         this.firstName = firstName;
@@ -49,11 +49,11 @@ public class Passenger {
         this.lastName = lastName;
     }
 
-    public PersonSex getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(PersonSex sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
@@ -100,12 +100,12 @@ public class Passenger {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Passenger passenger = (Passenger) o;
-        return age == passenger.age &&
-                Objects.equals(firstName, passenger.firstName) &&
-                Objects.equals(lastName, passenger.lastName) &&
-                Objects.equals(sex, passenger.sex) &&
-                Objects.equals(passportCountry, passenger.passportCountry) &&
-                Objects.equals(passportNumber, passenger.passportNumber);
+        return age == passenger.age
+                && Objects.equals(firstName, passenger.firstName)
+                && Objects.equals(lastName, passenger.lastName)
+                && Objects.equals(sex, passenger.sex)
+                && Objects.equals(passportCountry, passenger.passportCountry)
+                && Objects.equals(passportNumber, passenger.passportNumber);
     }
 
     @Override
