@@ -75,14 +75,15 @@ public class AirlineContact {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", contactName='" + contactName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", city='" + city + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+        return """
+                AirlineContact
+                    ID: %s,
+                    contact name: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    notes: %s
+                """.formatted(id, contactName, email, phone, city, notes);
     }
 
     @Override
@@ -90,7 +91,11 @@ public class AirlineContact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AirlineContact contact = (AirlineContact) o;
-        return Objects.equals(contactName, contact.contactName) && Objects.equals(email, contact.email) && Objects.equals(phone, contact.phone) && Objects.equals(city, contact.city) && Objects.equals(notes, contact.notes);
+        return Objects.equals(contactName, contact.contactName)
+                && Objects.equals(email, contact.email)
+                && Objects.equals(phone, contact.phone)
+                && Objects.equals(city, contact.city)
+                && Objects.equals(notes, contact.notes);
     }
 
     @Override

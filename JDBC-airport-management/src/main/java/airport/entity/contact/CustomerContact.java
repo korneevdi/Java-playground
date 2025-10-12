@@ -75,14 +75,15 @@ public class CustomerContact {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+        return """
+                CustomerContact
+                    ID: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    address: %s,
+                    notes: %s
+                """.formatted(id, email, phone, city, address, notes);
     }
 
     @Override
@@ -90,7 +91,11 @@ public class CustomerContact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomerContact that = (CustomerContact) o;
-        return Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(city, that.city) && Objects.equals(address, that.address) && Objects.equals(notes, that.notes);
+        return Objects.equals(email, that.email)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(city, that.city)
+                && Objects.equals(address, that.address)
+                && Objects.equals(notes, that.notes);
     }
 
     @Override

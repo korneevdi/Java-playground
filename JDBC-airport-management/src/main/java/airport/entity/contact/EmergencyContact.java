@@ -53,12 +53,13 @@ public class EmergencyContact {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", contactName='" + contactName + '\'' +
-                ", relation='" + relation + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return """
+                EmergencyContact
+                    ID: %s,
+                    contact name: %s,
+                    relation: %s,
+                    contact phone: %s
+                """.formatted(id, contactName, relation, phone);
     }
 
     @Override
@@ -66,7 +67,9 @@ public class EmergencyContact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmergencyContact that = (EmergencyContact) o;
-        return Objects.equals(contactName, that.contactName) && Objects.equals(relation, that.relation) && Objects.equals(phone, that.phone);
+        return Objects.equals(contactName, that.contactName)
+                && Objects.equals(relation, that.relation)
+                && Objects.equals(phone, that.phone);
     }
 
     @Override

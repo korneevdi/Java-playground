@@ -2,7 +2,7 @@ package airport.entity.contact;
 
 import java.util.Objects;
 
-public class EmployeeContact {
+public class AirportEmployeeContact {
 
     private int id;
 
@@ -16,7 +16,7 @@ public class EmployeeContact {
 
     private String notes;
 
-    public EmployeeContact(int id, String email, String phone, String city, String address, String notes) {
+    public AirportEmployeeContact(int id, String email, String phone, String city, String address, String notes) {
         this.id = id;
         this.email = email;
         this.phone = phone;
@@ -75,22 +75,27 @@ public class EmployeeContact {
 
     @Override
     public String toString() {
-        return "{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+        return """
+                AirportEmployeeContact
+                    ID: %s,
+                    contact email: %s,
+                    contact phone: %s,
+                    city: %s,
+                    address: %s,
+                    notes: %s
+                """.formatted(id, email, phone, city, address, notes);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmployeeContact that = (EmployeeContact) o;
-        return Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(city, that.city) && Objects.equals(address, that.address) && Objects.equals(notes, that.notes);
+        AirportEmployeeContact that = (AirportEmployeeContact) o;
+        return Objects.equals(email, that.email)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(city, that.city)
+                && Objects.equals(address, that.address)
+                && Objects.equals(notes, that.notes);
     }
 
     @Override
