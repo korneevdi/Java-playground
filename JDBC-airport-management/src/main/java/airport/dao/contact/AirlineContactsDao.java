@@ -3,42 +3,59 @@ package airport.dao.contact;
 import airport.entity.contact.AirlineContact;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Optional;
 
 public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
 
     private final static String TABLE_NAME = "airline_contacts";
 
-    private final static String SELECTED_FIELDS = "contact_id, contact_name, email, phone, headquarter_city, notes";
-
     private final static String ID_NAME = "contact_id";
 
     public AirlineContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, SELECTED_FIELDS, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME);
     }
 
-    // Find element by name
-    public List<AirlineContact> findAllByName(String name) {
-        return findByField("contact_name", name);
+    @Override
+    protected String buildFindAllSql(){
+        return """
+                SELECT ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airline_contacts ac
+                """;
     }
 
-    // Find element by email
-    public Optional<AirlineContact> findByEmail(String email) {
-        return findByField("email", email).stream().findFirst();
+    @Override
+    protected String buildFindByIdSql(){
+        return """
+                SELECT ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airline_contacts ac
+                WHERE %s = ?
+                """.formatted(ID_NAME);
     }
 
-    // Find element by phone
-    public List<AirlineContact> findAllByPhone(String phone) {
-        return findByField("phone", phone);
+    @Override
+    protected String buildFindByFieldSql(String fieldName) {
+        return """
+                SELECT ac.contact_id, ac.contact_name, ac.contact_email, ac.contact_phone, ac.city, ac.notes
+                FROM airline_contacts ac
+                WHERE %s = ?
+                """.formatted(fieldName);
     }
 
-    // Find element by city
-    public List<AirlineContact> findAllByCity(String city) {
-        return findByField("headquarter_city", city);
+    @Override
+    protected AirlineContact mapRow(ResultSet resultSet) throws SQLException {
+        return new AirlineContact(
+                resultSet.getInt("contact_id"),
+                resultSet.getString("contact_name"),
+                resultSet.getString("contact_email"),
+                resultSet.getString("contact_phone"),
+                resultSet.getString("city"),
+                resultSet.getString("notes")
+        );
     }
 
-    // Add new element
+
+    // ------------------------------------------------------------------------------------------------------
+
+    /*// Add new element
     @Override
     protected String buildInsertSql() {
         return """
@@ -94,18 +111,6 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
     }
 
     @Override
-    protected AirlineContact mapRow(ResultSet resultSet) throws SQLException {
-        return new AirlineContact(
-                resultSet.getInt("contact_id"),
-                resultSet.getString("contact_name"),
-                resultSet.getString("email"),
-                resultSet.getString("phone"),
-                resultSet.getString("headquarter_city"),
-                resultSet.getString("notes")
-        );
-    }
-
-    @Override
     protected String buildFindIdSql() {
         return """
                 SELECT %s FROM %s
@@ -119,5 +124,5 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
         ps.setString(2, contact.getEmail());
         ps.setString(3, contact.getPhone());
         ps.setString(4, contact.getCity());
-    }
+    }*/
 }

@@ -1,28 +1,24 @@
 package airport.dao.contact;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractContactDao<T> {
 
     protected final Connection connection;
     private final String tableName;
-    private final String selectedFields;
     private final String idName;
 
-    public AbstractContactDao(Connection connection, String tableName, String selectedFields, String idName) {
+    public AbstractContactDao(Connection connection, String tableName, String idName) {
         this.connection = connection;
         this.tableName = tableName;
-        this.selectedFields = selectedFields;
         this.idName = idName;
     }
 
     // Show the list of elements
     public List<T> findAll() {
-        String sql = """
-                SELECT %s FROM %s
-                """.formatted(selectedFields, tableName);
+        String sql = buildFindAllSql();
 
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
@@ -36,56 +32,84 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
+    // Find ID by unique field(s)
+    public OptionalInt findId(Map<String, String> uniqueFields) {
+        String where = uniqueFields.keySet().stream()
+                .map(s -> s + " = ?")
+                .collect(Collectors.joining(" AND "));
+
+        String sql = "SELECT " + idName + " FROM " + tableName + " WHERE " + where;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            int i = 1;
+            for (String value : uniqueFields.values()) {
+                ps.setString(i++, value);
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return OptionalInt.of(rs.getInt(idName));
+            } else {
+                return OptionalInt.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Find element by id
-    public T findById(int id) {
-        String sql = """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(selectedFields, tableName, "contact_id");
+    public Optional<T> findById(int id) {
+        String sql = buildFindByIdSql();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return mapRow(resultSet);
+                return Optional.of(mapRow(resultSet));
             }
-            return null;
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public int findId(T entity) {
-        String sql = buildFindIdSql();
-        try(PreparedStatement ps = connection.prepareStatement(sql)) {
-            setFindIdStatement(ps, entity);
-            ResultSet rs = ps.executeQuery();
-            return rs.getInt(idName);
-        } catch(SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected List<T> findByField(String fieldName, String fieldValue) {
-        String sql = """
-                SELECT %s FROM %s
-                WHERE %s = ?
-                """.formatted(selectedFields, tableName, fieldName);
+    // Find element(s) by field
+    public List<T> findByField(String fieldName, Object fieldValue) {
+        String sql = buildFindByFieldSql(fieldName);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, fieldValue);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<T> allContacts = new ArrayList<>();
-            while (resultSet.next()) {
-                allContacts.add(mapRow(resultSet));
+            if(fieldValue instanceof String) {
+                preparedStatement.setString(1, (String) fieldValue);
+            } else if(fieldValue instanceof java.sql.Date) {
+                preparedStatement.setDate(1, (java.sql.Date) fieldValue);
+            } else if (fieldValue instanceof Integer) {
+                preparedStatement.setInt(1, (Integer) fieldValue);
+            } else {
+                throw new RuntimeException("Unknown value type for 'fieldValue'");
             }
-            return allContacts;
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<T> allElements = new ArrayList<>();
+            while (resultSet.next()) {
+                allElements.add(mapRow(resultSet));
+            }
+            return allElements;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void insert(T entity) {
+    protected abstract String buildFindAllSql();
+
+    protected abstract String buildFindByIdSql();
+
+    protected abstract String buildFindByFieldSql(String fieldName);
+
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+
+    // ---------------------------------------------------------------------------------------------------------
+
+    /*public void insert(T entity) {
         String sql = buildInsertSql();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -133,9 +157,6 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
-    // Each child DAO class must describe how to map a table row to a Java object
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
-
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
@@ -150,5 +171,5 @@ public abstract class AbstractContactDao<T> {
 
     protected abstract String buildFindIdSql();
 
-    protected abstract void setFindIdStatement(PreparedStatement ps, T entity) throws SQLException;
+    protected abstract void setFindIdStatement(PreparedStatement ps, T entity) throws SQLException;*/
 }

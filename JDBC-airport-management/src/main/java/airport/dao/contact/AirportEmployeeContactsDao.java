@@ -1,31 +1,31 @@
 package airport.dao.contact;
 
-import airport.entity.contact.CustomerContact;
+import airport.entity.contact.AirportEmployeeContact;
 
 import java.sql.*;
 
-public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
+public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmployeeContact> {
 
-    private final static String TABLE_NAME = "customer_contacts";
+    private final static String TABLE_NAME = "airport_employee_contacts";
     private final static String ID_NAME = "contact_id";
 
-    public CustomerContactsDao(Connection connection) {
+    public AirportEmployeeContactsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
-                FROM customer_contacts cc
+                SELECT aec.contact_id, aec.contact_email, aec.contact_phone, aec.city, aec.address, aec.notes
+                FROM airport_employee_contacts aec
                 """;
     }
 
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
-                FROM customer_contacts cc
+                SELECT aec.contact_id, aec.contact_email, aec.contact_phone, aec.city, aec.address, aec.notes
+                FROM airport_employee_contacts aec
                 WHERE %s = ?
                 """.formatted(ID_NAME);
     }
@@ -33,15 +33,15 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     @Override
     protected String buildFindByFieldSql(String fieldName) {
         return """
-                SELECT cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
-                FROM customer_contacts cc
+                SELECT aec.contact_id, aec.contact_email, aec.contact_phone, aec.city, aec.address, aec.notes
+                FROM airport_employee_contacts aec
                 WHERE %s = ?
                 """.formatted(fieldName);
     }
 
     @Override
-    protected CustomerContact mapRow(ResultSet resultSet) throws SQLException {
-        return new CustomerContact(
+    protected AirportEmployeeContact mapRow(ResultSet resultSet) throws SQLException {
+        return new AirportEmployeeContact(
                 resultSet.getInt("contact_id"),
                 resultSet.getString("contact_email"),
                 resultSet.getString("contact_phone"),
@@ -52,10 +52,9 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
 
-    // ----------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------
 
-    /*// Add new element
-    @Override
+    /*@Override
     protected String buildInsertSql() {
         return """
                 INSERT INTO %s (email, phone, city, address, notes) VALUES
@@ -64,7 +63,7 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
     @Override
-    protected void setInsertStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+    protected void setInsertStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
         ps.setString(1, contact.getEmail());
         ps.setString(2, contact.getPhone());
         ps.setString(3, contact.getCity());
@@ -72,7 +71,6 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
         ps.setString(5, contact.getNotes());
     }
 
-    // Update element
     @Override
     protected String buildUpdateSql() {
         return """
@@ -83,7 +81,7 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
     @Override
-    protected void setUpdateStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+    protected void setUpdateStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
         ps.setString(1, contact.getEmail());
         ps.setString(2, contact.getPhone());
         ps.setString(3, contact.getCity());
@@ -92,7 +90,6 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
         ps.setInt(6, contact.getId());
     }
 
-    // Check duplicates (via service)
     @Override
     protected String buildExistsSql() {
         return """
@@ -102,7 +99,7 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
     @Override
-    protected void setExistsStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+    protected void setExistsStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
         ps.setString(1, contact.getEmail());
         ps.setString(2, contact.getPhone());
         ps.setString(3, contact.getCity());
@@ -118,7 +115,7 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
     @Override
-    protected void setFindIdStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+    protected void setFindIdStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
         ps.setString(1, contact.getEmail());
         ps.setString(2, contact.getPhone());
         ps.setString(3, contact.getCity());

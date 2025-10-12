@@ -3,45 +3,24 @@ package airport.service.contact;
 import airport.dao.contact.EmergencyContactsDao;
 import airport.entity.contact.EmergencyContact;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class EmergencyContactsService extends AbstractContactService<EmergencyContact> {
 
-    private final EmergencyContactsDao emergencyContactsDao;
+    private final static String ENTITY_NAME = "Emergency contact";
 
     public EmergencyContactsService(EmergencyContactsDao dao) {
-        super(dao);
-        this.emergencyContactsDao = dao;
+        super(dao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths
-        fieldMaxLengths.put("contact_name", 100);
-        fieldMaxLengths.put("relation", 30);
-        fieldMaxLengths.put("phone", 30);
+        stringFields = Map.of(
+                "contact_name", 100,
+                "relation", 30,
+                "contact_phone", 30
+        );
     }
 
-    // All contacts with certain contact name
-    public void findAllElementsByName(String name) {
-        List<EmergencyContact> allElements = emergencyContactsDao.findAllByName(name);
-        if (!allElements.isEmpty()) {
-            System.out.println("All contacts found with contact name '" + name + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All contacts with certain phone
-    public void findAllElementsByPhone(String phone) {
-        List<EmergencyContact> allElements = emergencyContactsDao.findAllByPhone(phone);
-        if (!allElements.isEmpty()) {
-            System.out.println("All contacts found with phone '" + phone + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
+    /*
     // Add new contact
     public void add(String contactName, String relation, String phone) {
         EmergencyContact contact = new EmergencyContact(0, contactName, relation, phone);
@@ -106,5 +85,5 @@ public class EmergencyContactsService extends AbstractContactService<EmergencyCo
         return emergencyContactsDao.findSingle(
                 contact.getContactName(), contact.getRelation(), contact.getPhone()
         ).map(EmergencyContact::getId);
-    }
+    }*/
 }

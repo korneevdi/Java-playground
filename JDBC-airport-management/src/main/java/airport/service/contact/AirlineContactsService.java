@@ -3,69 +3,27 @@ package airport.service.contact;
 import airport.dao.contact.AirlineContactsDao;
 import airport.entity.contact.AirlineContact;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class AirlineContactsService extends AbstractContactService<AirlineContact> {
 
-    private final AirlineContactsDao airlineContactsDao;
+    private final static String ENTITY_NAME = "Airline contact";
 
     public AirlineContactsService(AirlineContactsDao dao) {
-        super(dao);
-        this.airlineContactsDao = dao;
+        super(dao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths
-        fieldMaxLengths.put("contact_name", 100);
-        fieldMaxLengths.put("email", 100);
-        fieldMaxLengths.put("phone", 30);
-        fieldMaxLengths.put("headquarter_city", 25);
+        stringFields = Map.of(
+                "contact_name", 100,
+                "contact_email", 100,
+                "contact_phone", 30,
+                "city", 25,
+                "notes", 1000
+        );
     }
 
-    // All contacts with certain contact name
-    public void findAllElementsByName(String name) {
-        List<AirlineContact> allElements = airlineContactsDao.findAllByName(name);
-        if (!allElements.isEmpty()) {
-            System.out.println("All contacts found with contact name '" + name + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
 
-    // Contact with certain email
-    public void findElementByEmail(String email) {
-        Optional<AirlineContact> contact = airlineContactsDao.findByEmail(email);
-        if (contact.isPresent()) {
-            System.out.println("Contact found with email '" + email + "':");
-            System.out.println(contact.get());
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All contacts with certain phone
-    public void findAllElementsByPhone(String phone) {
-        List<AirlineContact> allElements = airlineContactsDao.findAllByPhone(phone);
-        if (!allElements.isEmpty()) {
-            System.out.println("All contacts found with phone '" + phone + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // All contacts with certain city
-    public void findAllElementsByCity(String city) {
-        List<AirlineContact> allElements = airlineContactsDao.findAllByCity(city);
-        if (!allElements.isEmpty()) {
-            System.out.println("All contacts found with headquarter in '" + city + "':");
-            printList(allElements);
-        } else {
-            System.out.println("No data found");
-        }
-    }
-
-    // Add new contact
+    /*// Add new contact
     public void add(String contactName, String email, String phone, String city, String notes) {
         AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, notes);
         addContact(contact);
@@ -128,5 +86,5 @@ public class AirlineContactsService extends AbstractContactService<AirlineContac
     @Override
     protected Optional<Integer> findId(AirlineContact contact) {
         return airlineContactsDao.findByEmail(contact.getEmail()).map(AirlineContact::getId);
-    }
+    }*/
 }
