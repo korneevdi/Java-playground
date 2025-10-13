@@ -5,16 +5,14 @@ import airport.entity.basic.Airplane;
 import airport.entity.contact.AirlineContact;
 import airport.entity.dictionary.Type;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class AirplaneDao extends AbstractBasicDao<Airplane> {
+public class AirplanesDao extends AbstractBasicDao<Airplane> {
 
     private final static String TABLE_NAME = "airplanes";
     private final static String ID_NAME = "airplane_id";
 
-    public AirplaneDao(Connection connection) {
+    public AirplanesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
@@ -95,4 +93,37 @@ public class AirplaneDao extends AbstractBasicDao<Airplane> {
                 type
         );
     }
+
+    /*
+    @Override
+    protected String buildInsertSql() {
+        return """
+        INSERT INTO airplanes (airline, registration_number, model, total_capacity, type)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
+        ps.setString(1, airplane.getAirline().getName());
+        ps.setString(2, airplane.getRegistrationNumber());
+        ps.setString(3, airplane.getModel());
+        ps.setInt(4, airplane.getCapacity());
+        ps.setInt(5, airplane.getType().getId());
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE registration_number = ? AND model = ? AND total_capacity = ?
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
+        ps.setString(1, airplane.getRegistrationNumber());
+        ps.setString(2, airplane.getModel());
+        ps.setInt(3, airplane.getCapacity());
+    }*/
 }

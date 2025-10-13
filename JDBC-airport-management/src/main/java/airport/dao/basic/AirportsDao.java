@@ -4,12 +4,12 @@ import airport.entity.basic.Airport;
 
 import java.sql.*;
 
-public class AirportDao extends AbstractBasicDao<Airport> {
+public class AirportsDao extends AbstractBasicDao<Airport> {
 
     private final static String TABLE_NAME = "airports";
     private final static String ID_NAME = "airport_id";
 
-    public AirportDao(Connection connection) {
+    public AirportsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 

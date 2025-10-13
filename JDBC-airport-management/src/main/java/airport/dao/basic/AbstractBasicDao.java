@@ -7,11 +7,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractBasicDao<T> {
 
     protected final Connection connection;
-
     private final String tableName;
     private final String idName;
-
-    //private final String selectedFields;
 
     public AbstractBasicDao(Connection connection, String tableName, String idName) {
         this.connection = connection;
@@ -75,7 +72,7 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    // Find element by field
+    // Find element(s) by field
     public List<T> findByField(String fieldName, Object fieldValue) {
         String sql = buildFindByFieldSql(fieldName);
 
@@ -101,9 +98,6 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-
-
-
     protected abstract String buildFindAllSql();
 
     protected abstract String buildFindByIdSql();
@@ -112,9 +106,7 @@ public abstract class AbstractBasicDao<T> {
 
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 
-
-    /*
-    public void insert(T entity) {
+    /*public void insert(T entity) {
         String sql = buildInsertSql();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -124,6 +116,26 @@ public abstract class AbstractBasicDao<T> {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean exists(T entity) {
+        String sql = buildExistsSql();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            setExistsStatement(ps, entity);
+            ResultSet resultSet = ps.executeQuery();
+            return resultSet.next(); // 'true' if something found, 'false' otherwise
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected abstract String buildInsertSql();
+
+    protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
+
+    protected abstract String buildExistsSql();
+
+    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
 
     public boolean update(T entity) {
         String sql = buildUpdateSql();
@@ -150,29 +162,8 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    public boolean exists(T entity) {
-        String sql = buildExistsSql();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            setExistsStatement(ps, entity);
-            ResultSet resultSet = ps.executeQuery();
-            return resultSet.next(); // 'true' if something found, 'false' otherwise
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected abstract String buildFindByFieldSql(String fieldName);
-
-    protected abstract String buildInsertSql();
-
-    protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
-
     protected abstract String buildUpdateSql();
 
     protected abstract void setUpdateStatement(PreparedStatement ps, T entity) throws SQLException;
-
-    protected abstract String buildExistsSql();
-
-    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;*/
+    */
 }

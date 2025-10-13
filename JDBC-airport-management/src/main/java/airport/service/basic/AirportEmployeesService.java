@@ -5,11 +5,11 @@ import airport.entity.basic.AirportEmployee;
 
 import java.util.Map;
 
-public class AirportEmployeeService extends AbstractBasicService<AirportEmployee>{
+public class AirportEmployeesService extends AbstractBasicService<AirportEmployee>{
 
     private final static String ENTITY_NAME = "Airport Employee";
 
-    public AirportEmployeeService(AirportEmployeeDao airportEmployeeDao) {
+    public AirportEmployeesService(AirportEmployeeDao airportEmployeeDao) {
         super(airportEmployeeDao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths

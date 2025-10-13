@@ -1,17 +1,27 @@
 package airport.service.basic;
 
-import airport.dao.basic.AirlineDao;
+import airport.dao.basic.AirlinesDao;
+import airport.dao.contact.AirlineContactsDao;
 import airport.entity.basic.Airline;
+import airport.service.contact.AirlineContactsService;
 
 import java.util.Map;
 
 
-public class AirlineService extends AbstractBasicService<Airline> {
+public class AirlinesService extends AbstractBasicService<Airline> {
+
+    private final AirlineContactsDao airlineContactsDao;
+
+    private final AirlineContactsService airlineContactsService;
 
     private final static String ENTITY_NAME = "Airline";
 
-    public AirlineService(AirlineDao airlineDao) {
+    public AirlinesService(AirlinesDao airlineDao,
+                           AirlineContactsDao airlineContactsDao,
+                           AirlineContactsService airlineContactsService) {
         super(airlineDao, ENTITY_NAME);
+        this.airlineContactsDao = airlineContactsDao;
+        this.airlineContactsService = airlineContactsService;
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(
@@ -25,20 +35,38 @@ public class AirlineService extends AbstractBasicService<Airline> {
                 Map.entry("notes", 1000)
         );
     }
-
 /*
-    // Add new airline
+    // Add new airline (airline data + contact data)
     public void add(String iata, String icao, String name, String contactName,
-                    String email, String phone, String city, String notes) {
-        AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, notes);
-        airlineContactsDao.insert(contact);
+                    String contactEmail, String contactPhone, String city, String notes) {
 
-        int contactId = airlineContactsDao.findId(contact);
-        contact.setId(contactId);
+        AirlineContact contact = new AirlineContact(0, contactName, contactEmail, contactPhone, city, notes);
         Airline airline = new Airline(0, iata, icao, name, contact);
-        airlineDao.insert(airline);
-    }
 
+        if(!airlineContactsService.isValidContact(contact)) return;
+
+        int contactId;
+        if(airlineContactsDao.exists(contact)) {
+            // get id
+            contactId = airlineContactsDao.findId(contact);
+            contact.setId(contactId);
+            airline.setContact(contact);
+            addElement(airline);
+        } else {
+            // insert & get id
+            airlineContactsDao.insert(contact);
+            contactId = airlineContactsDao.findId(contact);
+            contact.setId(contactId);
+            airline.setContact(contact);
+
+            boolean inserted = addElement(airline);
+            if(!inserted) {
+                airlineContactsDao.deleteById(contactId);
+            }
+        }
+    }*/
+
+    /*
     // Update airline
     public void update(String oldIata, String oldIcao, String oldName, String oldContactName, String oldEmail, String oldPhone, String oldCity, String oldNotes,
                        String newIata, String newIcao, String newName, String newContactName, String newEmail, String newPhone, String newCity, String newNotes) {

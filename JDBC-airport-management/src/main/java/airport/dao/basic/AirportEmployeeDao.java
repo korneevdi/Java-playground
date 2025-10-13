@@ -1,10 +1,10 @@
 package airport.dao.basic;
 
 import airport.entity.basic.AirportEmployee;
+import airport.entity.contact.AirportEmployeeContact;
 import airport.entity.contact.EmergencyContact;
-import airport.entity.contact.EmployeeContact;
-import airport.entity.dictionary.EmployeeRole;
-import airport.entity.dictionary.PersonSex;
+import airport.entity.dictionary.AirportEmployeeRole;
+import airport.entity.dictionary.Sex;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -72,7 +72,7 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
 
     @Override
     protected AirportEmployee mapRow(ResultSet rs) throws SQLException {
-        EmployeeContact empContact = new EmployeeContact(
+        AirportEmployeeContact empContact = new AirportEmployeeContact(
                 rs.getInt("emp_contact_id"),
                 rs.getString("emp_contact_email"),
                 rs.getString("emp_contact_phone"),
@@ -88,12 +88,12 @@ public class AirportEmployeeDao extends AbstractBasicDao<AirportEmployee> {
                 rs.getString("emerg_contact_phone")
         );
 
-        EmployeeRole role = new EmployeeRole(
+        AirportEmployeeRole role = new AirportEmployeeRole(
                 rs.getInt("role_id"),
                 rs.getString("role_name")
         );
 
-        PersonSex sex = new PersonSex(
+        Sex sex = new Sex(
                 rs.getInt("sex_id"),
                 rs.getString("sex_name")
         );

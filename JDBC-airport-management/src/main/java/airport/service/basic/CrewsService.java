@@ -1,15 +1,15 @@
 package airport.service.basic;
 
-import airport.dao.basic.CrewDao;
+import airport.dao.basic.CrewsDao;
 import airport.entity.basic.Crew;
 
 import java.util.Map;
 
-public class CrewService extends AbstractBasicService<Crew>{
+public class CrewsService extends AbstractBasicService<Crew>{
 
     private final static String ENTITY_NAME = "Flight Crew";
 
-    public CrewService(CrewDao crewDao) {
+    public CrewsService(CrewsDao crewDao) {
         super(crewDao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths

@@ -1,19 +1,17 @@
 package airport.dao.basic;
 
 import airport.entity.basic.Crew;
-import airport.entity.dictionary.PersonSex;
+import airport.entity.dictionary.Sex;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
-public class CrewDao extends AbstractBasicDao<Crew> {
+public class CrewsDao extends AbstractBasicDao<Crew> {
 
     private final static String TABLE_NAME = "flight_crews";
     private final static String ID_NAME = "flight_crew_id";
 
-    public CrewDao(Connection connection) {
+    public CrewsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
@@ -51,7 +49,7 @@ public class CrewDao extends AbstractBasicDao<Crew> {
 
     @Override
     protected Crew mapRow(ResultSet resultSet) throws SQLException {
-        PersonSex sex = new PersonSex(
+        Sex sex = new Sex(
                 resultSet.getInt("sex_id"),
                 resultSet.getString("sex_name")
         );

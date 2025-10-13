@@ -17,9 +17,9 @@ public abstract class AbstractBasicService<T> {
     protected Map<String, IntRange> integerFields = new HashMap<>();
     protected Set<String> dateFields = new HashSet<>();
 
-    public AbstractBasicService(AbstractBasicDao<T> dao, String tableName) {
+    public AbstractBasicService(AbstractBasicDao<T> dao, String entityName) {
         this.dao = dao;
-        this.entityName = tableName;
+        this.entityName = entityName;
     }
 
     // Show all saved contacts
@@ -33,6 +33,7 @@ public abstract class AbstractBasicService<T> {
         }
     }
 
+    // Find element(s) by field
     public void findAllByField(String fieldName, Object fieldValue) {
         if(!validateField(fieldName, fieldValue.toString())) return;
 
@@ -110,20 +111,56 @@ public abstract class AbstractBasicService<T> {
     // Auxiliary class for integer range
     protected record IntRange(int min, int max) {}
 
-/*
-    // Add new contact
-    public void addContact(T entity) {
-        if(!isValidContact(entity)) return;
-
-        if (dao.exists(entity)) {
-            existsOrNotOutput(entity, true);
-            return;
+    /*
+    // Insert new element into tables
+    public boolean addElement(T element) {
+        if(!isValidElement(element)) {
+            System.out.println("Invalid input");
+            return false;
         }
 
-        dao.insert(entity);
+        if (dao.exists(element)) {
+            System.out.println("Element with properties entered already exists");
+            return false;
+        }
+
+        dao.insert(element);
         System.out.println("New element inserted successfully");
+
+        return true;
     }
 
+    protected boolean isValidElement(T element) {
+        Class<?> clazz = element.getClass();
+
+        // Gather all fields, which must be checked
+        Set<String> allFields = new HashSet<>();
+        allFields.addAll(stringFields.keySet());
+        allFields.addAll(integerFields.keySet());
+        allFields.addAll(dateFields);
+
+        for (String fieldName : allFields) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                Object value = field.get(element);
+                String stringValue = value != null ? value.toString() : "";
+
+                if (!validateField(fieldName, stringValue)) {
+                    return false;
+                }
+
+            } catch (NoSuchFieldException e) {
+                System.out.println("Warning: field '" + fieldName + "' not found in class " + clazz.getSimpleName());
+            } catch (IllegalAccessException e) {
+                System.out.println("Cannot access field '" + fieldName + "' in class " + clazz.getSimpleName());
+            }
+        }
+
+        return true;
+    }*/
+
+/*
     // Update contact
     public void updateElement(T oldEntity, T newEntity) {
         if (!dao.exists(oldEntity)) {

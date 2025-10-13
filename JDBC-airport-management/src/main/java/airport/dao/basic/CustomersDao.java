@@ -3,16 +3,14 @@ package airport.dao.basic;
 import airport.entity.basic.Customer;
 import airport.entity.contact.CustomerContact;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class CustomerDao extends AbstractBasicDao<Customer> {
+public class CustomersDao extends AbstractBasicDao<Customer> {
 
     private final static String TABLE_NAME = "customers";
     private final static String ID_NAME = "customer_id";
 
-    public CustomerDao(Connection connection) {
+    public CustomersDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME);
     }
 
