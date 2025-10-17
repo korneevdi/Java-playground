@@ -40,7 +40,7 @@ INSERT INTO control_types (type_name) VALUES
 ('custom control');
 
 -- 6. Check-in counters for departure flights
-INSERT INTO check_in_counters (counter_name) VALUES
+INSERT INTO check_in_counters (counter_number) VALUES
 ('A1'), ('A2'), ('A3'), ('A4'), ('A5'),         -- zone A
 ('A6'), ('A7'), ('A8'), ('A9'), ('A10'),
 ('A11'), ('A12'), ('A13'), ('A14'), ('A15'),
@@ -53,7 +53,7 @@ INSERT INTO check_in_counters (counter_name) VALUES
 ('B16'), ('B17'), ('B18'), ('B19'), ('B20');
 
 -- 7. Baggage claims for arrival flights
-INSERT INTO baggage_claims (claim_name) VALUES
+INSERT INTO baggage_claims (claim_number) VALUES
 ('1'), ('2'), ('3'), ('4'), ('5'),
 ('6'), ('7'), ('8'), ('9'), ('10'),
 ('11'), ('12'), ('13'), ('14'), ('15'),
@@ -145,7 +145,7 @@ INSERT INTO airport_employee_contacts (contact_email, contact_phone, city, addre
 ('olivia.johnson@airport.com', '+1-310-555-1015', 'Los Angeles', '114 Airport Rd', 'Administration');
 
 -- 15. Emergency contacts
-INSERT INTO emergency_contacts (contact_name, relation, contact_phone) VALUES
+INSERT INTO emergency_contacts (contact_name, contact_relation, contact_phone) VALUES
 ('Mike Turner', 'Husband', '+1-310-555-2002'),
 ('Laura Harris', 'Wife', '+1-310-555-2001'),
 ('Peter Lee', 'Brother', '+1-310-555-2003'),

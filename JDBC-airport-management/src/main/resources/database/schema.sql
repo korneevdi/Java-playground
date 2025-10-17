@@ -118,7 +118,7 @@ CREATE TABLE emergency_contacts
 (
     contact_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     contact_name VARCHAR (100) NOT NULL,
-    relation VARCHAR (30),
+    contact_relation VARCHAR (30),
     contact_phone VARCHAR (30) NOT NULL
 );
 
