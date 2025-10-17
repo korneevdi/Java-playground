@@ -1,35 +1,20 @@
 package airport.service.basic;
 
-import airport.dao.basic.AirlinesDao;
 import airport.dao.basic.AirplanesDao;
-import airport.dao.dictionary.TypesDao;
 import airport.entity.basic.Airplane;
 
 import java.util.Map;
 
 public class AirplanesService extends AbstractBasicService<Airplane> {
 
-    private final AirlinesDao airlineDao;
-
-    private final TypesDao typeDao;
-
     private final static String ENTITY_NAME = "Airplane";
 
-    public AirplanesService(AirplanesDao airplaneDao, AirlinesDao airlineDao, TypesDao typeDao) {
+    public AirplanesService(AirplanesDao airplaneDao) {
         super(airplaneDao, ENTITY_NAME);
-        this.airlineDao = airlineDao;
-        this.typeDao = typeDao;
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(
-                Map.entry("iata", 2),
-                Map.entry("icao", 3),
                 Map.entry("name", 60),
-                Map.entry("contact_name", 100),
-                Map.entry("contact_email", 100),
-                Map.entry("contact_phone", 30),
-                Map.entry("city", 25),
-                Map.entry("notes", 1000),
                 Map.entry("registration_number", 20),
                 Map.entry("model", 30),
                 Map.entry("type_name", 30)

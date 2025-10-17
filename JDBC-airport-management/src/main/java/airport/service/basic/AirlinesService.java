@@ -10,18 +10,10 @@ import java.util.Map;
 
 public class AirlinesService extends AbstractBasicService<Airline> {
 
-    private final AirlineContactsDao airlineContactsDao;
-
-    private final AirlineContactsService airlineContactsService;
-
     private final static String ENTITY_NAME = "Airline";
 
-    public AirlinesService(AirlinesDao airlineDao,
-                           AirlineContactsDao airlineContactsDao,
-                           AirlineContactsService airlineContactsService) {
+    public AirlinesService(AirlinesDao airlineDao) {
         super(airlineDao, ENTITY_NAME);
-        this.airlineContactsDao = airlineContactsDao;
-        this.airlineContactsService = airlineContactsService;
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(

@@ -1,6 +1,6 @@
 package airport.service.basic;
 
-import airport.dao.basic.AirportEmployeeDao;
+import airport.dao.basic.AirportEmployeesDao;
 import airport.entity.basic.AirportEmployee;
 
 import java.util.Map;
@@ -9,8 +9,8 @@ public class AirportEmployeesService extends AbstractBasicService<AirportEmploye
 
     private final static String ENTITY_NAME = "Airport Employee";
 
-    public AirportEmployeesService(AirportEmployeeDao airportEmployeeDao) {
-        super(airportEmployeeDao, ENTITY_NAME);
+    public AirportEmployeesService(AirportEmployeesDao airportEmployeesDao) {
+        super(airportEmployeesDao, ENTITY_NAME);
 
         // Set the map of the fields and max lengths
         stringFields = Map.ofEntries(
