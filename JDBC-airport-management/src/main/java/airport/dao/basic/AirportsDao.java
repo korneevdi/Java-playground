@@ -3,14 +3,19 @@ package airport.dao.basic;
 import airport.entity.basic.Airport;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AirportsDao extends AbstractBasicDao<Airport> {
 
     private final static String TABLE_NAME = "airports";
     private final static String ID_NAME = "airport_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("iata");
+    }};
 
     public AirportsDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -37,6 +42,19 @@ public class AirportsDao extends AbstractBasicDao<Airport> {
                 FROM airports a
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Airport airport) throws SQLException {
+        ps.setString(1, airport.getIata());
     }
 
     @Override
@@ -92,23 +110,5 @@ public class AirportsDao extends AbstractBasicDao<Airport> {
         ps.setString(6, airport.getTimezone());
         ps.setInt(7, airport.getId());
     }
-
-    // Check duplicates (via service)
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE iata = ? AND icao = ? AND name = ? AND city = ? AND country = ? AND timezone = ?
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setExistsStatement(PreparedStatement ps, Airport airport) throws SQLException {
-        ps.setString(1, airport.getIata());
-        ps.setString(2, airport.getIcao());
-        ps.setString(3, airport.getName());
-        ps.setString(4, airport.getCity());
-        ps.setString(5, airport.getCountry());
-        ps.setString(6, airport.getTimezone());
-    }*/
+*/
 }

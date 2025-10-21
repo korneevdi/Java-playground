@@ -4,14 +4,20 @@ import airport.entity.basic.Passenger;
 import airport.entity.dictionary.Sex;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PassengersDao extends AbstractBasicDao<Passenger> {
 
     private final static String TABLE_NAME = "passengers";
     private final static String ID_NAME = "passenger_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("passport_country");
+        add("passport_number");
+    }};
 
     public PassengersDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -44,6 +50,20 @@ public class PassengersDao extends AbstractBasicDao<Passenger> {
                 JOIN sexes s ON p.sex = s.sex_id
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ? AND %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Passenger passenger) throws SQLException {
+        ps.setString(1, passenger.getPassportCountry());
+        ps.setString(2, passenger.getPassportNumber());
     }
 
     @Override

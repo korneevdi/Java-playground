@@ -9,11 +9,13 @@ public abstract class AbstractBasicDao<T> {
     protected final Connection connection;
     private final String tableName;
     private final String idName;
+    private final List<String> uniqueFields;
 
-    public AbstractBasicDao(Connection connection, String tableName, String idName) {
+    public AbstractBasicDao(Connection connection, String tableName, String idName, List<String> uniqueFields) {
         this.connection = connection;
         this.idName = idName;
         this.tableName = tableName;
+        this.uniqueFields = uniqueFields;
     }
 
     // Show the list of elements
@@ -98,25 +100,6 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    protected abstract String buildFindAllSql();
-
-    protected abstract String buildFindByIdSql();
-
-    protected abstract String buildFindByFieldSql(String fieldName);
-
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
-
-    /*public void insert(T entity) {
-        String sql = buildInsertSql();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            setInsertStatement(ps, entity);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean exists(T entity) {
         String sql = buildExistsSql();
 
@@ -129,13 +112,33 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    protected abstract String buildInsertSql();
+    protected abstract String buildFindAllSql();
 
-    protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
+    protected abstract String buildFindByIdSql();
+
+    protected abstract String buildFindByFieldSql(String fieldName);
 
     protected abstract String buildExistsSql();
 
     protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
+
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+    /*
+    public void insert(T entity) {
+        String sql = buildInsertSql();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            setInsertStatement(ps, entity);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected abstract String buildInsertSql();
+
+    protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
 
     public boolean update(T entity) {
         String sql = buildUpdateSql();

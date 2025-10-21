@@ -3,14 +3,19 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.Sex;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SexesDao extends AbstractDictionaryDao<Sex> {
 
     private static final String TABLE_NAME = "sexes";
     private static final String ID_NAME = "sex_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("sex_name");
+    }};
 
     public SexesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -37,6 +42,19 @@ public class SexesDao extends AbstractDictionaryDao<Sex> {
                 FROM sexes s
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Sex sex) throws SQLException {
+        ps.setString(1, sex.getName());
     }
 
     @Override

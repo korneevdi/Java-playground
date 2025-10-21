@@ -3,14 +3,21 @@ package airport.dao.contact;
 import airport.entity.contact.EmergencyContact;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
 
     private final static String TABLE_NAME = "emergency_contacts";
     private final static String ID_NAME = "contact_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("contact_name");
+        add("contact_relation");
+        add("contact_phone");
+    }};
 
     public EmergencyContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -37,6 +44,21 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
                 FROM emergency_contacts ec
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ? AND %s = ? AND %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1), UNIQUE_FIELDS.get(2));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, EmergencyContact emergencyContact) throws SQLException {
+        ps.setString(1, emergencyContact.getContactName());
+        ps.setString(2, emergencyContact.getRelation());
+        ps.setString(3, emergencyContact.getPhone());
     }
 
     @Override
@@ -86,35 +108,5 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
         ps.setInt(4, contact.getId());
         ps.setInt(6, contact.getId());
     }
-
-    // Check duplicates (via service)
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE contact_name = ? AND relation = ? AND phone = ?
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setExistsStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
-        ps.setString(1, contact.getContactName());
-        ps.setString(2, contact.getRelation());
-        ps.setString(3, contact.getPhone());
-    }
-
-    @Override
-    protected String buildFindIdSql() {
-        return """
-                SELECT %s FROM %s
-                WHERE contact_name = ? AND relation = ? AND phone = ?
-                """.formatted(ID_NAME, TABLE_NAME);
-    }
-
-    @Override
-    protected void setFindIdStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
-        ps.setString(1, contact.getContactName());
-        ps.setString(2, contact.getRelation());
-        ps.setString(3, contact.getPhone());
-    }*/
+*/
 }

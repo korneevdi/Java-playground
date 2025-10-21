@@ -7,18 +7,24 @@ import airport.entity.dictionary.AirportEmployeeRole;
 import airport.entity.dictionary.Sex;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
 
     private final static String TABLE_NAME = "airport_employees";
     private final static String ID_NAME = "employee_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("passport_country");
+        add("passport_number");
+    }};
 
     public AirportEmployeesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -90,6 +96,19 @@ public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
         return qualifiedFieldName;
     }
 
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ? AND %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, AirportEmployee airportEmployee) throws SQLException {
+        ps.setString(1, airportEmployee.getPassportCountry());
+        ps.setString(2, airportEmployee.getPassportNumber());
+    }
 
     @Override
     protected AirportEmployee mapRow(ResultSet rs) throws SQLException {

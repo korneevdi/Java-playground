@@ -9,11 +9,13 @@ public abstract class AbstractContactDao<T> {
     protected final Connection connection;
     private final String tableName;
     private final String idName;
+    private final List<String> uniqueFields;
 
-    public AbstractContactDao(Connection connection, String tableName, String idName) {
+    public AbstractContactDao(Connection connection, String tableName, String idName, List<String> uniqueFields) {
         this.connection = connection;
         this.tableName = tableName;
         this.idName = idName;
+        this.uniqueFields = uniqueFields;
     }
 
     // Show the list of elements
@@ -98,11 +100,27 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
+    public boolean exists(T entity) {
+        String sql = buildExistsSql();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            setExistsStatement(ps, entity);
+            ResultSet resultSet = ps.executeQuery();
+            return resultSet.next(); // 'true' if something found, 'false' otherwise
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected abstract String buildFindAllSql();
 
     protected abstract String buildFindByIdSql();
 
     protected abstract String buildFindByFieldSql(String fieldName);
+
+    protected abstract String buildExistsSql();
+
+    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
 
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 
@@ -145,18 +163,6 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
-    public boolean exists(T entity) {
-        String sql = buildExistsSql();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            setExistsStatement(ps, entity);
-            ResultSet resultSet = ps.executeQuery();
-            return resultSet.next(); // 'true' if something found, 'false' otherwise
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
@@ -164,12 +170,5 @@ public abstract class AbstractContactDao<T> {
     protected abstract String buildUpdateSql();
 
     protected abstract void setUpdateStatement(PreparedStatement ps, T entity) throws SQLException;
-
-    protected abstract String buildExistsSql();
-
-    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
-
-    protected abstract String buildFindIdSql();
-
-    protected abstract void setFindIdStatement(PreparedStatement ps, T entity) throws SQLException;*/
+*/
 }

@@ -6,14 +6,19 @@ import airport.entity.contact.AirlineContact;
 import airport.entity.dictionary.Type;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AirplanesDao extends AbstractBasicDao<Airplane> {
 
     private final static String TABLE_NAME = "airplanes";
     private final static String ID_NAME = "airplane_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("registration_number");
+    }};
 
     public AirplanesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -58,6 +63,19 @@ public class AirplanesDao extends AbstractBasicDao<Airplane> {
                 JOIN airline_contacts ac ON a.contact = ac.contact_id
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
+        ps.setString(1, airplane.getRegistrationNumber());
     }
 
     @Override
@@ -111,19 +129,5 @@ public class AirplanesDao extends AbstractBasicDao<Airplane> {
         ps.setInt(4, airplane.getCapacity());
         ps.setInt(5, airplane.getType().getId());
     }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE registration_number = ? AND model = ? AND total_capacity = ?
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setExistsStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
-        ps.setString(1, airplane.getRegistrationNumber());
-        ps.setString(2, airplane.getModel());
-        ps.setInt(3, airplane.getCapacity());
-    }*/
+*/
 }

@@ -3,14 +3,19 @@ package airport.dao.contact;
 import airport.entity.contact.CustomerContact;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
 
     private final static String TABLE_NAME = "customer_contacts";
     private final static String ID_NAME = "contact_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("contact_email");
+    }};
 
     public CustomerContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -37,6 +42,19 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
                 FROM customer_contacts cc
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, CustomerContact customerContact) throws SQLException {
+        ps.setString(1, customerContact.getEmail());
     }
 
     @Override
@@ -91,37 +109,5 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
         ps.setString(5, contact.getNotes());
         ps.setInt(6, contact.getId());
     }
-
-    // Check duplicates (via service)
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %S
-                WHERE email = ? AND phone = ? AND city = ? AND address = ?
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setExistsStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
-        ps.setString(1, contact.getEmail());
-        ps.setString(2, contact.getPhone());
-        ps.setString(3, contact.getCity());
-        ps.setString(4, contact.getAddress());
-    }
-
-    @Override
-    protected String buildFindIdSql() {
-        return """
-                SELECT %s FROM %s
-                WHERE email = ? AND phone = ? AND city = ? AND address = ?
-                """.formatted(ID_NAME, TABLE_NAME);
-    }
-
-    @Override
-    protected void setFindIdStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
-        ps.setString(1, contact.getEmail());
-        ps.setString(2, contact.getPhone());
-        ps.setString(3, contact.getCity());
-        ps.setString(4, contact.getAddress());
-    }*/
+*/
 }

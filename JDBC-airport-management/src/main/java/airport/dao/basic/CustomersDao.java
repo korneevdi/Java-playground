@@ -4,14 +4,20 @@ import airport.entity.basic.Customer;
 import airport.entity.contact.CustomerContact;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomersDao extends AbstractBasicDao<Customer> {
 
     private final static String TABLE_NAME = "customers";
     private final static String ID_NAME = "customer_id";
+    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
+        add("passport_country");
+        add("passport_number");
+    }};
 
     public CustomersDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME);
+        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
     @Override
@@ -44,6 +50,20 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
                 JOIN customer_contacts cc ON c.contact = cc.contact_id
                 WHERE %s = ?
                 """.formatted(fieldName);
+    }
+
+    @Override
+    protected String buildExistsSql() {
+        return """
+                SELECT 1 FROM %s
+                WHERE %s = ? AND %s = ?
+                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1));
+    }
+
+    @Override
+    protected void setExistsStatement(PreparedStatement ps, Customer customer) throws SQLException {
+        ps.setString(1, customer.getPassportCountry());
+        ps.setString(2, customer.getPassportNumber());
     }
 
     @Override
