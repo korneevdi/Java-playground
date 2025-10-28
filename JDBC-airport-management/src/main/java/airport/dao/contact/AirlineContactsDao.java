@@ -19,6 +19,10 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
     }
 
+    public List<String> getUniqueFields() {
+        return UNIQUE_FIELDS;
+    }
+
     @Override
     protected String buildFindAllSql(){
         return """
@@ -59,6 +63,23 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (contact_name, contact_email, contact_phone, city, notes) VALUES
+                (?, ?, ?, ?, ?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, AirlineContact contact) throws SQLException {
+        ps.setString(1, contact.getContactName());
+        ps.setString(2, contact.getEmail());
+        ps.setString(3, contact.getPhone());
+        ps.setString(4, contact.getCity());
+        ps.setString(5, contact.getNotes());
+    }
+
+    @Override
     protected AirlineContact mapRow(ResultSet resultSet) throws SQLException {
         return new AirlineContact(
                 resultSet.getInt("contact_id"),
@@ -73,24 +94,7 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
 
     // ------------------------------------------------------------------------------------------------------
 
-    /*// Add new element
-    @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (contact_name, email, phone, headquarter_city, notes) VALUES
-                (?, ?, ?, ?, ?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setInsertStatement(PreparedStatement ps, AirlineContact contact) throws SQLException {
-        ps.setString(1, contact.getContactName());
-        ps.setString(2, contact.getEmail());
-        ps.setString(3, contact.getPhone());
-        ps.setString(4, contact.getCity());
-        ps.setString(5, contact.getNotes());
-    }
-
+    /*
     // Update element
     @Override
     protected String buildUpdateSql() {

@@ -62,6 +62,21 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (contact_name, contact_relation, contact_phone) VALUES
+                (?, ?, ?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
+        ps.setString(1, contact.getContactName());
+        ps.setString(2, contact.getRelation());
+        ps.setString(3, contact.getPhone());
+    }
+
+    @Override
     protected EmergencyContact mapRow(ResultSet resultSet) throws SQLException {
         return new EmergencyContact(
                 resultSet.getInt("contact_id"),
@@ -74,22 +89,7 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
 
     // ---------------------------------------------------------------------------------------------------
 
-    /*// Add new element
-    @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (contact_name, relation, phone) VALUES
-                (?, ?, ?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setInsertStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
-        ps.setString(1, contact.getContactName());
-        ps.setString(2, contact.getRelation());
-        ps.setString(3, contact.getPhone());
-    }
-
+    /*
     // Update element
     @Override
     protected String buildUpdateSql() {

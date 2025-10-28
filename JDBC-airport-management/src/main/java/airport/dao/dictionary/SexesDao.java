@@ -58,6 +58,19 @@ public class SexesDao extends AbstractDictionaryDao<Sex> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (sex_name) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Sex sex) throws SQLException {
+        ps.setString(1, sex.getName());
+    }
+
+    @Override
     protected Sex mapRow(ResultSet resultSet) throws SQLException {
         return new Sex(
                 resultSet.getInt("sex_id"),

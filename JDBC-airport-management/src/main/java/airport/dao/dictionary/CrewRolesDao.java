@@ -1,6 +1,5 @@
 package airport.dao.dictionary;
 
-import airport.entity.dictionary.AirportEmployeeRole;
 import airport.entity.dictionary.CrewRole;
 
 import java.sql.*;
@@ -55,6 +54,19 @@ public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
 
     @Override
     protected void setExistsStatement(PreparedStatement ps, CrewRole crewRole) throws SQLException {
+        ps.setString(1, crewRole.getName());
+    }
+
+    @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (role_name) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, CrewRole crewRole) throws SQLException {
         ps.setString(1, crewRole.getName());
     }
 

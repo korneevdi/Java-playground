@@ -58,6 +58,19 @@ public class GatesDao extends AbstractDictionaryDao<Gate> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (gate_number) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Gate gate) throws SQLException {
+        ps.setString(1, gate.getNumber());
+    }
+
+    @Override
     protected Gate mapRow(ResultSet resultSet) throws SQLException {
         return new Gate(
                 resultSet.getInt("gate_id"),

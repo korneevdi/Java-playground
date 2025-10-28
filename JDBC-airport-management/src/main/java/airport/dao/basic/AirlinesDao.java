@@ -65,6 +65,22 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+        INSERT INTO airlines (iata, icao, name, contact)
+        VALUES (?, ?, ?, ?)
+        """;
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Airline airline) throws SQLException {
+        ps.setString(1, airline.getIata());
+        ps.setString(2, airline.getIcao());
+        ps.setString(3, airline.getName());
+        ps.setInt(4, airline.getContact().getId());
+    }
+
+    @Override
     protected Airline mapRow(ResultSet resultSet) throws SQLException {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),
@@ -83,24 +99,6 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
         );
     }
 
-    /*
-    @Override
-    protected String buildInsertSql() {
-        return """
-        INSERT INTO airlines (iata, icao, name, contact)
-        VALUES (?, ?, ?, ?)
-        """;
-    }
-
-    @Override
-    protected void setInsertStatement(PreparedStatement ps, Airline airline) throws SQLException {
-        ps.setString(1, airline.getIata());
-        ps.setString(2, airline.getIcao());
-        ps.setString(3, airline.getName());
-        ps.setInt(4, airline.getContact().getId());
-    }
-
-*/
 
 
     /*

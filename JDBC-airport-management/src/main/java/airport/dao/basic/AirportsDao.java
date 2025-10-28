@@ -58,6 +58,24 @@ public class AirportsDao extends AbstractBasicDao<Airport> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+        INSERT INTO airports (iata, icao, name, city, country, timezone)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """;
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Airport airport) throws SQLException {
+        ps.setString(1, airport.getIata());
+        ps.setString(2, airport.getIcao());
+        ps.setString(3, airport.getName());
+        ps.setString(4, airport.getCity());
+        ps.setString(5, airport.getCountry());
+        ps.setString(6, airport.getTimezone());
+    }
+
+    @Override
     protected Airport mapRow(ResultSet resultSet) throws SQLException {
         return new Airport(
                 resultSet.getInt("airport_id"),

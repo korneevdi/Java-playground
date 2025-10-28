@@ -58,6 +58,19 @@ public class TypesDao extends AbstractDictionaryDao<Type> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (type_name) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Type type) throws SQLException {
+        ps.setString(1, type.getName());
+    }
+
+    @Override
     protected Type mapRow(ResultSet resultSet) throws SQLException {
         return new Type(
                 resultSet.getInt("type_id"),

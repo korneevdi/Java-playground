@@ -58,6 +58,23 @@ public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmploy
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (contact_email, contact_phone, city, address, notes) VALUES
+                (?, ?, ?, ?, ?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
+        ps.setString(5, contact.getNotes());
+    }
+
+    @Override
     protected AirportEmployeeContact mapRow(ResultSet resultSet) throws SQLException {
         return new AirportEmployeeContact(
                 resultSet.getInt("contact_id"),
@@ -72,23 +89,7 @@ public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmploy
 
     // ----------------------------------------------------------------------------------------------------
 
-    /*@Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (email, phone, city, address, notes) VALUES
-                (?, ?, ?, ?, ?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
-    protected void setInsertStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
-        ps.setString(1, contact.getEmail());
-        ps.setString(2, contact.getPhone());
-        ps.setString(3, contact.getCity());
-        ps.setString(4, contact.getAddress());
-        ps.setString(5, contact.getNotes());
-    }
-
+    /*
     @Override
     protected String buildUpdateSql() {
         return """

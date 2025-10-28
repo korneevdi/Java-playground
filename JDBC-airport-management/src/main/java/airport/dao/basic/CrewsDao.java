@@ -68,6 +68,26 @@ public class CrewsDao extends AbstractBasicDao<Crew> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+        INSERT INTO flight_crews (pilot_license_number, first_name, last_name, sex, birth_date,
+        passport_country, passport_number)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Crew crew) throws SQLException {
+        ps.setString(1, crew.getPilotLicenseNumber());
+        ps.setString(2, crew.getFirstName());
+        ps.setString(3, crew.getLastName());
+        ps.setInt(4, crew.getSex().getId());
+        ps.setDate(5, java.sql.Date.valueOf(crew.getBirthDate()));
+        ps.setString(6, crew.getPassportCountry());
+        ps.setString(7, crew.getPassportNumber());
+    }
+
+    @Override
     protected Crew mapRow(ResultSet resultSet) throws SQLException {
         Sex sex = new Sex(
                 resultSet.getInt("sex_id"),

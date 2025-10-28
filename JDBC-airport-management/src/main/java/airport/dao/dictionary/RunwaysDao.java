@@ -58,6 +58,19 @@ public class RunwaysDao extends AbstractDictionaryDao<Runway> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (runway_number) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Runway runway) throws SQLException {
+        ps.setString(1, runway.getNumber());
+    }
+
+    @Override
     protected Runway mapRow(ResultSet resultSet) throws SQLException {
         return new Runway(
                 resultSet.getInt("runway_id"),

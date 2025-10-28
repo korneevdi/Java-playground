@@ -79,6 +79,23 @@ public class AirplanesDao extends AbstractBasicDao<Airplane> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+        INSERT INTO airplanes (airline, registration_number, model, total_capacity, type)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
+        ps.setInt(1, airplane.getAirline().getId());
+        ps.setString(2, airplane.getRegistrationNumber());
+        ps.setString(3, airplane.getModel());
+        ps.setInt(4, airplane.getCapacity());
+        ps.setInt(5, airplane.getType().getId());
+    }
+
+    @Override
     protected Airplane mapRow(ResultSet resultSet) throws SQLException {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),

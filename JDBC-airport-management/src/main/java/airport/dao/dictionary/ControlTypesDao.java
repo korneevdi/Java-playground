@@ -1,6 +1,5 @@
 package airport.dao.dictionary;
 
-import airport.entity.dictionary.AirportEmployeeRole;
 import airport.entity.dictionary.ControlType;
 
 import java.sql.*;
@@ -55,6 +54,19 @@ public class ControlTypesDao extends AbstractDictionaryDao<ControlType> {
 
     @Override
     protected void setExistsStatement(PreparedStatement ps, ControlType controlType) throws SQLException {
+        ps.setString(1, controlType.getName());
+    }
+
+    @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (type_name) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, ControlType controlType) throws SQLException {
         ps.setString(1, controlType.getName());
     }
 

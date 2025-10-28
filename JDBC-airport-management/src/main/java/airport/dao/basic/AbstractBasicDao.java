@@ -112,19 +112,6 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
-    protected abstract String buildFindAllSql();
-
-    protected abstract String buildFindByIdSql();
-
-    protected abstract String buildFindByFieldSql(String fieldName);
-
-    protected abstract String buildExistsSql();
-
-    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
-
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
-
-    /*
     public void insert(T entity) {
         String sql = buildInsertSql();
 
@@ -136,10 +123,23 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
+    protected abstract String buildFindAllSql();
+
+    protected abstract String buildFindByIdSql();
+
+    protected abstract String buildFindByFieldSql(String fieldName);
+
+    protected abstract String buildExistsSql();
+
+    protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
+
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
 
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+    /*
     public boolean update(T entity) {
         String sql = buildUpdateSql();
 

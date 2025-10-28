@@ -58,6 +58,19 @@ public class CheckInCountersDao extends AbstractDictionaryDao<CheckInCounter> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (counter_number) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, CheckInCounter checkInCounter) throws SQLException {
+        ps.setString(1, checkInCounter.getNumber());
+    }
+
+    @Override
     protected CheckInCounter mapRow(ResultSet resultSet) throws SQLException {
         return new CheckInCounter(
                 resultSet.getInt("counter_id"),

@@ -58,6 +58,19 @@ public class BaggageClaimsDao extends AbstractDictionaryDao<BaggageClaim> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (claim_number) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, BaggageClaim baggageClaim) throws SQLException {
+        ps.setString(1, baggageClaim.getNumber());
+    }
+
+    @Override
     protected BaggageClaim mapRow(ResultSet resultSet) throws SQLException {
         return new BaggageClaim(
                 resultSet.getInt("claim_id"),

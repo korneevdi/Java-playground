@@ -58,6 +58,19 @@ public class TerminalsDao extends AbstractDictionaryDao<Terminal> {
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (terminal_number) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, Terminal terminal) throws SQLException {
+        ps.setString(1, terminal.getNumber());
+    }
+
+    @Override
     protected Terminal mapRow(ResultSet resultSet) throws SQLException {
         return new Terminal(
                 resultSet.getInt("terminal_id"),

@@ -58,6 +58,19 @@ public class AirportEmployeeRolesDao extends AbstractDictionaryDao<AirportEmploy
     }
 
     @Override
+    protected String buildInsertSql() {
+        return """
+                INSERT INTO %s (role_name) VALUES
+                (?)
+                """.formatted(TABLE_NAME);
+    }
+
+    @Override
+    protected void setInsertStatement(PreparedStatement ps, AirportEmployeeRole airportEmployeeRole) throws SQLException {
+        ps.setString(1, airportEmployeeRole.getName());
+    }
+
+    @Override
     protected AirportEmployeeRole mapRow(ResultSet resultSet) throws SQLException {
         return new AirportEmployeeRole(
                 resultSet.getInt("role_id"),
