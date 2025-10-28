@@ -123,6 +123,20 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
+    public boolean deleteById(int id) {
+        String sql = """
+                DELETE FROM %s
+                WHERE %s = ?
+                """.formatted(tableName, idName);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected String buildExistsSql() {
         String whereClause = uniqueFields.stream()
                 .map(f -> f + " = ?")
@@ -148,17 +162,7 @@ public abstract class AbstractContactDao<T> {
 
     // ---------------------------------------------------------------------------------------------------------
 
-    /*public void insert(T entity) {
-        String sql = buildInsertSql();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            setInsertStatement(ps, entity);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    /*
     public boolean update(T entity) {
         String sql = buildUpdateSql();
 
@@ -169,24 +173,6 @@ public abstract class AbstractContactDao<T> {
             throw new RuntimeException(e);
         }
     }
-
-    public boolean deleteById(int id) {
-        String sql = """
-                DELETE FROM %s
-                WHERE %s = ?
-                """.formatted(tableName, "contact_id");
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected abstract String buildInsertSql();
-
-    protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
 
     protected abstract String buildUpdateSql();
 

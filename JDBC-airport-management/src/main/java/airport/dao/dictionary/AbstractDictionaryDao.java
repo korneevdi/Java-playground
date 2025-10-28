@@ -123,6 +123,20 @@ public abstract class AbstractDictionaryDao<T> {
         }
     }
 
+    public boolean deleteById(int id) {
+        String sql = """
+                DELETE FROM %s
+                WHERE %s = ?
+                """.formatted(tableName, idName);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected String buildExistsSql() {
         String whereClause = uniqueFields.stream()
                 .map(f -> f + " = ?")
