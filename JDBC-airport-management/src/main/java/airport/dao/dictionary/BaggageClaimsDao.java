@@ -3,16 +3,15 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.BaggageClaim;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BaggageClaimsDao extends AbstractDictionaryDao<BaggageClaim> {
 
     private static final String TABLE_NAME = "baggage_claims";
     private static final String ID_NAME = "claim_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("claim_number");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "claim_number"
+    );
 
     public BaggageClaimsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +41,6 @@ public class BaggageClaimsDao extends AbstractDictionaryDao<BaggageClaim> {
                 FROM baggage_claims bc
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

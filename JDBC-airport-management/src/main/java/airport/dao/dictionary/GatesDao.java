@@ -3,16 +3,15 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.Gate;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GatesDao extends AbstractDictionaryDao<Gate> {
 
     private static final String TABLE_NAME = "gates";
     private static final String ID_NAME = "gate_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("gate_number");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "gate_number"
+    );
 
     public GatesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +41,6 @@ public class GatesDao extends AbstractDictionaryDao<Gate> {
                 FROM gates g
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

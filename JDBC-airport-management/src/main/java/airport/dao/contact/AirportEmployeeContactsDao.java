@@ -10,9 +10,9 @@ public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmploy
 
     private final static String TABLE_NAME = "airport_employee_contacts";
     private final static String ID_NAME = "contact_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("contact_email");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "contact_email"
+    );
 
     public AirportEmployeeContactsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +42,6 @@ public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmploy
                 FROM airport_employee_contacts aec
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

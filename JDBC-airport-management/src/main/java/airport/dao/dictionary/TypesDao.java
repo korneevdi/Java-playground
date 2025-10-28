@@ -3,16 +3,15 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.Type;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TypesDao extends AbstractDictionaryDao<Type> {
 
     private static final String TABLE_NAME = "types";
     private static final String ID_NAME = "type_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("type_name");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "type_name"
+    );
 
     public TypesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +41,6 @@ public class TypesDao extends AbstractDictionaryDao<Type> {
                 FROM types t
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

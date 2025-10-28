@@ -3,16 +3,15 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.CrewRole;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
 
     private static final String TABLE_NAME = "crew_roles";
     private static final String ID_NAME = "role_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("role_name");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "role_name"
+    );
 
     public CrewRolesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +41,6 @@ public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
                 FROM crew_roles cr
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

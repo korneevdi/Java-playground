@@ -4,17 +4,17 @@ import airport.entity.basic.Passenger;
 import airport.entity.dictionary.Sex;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PassengersDao extends AbstractBasicDao<Passenger> {
 
     private final static String TABLE_NAME = "passengers";
     private final static String ID_NAME = "passenger_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("passport_country");
-        add("passport_number");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "passport_country",
+            "passport_number"
+    );
 
     public PassengersDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -54,10 +54,11 @@ public class PassengersDao extends AbstractBasicDao<Passenger> {
 
     @Override
     protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ? AND %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1));
+        String whereClause = UNIQUE_FIELDS.stream()
+                .map(f -> f + " = ?")
+                .collect(Collectors.joining(" AND "));
+
+        return "SELECT 1 FROM " + TABLE_NAME + " WHERE " + whereClause;
     }
 
     @Override

@@ -3,16 +3,15 @@ package airport.dao.dictionary;
 import airport.entity.dictionary.Status;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class StatusesDao extends AbstractDictionaryDao<Status> {
 
     private static final String TABLE_NAME = "statuses";
     private static final String ID_NAME = "status_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("status_name");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "status_name"
+    );
 
     public StatusesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +41,6 @@ public class StatusesDao extends AbstractDictionaryDao<Status> {
                 FROM statuses st
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

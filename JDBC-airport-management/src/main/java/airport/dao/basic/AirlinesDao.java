@@ -4,16 +4,17 @@ import airport.entity.basic.Airline;
 import airport.entity.contact.AirlineContact;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AirlinesDao extends AbstractBasicDao<Airline> {
 
     private final static String TABLE_NAME = "airlines";
     private final static String ID_NAME = "airline_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("iata");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "iata",
+            "icao",
+            "name"
+    );
 
     public AirlinesDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -49,14 +50,6 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
                 JOIN airline_contacts ac ON a.airline_id = ac.contact_id
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

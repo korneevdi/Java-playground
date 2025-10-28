@@ -3,16 +3,17 @@ package airport.dao.basic;
 import airport.entity.basic.Airport;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AirportsDao extends AbstractBasicDao<Airport> {
 
     private final static String TABLE_NAME = "airports";
     private final static String ID_NAME = "airport_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("iata");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "iata",
+            "icao",
+            "name"
+    );
 
     public AirportsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -42,14 +43,6 @@ public class AirportsDao extends AbstractBasicDao<Airport> {
                 FROM airports a
                 WHERE %s = ?
                 """.formatted(fieldName);
-    }
-
-    @Override
-    protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0));
     }
 
     @Override

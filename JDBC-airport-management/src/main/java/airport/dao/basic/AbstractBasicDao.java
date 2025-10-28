@@ -123,13 +123,19 @@ public abstract class AbstractBasicDao<T> {
         }
     }
 
+    protected String buildExistsSql() {
+        String whereClause = uniqueFields.stream()
+                .map(f -> f + " = ?")
+                .collect(Collectors.joining(" OR "));
+
+        return "SELECT 1 FROM " + tableName + " WHERE " + whereClause;
+    }
+
     protected abstract String buildFindAllSql();
 
     protected abstract String buildFindByIdSql();
 
     protected abstract String buildFindByFieldSql(String fieldName);
-
-    protected abstract String buildExistsSql();
 
     protected abstract void setExistsStatement(PreparedStatement ps, T entity) throws SQLException;
 

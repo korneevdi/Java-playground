@@ -3,18 +3,18 @@ package airport.dao.contact;
 import airport.entity.contact.EmergencyContact;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
 
     private final static String TABLE_NAME = "emergency_contacts";
     private final static String ID_NAME = "contact_id";
-    private final static List<String> UNIQUE_FIELDS = new ArrayList<>() {{
-        add("contact_name");
-        add("contact_relation");
-        add("contact_phone");
-    }};
+    private final static List<String> UNIQUE_FIELDS = List.of(
+            "contact_name",
+            "contact_relation",
+            "contact_phone"
+    );
 
     public EmergencyContactsDao(Connection connection) {
         super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
@@ -48,10 +48,11 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
 
     @Override
     protected String buildExistsSql() {
-        return """
-                SELECT 1 FROM %s
-                WHERE %s = ? AND %s = ? AND %s = ?
-                """.formatted(TABLE_NAME, UNIQUE_FIELDS.get(0), UNIQUE_FIELDS.get(1), UNIQUE_FIELDS.get(2));
+        String whereClause = UNIQUE_FIELDS.stream()
+                .map(f -> f + " = ?")
+                .collect(Collectors.joining(" AND "));
+
+        return "SELECT 1 FROM " + TABLE_NAME + " WHERE " + whereClause;
     }
 
     @Override
