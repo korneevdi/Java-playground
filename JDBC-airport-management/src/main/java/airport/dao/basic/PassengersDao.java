@@ -86,6 +86,26 @@ public class PassengersDao extends AbstractBasicDao<Passenger> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET first_name = ?, last_name = ?, sex = ?, age = ?, passport_country = ?, passport_number = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Passenger passenger) throws SQLException {
+        ps.setString(1, passenger.getFirstName());
+        ps.setString(2, passenger.getLastName());
+        ps.setInt(3, passenger.getSex().getId());
+        ps.setInt(4, passenger.getAge());
+        ps.setString(5, passenger.getPassportCountry());
+        ps.setString(6, passenger.getPassportNumber());
+        ps.setInt(7, passenger.getId());
+    }
+
+    @Override
     protected Passenger mapRow(ResultSet resultSet) throws SQLException {
         Sex sex = new Sex(
                 resultSet.getInt("sex_id"),

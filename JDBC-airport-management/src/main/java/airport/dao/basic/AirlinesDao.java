@@ -74,6 +74,24 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET iata = ?, icao = ?, name = ?, contact = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Airline airline) throws SQLException {
+        ps.setString(1, airline.getIata());
+        ps.setString(2, airline.getIcao());
+        ps.setString(3, airline.getName());
+        ps.setInt(4, airline.getContact().getId());
+        ps.setInt(5, airline.getId());
+    }
+
+    @Override
     protected Airline mapRow(ResultSet resultSet) throws SQLException {
         AirlineContact contact = new AirlineContact(
                 resultSet.getInt("contact_id"),
@@ -91,27 +109,4 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
                 contact
         );
     }
-
-
-
-    /*
-    // Update element
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET iata = ?, icao = ?, name = ?, contact = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
-    }
-
-    @Override
-    protected void setUpdateStatement(PreparedStatement ps, Airline airline) throws SQLException {
-        ps.setString(1, airline.getIata());
-        ps.setString(2, airline.getIcao());
-        ps.setString(3, airline.getName());
-        ps.setInt(4, airline.getContact().getId());
-        ps.setInt(5, airline.getId());
-    }
-    */
 }

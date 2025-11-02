@@ -134,6 +134,29 @@ public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET first_name = ?, last_name = ?, role = ?, sex = ?, birth_date = ?, passport_country = ?, passport_number = ?, contact = ?, emergency_contact = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, AirportEmployee airportEmployee) throws SQLException {
+        ps.setString(1, airportEmployee.getFirstName());
+        ps.setString(2, airportEmployee.getLastName());
+        ps.setInt(3, airportEmployee.getRole().getId());
+        ps.setInt(4, airportEmployee.getSex().getId());
+        ps.setDate(5, java.sql.Date.valueOf(airportEmployee.getBirthDate()));
+        ps.setString(6, airportEmployee.getPassportCountry());
+        ps.setString(7, airportEmployee.getPassportNumber());
+        ps.setInt(8, airportEmployee.getContact().getId());
+        ps.setInt(9, airportEmployee.getEmergencyContact().getId());
+        ps.setInt(10, airportEmployee.getId());
+    }
+
+    @Override
     protected AirportEmployee mapRow(ResultSet rs) throws SQLException {
         AirportEmployeeContact empContact = new AirportEmployeeContact(
                 rs.getInt("emp_contact_id"),

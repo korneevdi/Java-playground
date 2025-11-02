@@ -22,7 +22,7 @@ public class CrewsDao extends AbstractBasicDao<Crew> {
     }
 
     @Override
-    protected String buildFindAllSql(){
+    protected String buildFindAllSql() {
         return """
                 SELECT fc.flight_crew_id, fc.pilot_license_number, fc.first_name, fc.last_name, fc.birth_date, fc.passport_country, fc.passport_number,
                        s.sex_id, s.sex_name
@@ -32,7 +32,7 @@ public class CrewsDao extends AbstractBasicDao<Crew> {
     }
 
     @Override
-    protected String buildFindByIdSql(){
+    protected String buildFindByIdSql() {
         return """
                 SELECT fc.flight_crew_id, fc.pilot_license_number, fc.first_name, fc.last_name, fc.birth_date, fc.passport_country, fc.passport_number,
                        s.sex_id, s.sex_name
@@ -71,10 +71,10 @@ public class CrewsDao extends AbstractBasicDao<Crew> {
     @Override
     protected String buildInsertSql() {
         return """
-        INSERT INTO flight_crews (pilot_license_number, first_name, last_name, sex, birth_date,
-        passport_country, passport_number)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        """;
+                INSERT INTO flight_crews (pilot_license_number, first_name, last_name, sex, birth_date,
+                passport_country, passport_number)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """;
     }
 
     @Override
@@ -86,6 +86,27 @@ public class CrewsDao extends AbstractBasicDao<Crew> {
         ps.setDate(5, java.sql.Date.valueOf(crew.getBirthDate()));
         ps.setString(6, crew.getPassportCountry());
         ps.setString(7, crew.getPassportNumber());
+    }
+
+    @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET pilot_license_number = ?, first_name = ?, last_name = ?, sex = ?, birth_date = ?, passport_country = ?, passport_number = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Crew crew) throws SQLException {
+        ps.setString(1, crew.getPilotLicenseNumber());
+        ps.setString(2, crew.getFirstName());
+        ps.setString(3, crew.getLastName());
+        ps.setInt(4, crew.getSex().getId());
+        ps.setDate(5, java.sql.Date.valueOf(crew.getBirthDate()));
+        ps.setString(6, crew.getPassportCountry());
+        ps.setString(7, crew.getPassportNumber());
+        ps.setInt(8, crew.getId());
     }
 
     @Override

@@ -21,7 +21,7 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
     }
 
     @Override
-    protected String buildFindAllSql(){
+    protected String buildFindAllSql() {
         return """
                 SELECT c.customer_id, c.first_name, c.last_name, c.passport_country, c.passport_number,
                        cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
@@ -31,7 +31,7 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
     }
 
     @Override
-    protected String buildFindByIdSql(){
+    protected String buildFindByIdSql() {
         return """
                 SELECT c.customer_id, c.first_name, c.last_name, c.passport_country, c.passport_number,
                        cc.contact_id, cc.contact_email, cc.contact_phone, cc.city, cc.address, cc.notes
@@ -70,9 +70,9 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
     @Override
     protected String buildInsertSql() {
         return """
-        INSERT INTO customers (first_name, last_name, passport_country, passport_number, contact)
-        VALUES (?, ?, ?, ?, ?)
-        """;
+                INSERT INTO customers (first_name, last_name, passport_country, passport_number, contact)
+                VALUES (?, ?, ?, ?, ?)
+                """;
     }
 
     @Override
@@ -82,6 +82,25 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
         ps.setString(3, customer.getPassportCountry());
         ps.setString(4, customer.getPassportNumber());
         ps.setInt(5, customer.getContact().getId());
+    }
+
+    @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET first_name = ?, last_name = ?, passport_country = ?, passport_number = ?, contact = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Customer customer) throws SQLException {
+        ps.setString(1, customer.getFirstName());
+        ps.setString(2, customer.getLastName());
+        ps.setString(3, customer.getPassportCountry());
+        ps.setString(4, customer.getPassportNumber());
+        ps.setInt(5, customer.getContact().getId());
+        ps.setInt(6, customer.getId());
     }
 
     @Override

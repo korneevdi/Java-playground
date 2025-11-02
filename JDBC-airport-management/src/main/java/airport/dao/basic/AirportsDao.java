@@ -69,6 +69,26 @@ public class AirportsDao extends AbstractBasicDao<Airport> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET iata = ?, icao = ?, name = ?, city = ?, country = ?, timezone = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Airport airport) throws SQLException {
+        ps.setString(1, airport.getIata());
+        ps.setString(2, airport.getIcao());
+        ps.setString(3, airport.getName());
+        ps.setString(4, airport.getCity());
+        ps.setString(5, airport.getCountry());
+        ps.setString(6, airport.getTimezone());
+        ps.setInt(7, airport.getId());
+    }
+
+    @Override
     protected Airport mapRow(ResultSet resultSet) throws SQLException {
         return new Airport(
                 resultSet.getInt("airport_id"),
