@@ -1,5 +1,6 @@
 package airport.dao.basic;
 
+import airport.dao.AbstractDao;
 import airport.entity.basic.Passenger;
 import airport.entity.dictionary.Sex;
 
@@ -7,17 +8,25 @@ import java.sql.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PassengersDao extends AbstractBasicDao<Passenger> {
+public class PassengersDao extends AbstractDao<Passenger> {
 
     private final static String TABLE_NAME = "passengers";
     private final static String ID_NAME = "passenger_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "first_name",
+            "last_name",
+            "sex",
+            "age",
+            "passport_country",
+            "passport_number"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "passport_country",
             "passport_number"
     );
 
     public PassengersDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -68,14 +77,6 @@ public class PassengersDao extends AbstractBasicDao<Passenger> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-        INSERT INTO passengers (first_name, last_name, sex, age, passport_country, passport_number)
-        VALUES (?, ?, ?, ?, ?, ?)
-        """;
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Passenger passenger) throws SQLException {
         ps.setString(1, passenger.getFirstName());
         ps.setString(2, passenger.getLastName());
@@ -83,15 +84,6 @@ public class PassengersDao extends AbstractBasicDao<Passenger> {
         ps.setInt(4, passenger.getAge());
         ps.setString(5, passenger.getPassportCountry());
         ps.setString(6, passenger.getPassportNumber());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET first_name = ?, last_name = ?, sex = ?, age = ?, passport_country = ?, passport_number = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

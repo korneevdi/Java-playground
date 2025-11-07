@@ -1,15 +1,22 @@
 package airport.dao.basic;
 
+import airport.dao.AbstractDao;
 import airport.entity.basic.Airline;
 import airport.entity.contact.AirlineContact;
 
 import java.sql.*;
 import java.util.List;
 
-public class AirlinesDao extends AbstractBasicDao<Airline> {
+public class AirlinesDao extends AbstractDao<Airline> {
 
     private final static String TABLE_NAME = "airlines";
     private final static String ID_NAME = "airline_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "iata",
+            "icao",
+            "name",
+            "contact"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "iata",
             "icao",
@@ -17,7 +24,7 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
     );
 
     public AirlinesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -58,28 +65,11 @@ public class AirlinesDao extends AbstractBasicDao<Airline> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-        INSERT INTO airlines (iata, icao, name, contact)
-        VALUES (?, ?, ?, ?)
-        """;
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Airline airline) throws SQLException {
         ps.setString(1, airline.getIata());
         ps.setString(2, airline.getIcao());
         ps.setString(3, airline.getName());
         ps.setInt(4, airline.getContact().getId());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET iata = ?, icao = ?, name = ?, contact = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

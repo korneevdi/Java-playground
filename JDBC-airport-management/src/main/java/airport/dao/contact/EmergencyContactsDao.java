@@ -1,23 +1,25 @@
 package airport.dao.contact;
 
+import airport.dao.AbstractDao;
 import airport.entity.contact.EmergencyContact;
 
 import java.sql.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
+public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
 
     private final static String TABLE_NAME = "emergency_contacts";
     private final static String ID_NAME = "contact_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "contact_name",
             "contact_relation",
             "contact_phone"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public EmergencyContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -63,27 +65,10 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (contact_name, contact_relation, contact_phone) VALUES
-                (?, ?, ?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, EmergencyContact contact) throws SQLException {
         ps.setString(1, contact.getContactName());
         ps.setString(2, contact.getRelation());
         ps.setString(3, contact.getPhone());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET contact_name = ?, contact_relation = ?, contact_phone = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

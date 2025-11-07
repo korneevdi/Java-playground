@@ -1,5 +1,6 @@
 package airport.dao.basic;
 
+import airport.dao.AbstractDao;
 import airport.entity.basic.AirportEmployee;
 import airport.entity.contact.AirportEmployeeContact;
 import airport.entity.contact.EmergencyContact;
@@ -14,17 +15,28 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
+public class AirportEmployeesDao extends AbstractDao<AirportEmployee> {
 
     private final static String TABLE_NAME = "airport_employees";
     private final static String ID_NAME = "employee_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "first_name",
+            "last_name",
+            "role",
+            "sex",
+            "birth_date",
+            "passport_country",
+            "passport_number",
+            "contact",
+            "emergency_contact"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "passport_country",
             "passport_number"
     );
 
     public AirportEmployeesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -112,15 +124,6 @@ public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-        INSERT INTO airport_employees (first_name, last_name, role, sex, birth_date,
-        passport_country, passport_number, contact, emergency_contact)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, AirportEmployee airportEmployee) throws SQLException {
         ps.setString(1, airportEmployee.getFirstName());
         ps.setString(2, airportEmployee.getLastName());
@@ -131,15 +134,6 @@ public class AirportEmployeesDao extends AbstractBasicDao<AirportEmployee> {
         ps.setString(7, airportEmployee.getPassportNumber());
         ps.setInt(8, airportEmployee.getContact().getId());
         ps.setInt(9, airportEmployee.getEmergencyContact().getId());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET first_name = ?, last_name = ?, role = ?, sex = ?, birth_date = ?, passport_country = ?, passport_number = ?, contact = ?, emergency_contact = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

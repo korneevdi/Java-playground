@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.Status;
 
 import java.sql.*;
 import java.util.List;
 
-public class StatusesDao extends AbstractDictionaryDao<Status> {
+public class StatusesDao extends AbstractDao<Status> {
 
     private static final String TABLE_NAME = "statuses";
     private static final String ID_NAME = "status_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "status_name"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public StatusesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class StatusesDao extends AbstractDictionaryDao<Status> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (status_name) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Status status) throws SQLException {
         ps.setString(1, status.getName());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET status_name = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

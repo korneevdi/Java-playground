@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.CheckInCounter;
 
 import java.sql.*;
 import java.util.List;
 
-public class CheckInCountersDao extends AbstractDictionaryDao<CheckInCounter> {
+public class CheckInCountersDao extends AbstractDao<CheckInCounter> {
 
     private static final String TABLE_NAME = "check_in_counters";
     private static final String ID_NAME = "counter_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "counter_number"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public CheckInCountersDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class CheckInCountersDao extends AbstractDictionaryDao<CheckInCounter> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (counter_number) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, CheckInCounter checkInCounter) throws SQLException {
         ps.setString(1, checkInCounter.getNumber());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET counter_number = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

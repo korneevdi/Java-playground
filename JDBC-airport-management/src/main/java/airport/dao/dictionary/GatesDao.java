@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.Gate;
 
 import java.sql.*;
 import java.util.List;
 
-public class GatesDao extends AbstractDictionaryDao<Gate> {
+public class GatesDao extends AbstractDao<Gate> {
 
     private static final String TABLE_NAME = "gates";
     private static final String ID_NAME = "gate_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "gate_number"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public GatesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class GatesDao extends AbstractDictionaryDao<Gate> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (gate_number) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Gate gate) throws SQLException {
         ps.setString(1, gate.getNumber());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET gate_number = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

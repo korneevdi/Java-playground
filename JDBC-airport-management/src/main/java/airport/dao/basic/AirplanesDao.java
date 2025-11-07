@@ -1,5 +1,6 @@
 package airport.dao.basic;
 
+import airport.dao.AbstractDao;
 import airport.entity.basic.Airline;
 import airport.entity.basic.Airplane;
 import airport.entity.contact.AirlineContact;
@@ -8,16 +9,23 @@ import airport.entity.dictionary.Type;
 import java.sql.*;
 import java.util.List;
 
-public class AirplanesDao extends AbstractBasicDao<Airplane> {
+public class AirplanesDao extends AbstractDao<Airplane> {
 
     private final static String TABLE_NAME = "airplanes";
     private final static String ID_NAME = "airplane_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "airline",
+            "registration_number",
+            "model",
+            "total_capacity",
+            "type"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "registration_number"
     );
 
     public AirplanesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -70,29 +78,12 @@ public class AirplanesDao extends AbstractBasicDao<Airplane> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-        INSERT INTO airplanes (airline, registration_number, model, total_capacity, type)
-        VALUES (?, ?, ?, ?, ?)
-        """;
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Airplane airplane) throws SQLException {
         ps.setInt(1, airplane.getAirline().getId());
         ps.setString(2, airplane.getRegistrationNumber());
         ps.setString(3, airplane.getModel());
         ps.setInt(4, airplane.getCapacity());
         ps.setInt(5, airplane.getType().getId());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET airline = ?, registration_number = ?, model = ?, total_capacity = ?, type = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

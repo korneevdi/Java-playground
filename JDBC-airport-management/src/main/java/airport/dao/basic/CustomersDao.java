@@ -1,5 +1,6 @@
 package airport.dao.basic;
 
+import airport.dao.AbstractDao;
 import airport.entity.basic.Customer;
 import airport.entity.contact.CustomerContact;
 
@@ -7,17 +8,24 @@ import java.sql.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomersDao extends AbstractBasicDao<Customer> {
+public class CustomersDao extends AbstractDao<Customer> {
 
     private final static String TABLE_NAME = "customers";
     private final static String ID_NAME = "customer_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "first_name",
+            "last_name",
+            "passport_country",
+            "passport_number",
+            "contact"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "passport_country",
             "passport_number"
     );
 
     public CustomersDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -68,29 +76,12 @@ public class CustomersDao extends AbstractBasicDao<Customer> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO customers (first_name, last_name, passport_country, passport_number, contact)
-                VALUES (?, ?, ?, ?, ?)
-                """;
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Customer customer) throws SQLException {
         ps.setString(1, customer.getFirstName());
         ps.setString(2, customer.getLastName());
         ps.setString(3, customer.getPassportCountry());
         ps.setString(4, customer.getPassportNumber());
         ps.setInt(5, customer.getContact().getId());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET first_name = ?, last_name = ?, passport_country = ?, passport_number = ?, contact = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

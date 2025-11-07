@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.CrewRole;
 
 import java.sql.*;
 import java.util.List;
 
-public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
+public class CrewRolesDao extends AbstractDao<CrewRole> {
 
     private static final String TABLE_NAME = "crew_roles";
     private static final String ID_NAME = "role_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "role_name"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public CrewRolesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (role_name) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, CrewRole crewRole) throws SQLException {
         ps.setString(1, crewRole.getName());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET role_name = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

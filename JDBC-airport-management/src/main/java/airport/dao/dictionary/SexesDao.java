@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.Sex;
 
 import java.sql.*;
 import java.util.List;
 
-public class SexesDao extends AbstractDictionaryDao<Sex> {
+public class SexesDao extends AbstractDao<Sex> {
 
     private static final String TABLE_NAME = "sexes";
     private static final String ID_NAME = "sex_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "sex_name"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public SexesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class SexesDao extends AbstractDictionaryDao<Sex> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (sex_name) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Sex sex) throws SQLException {
         ps.setString(1, sex.getName());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET sex_name = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

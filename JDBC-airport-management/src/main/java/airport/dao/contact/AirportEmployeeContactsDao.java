@@ -1,21 +1,28 @@
 package airport.dao.contact;
 
+import airport.dao.AbstractDao;
 import airport.entity.contact.AirportEmployeeContact;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmployeeContact> {
+public class AirportEmployeeContactsDao extends AbstractDao<AirportEmployeeContact> {
 
     private final static String TABLE_NAME = "airport_employee_contacts";
     private final static String ID_NAME = "contact_id";
+    private final static List<String> ALL_FIELDS = List.of(
+            "contact_email",
+            "contact_phone",
+            "city",
+            "address",
+            "notes"
+    );
     private final static List<String> UNIQUE_FIELDS = List.of(
             "contact_email"
     );
 
     public AirportEmployeeContactsDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -50,29 +57,12 @@ public class AirportEmployeeContactsDao extends AbstractContactDao<AirportEmploy
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (contact_email, contact_phone, city, address, notes) VALUES
-                (?, ?, ?, ?, ?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
         ps.setString(1, contact.getEmail());
         ps.setString(2, contact.getPhone());
         ps.setString(3, contact.getCity());
         ps.setString(4, contact.getAddress());
         ps.setString(5, contact.getNotes());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET contact_email = ?, contact_phone = ?, city = ?, address = ?, notes = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override

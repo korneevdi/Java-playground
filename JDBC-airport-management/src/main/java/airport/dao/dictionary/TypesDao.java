@@ -1,20 +1,22 @@
 package airport.dao.dictionary;
 
+import airport.dao.AbstractDao;
 import airport.entity.dictionary.Type;
 
 import java.sql.*;
 import java.util.List;
 
-public class TypesDao extends AbstractDictionaryDao<Type> {
+public class TypesDao extends AbstractDao<Type> {
 
     private static final String TABLE_NAME = "types";
     private static final String ID_NAME = "type_id";
-    private final static List<String> UNIQUE_FIELDS = List.of(
+    private final static List<String> ALL_FIELDS = List.of(
             "type_name"
     );
+    private final static List<String> UNIQUE_FIELDS = ALL_FIELDS;
 
     public TypesDao(Connection connection) {
-        super(connection, TABLE_NAME, ID_NAME, UNIQUE_FIELDS);
+        super(connection, TABLE_NAME, ID_NAME, ALL_FIELDS, UNIQUE_FIELDS);
     }
 
     @Override
@@ -49,25 +51,8 @@ public class TypesDao extends AbstractDictionaryDao<Type> {
     }
 
     @Override
-    protected String buildInsertSql() {
-        return """
-                INSERT INTO %s (type_name) VALUES
-                (?)
-                """.formatted(TABLE_NAME);
-    }
-
-    @Override
     protected void setInsertStatement(PreparedStatement ps, Type type) throws SQLException {
         ps.setString(1, type.getName());
-    }
-
-    @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET type_name = ?
-                WHERE %s = ?
-                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override
