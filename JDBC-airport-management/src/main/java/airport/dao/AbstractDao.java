@@ -39,11 +39,11 @@ public abstract class AbstractDao<T> {
 
     // Find ID by unique field(s)
     public OptionalInt findId(Map<String, String> uniqueFields) {
-        String where = uniqueFields.keySet().stream()
+        String condition = uniqueFields.keySet().stream()
                 .map(s -> s + " = ?")
                 .collect(Collectors.joining(" AND "));
 
-        String sql = "SELECT " + idName + " FROM " + tableName + " WHERE " + where;
+        String sql = String.format("SELECT %s FROM %s WHERE %s", idName, tableName, condition);
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             int i = 1;
@@ -138,10 +138,7 @@ public abstract class AbstractDao<T> {
     }
 
     public boolean deleteById(int id) {
-        String sql = """
-                DELETE FROM %s
-                WHERE %s = ?
-                """.formatted(tableName, idName);
+        String sql = String.format("DELETE FROM %s WHERE %s = ?", tableName, idName);
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -152,11 +149,15 @@ public abstract class AbstractDao<T> {
     }
 
     protected String buildExistsSql() {
+        if (uniqueFields.isEmpty()) {
+            throw new IllegalStateException("No unique fields specified for check in " + tableName);
+        }
+
         String condition = uniqueFields.stream()
                 .map(f -> f + " = ?")
                 .collect(Collectors.joining(" OR "));
 
-        return "SELECT 1 FROM " + tableName + " WHERE " + condition;
+        return String.format("SELECT 1 FROM %s WHERE %s", tableName, condition);
     }
 
     protected String buildInsertSql() {
@@ -169,7 +170,7 @@ public abstract class AbstractDao<T> {
                 .map(f -> "?")
                 .collect(Collectors.joining(", "));
 
-        return "INSERT INTO " + tableName + " (" + fields + ") VALUES (" + placeholders + ")";
+        return String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, fields, placeholders);
     }
 
     protected String buildUpdateSql() {
@@ -181,7 +182,7 @@ public abstract class AbstractDao<T> {
                 .map(f -> f + " = ?")
                 .collect(Collectors.joining(", "));
 
-        return "UPDATE " + tableName + " SET " + set + " WHERE " + idName + " = ?";
+        return String.format("UPDATE %s SET %s WHERE %s = ?", tableName, set, idName);
     }
 
     protected abstract String buildFindAllSql();
