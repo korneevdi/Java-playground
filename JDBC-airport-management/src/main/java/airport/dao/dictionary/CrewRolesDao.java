@@ -62,6 +62,21 @@ public class CrewRolesDao extends AbstractDictionaryDao<CrewRole> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET role_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, CrewRole crewRole) throws SQLException {
+        ps.setString(1, crewRole.getName());
+        ps.setInt(2, crewRole.getId());
+    }
+
+    @Override
     protected CrewRole mapRow(ResultSet resultSet) throws SQLException {
         return new CrewRole(
                 resultSet.getInt("role_id"),

@@ -62,6 +62,21 @@ public class ControlTypesDao extends AbstractDictionaryDao<ControlType> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET type_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, ControlType controlType) throws SQLException {
+        ps.setString(1, controlType.getName());
+        ps.setInt(2, controlType.getId());
+    }
+
+    @Override
     protected ControlType mapRow(ResultSet resultSet) throws SQLException {
         return new ControlType(
                 resultSet.getInt("type_id"),

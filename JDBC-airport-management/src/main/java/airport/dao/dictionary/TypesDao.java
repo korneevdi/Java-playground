@@ -62,6 +62,21 @@ public class TypesDao extends AbstractDictionaryDao<Type> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET type_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Type type) throws SQLException {
+        ps.setString(1, type.getName());
+        ps.setInt(2, type.getId());
+    }
+
+    @Override
     protected Type mapRow(ResultSet resultSet) throws SQLException {
         return new Type(
                 resultSet.getInt("type_id"),

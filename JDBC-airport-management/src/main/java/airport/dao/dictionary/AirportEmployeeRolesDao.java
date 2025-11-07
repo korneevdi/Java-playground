@@ -62,6 +62,21 @@ public class AirportEmployeeRolesDao extends AbstractDictionaryDao<AirportEmploy
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET role_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, AirportEmployeeRole airportEmployeeRole) throws SQLException {
+        ps.setString(1, airportEmployeeRole.getName());
+        ps.setInt(2, airportEmployeeRole.getId());
+    }
+
+    @Override
     protected AirportEmployeeRole mapRow(ResultSet resultSet) throws SQLException {
         return new AirportEmployeeRole(
                 resultSet.getInt("role_id"),

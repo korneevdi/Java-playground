@@ -62,6 +62,21 @@ public class TerminalsDao extends AbstractDictionaryDao<Terminal> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET terminal_number = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Terminal terminal) throws SQLException {
+        ps.setString(1, terminal.getNumber());
+        ps.setInt(2, terminal.getId());
+    }
+
+    @Override
     protected Terminal mapRow(ResultSet resultSet) throws SQLException {
         return new Terminal(
                 resultSet.getInt("terminal_id"),

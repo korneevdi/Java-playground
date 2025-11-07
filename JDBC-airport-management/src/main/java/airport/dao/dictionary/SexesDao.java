@@ -62,6 +62,21 @@ public class SexesDao extends AbstractDictionaryDao<Sex> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET sex_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Sex sex) throws SQLException {
+        ps.setString(1, sex.getName());
+        ps.setInt(2, sex.getId());
+    }
+
+    @Override
     protected Sex mapRow(ResultSet resultSet) throws SQLException {
         return new Sex(
                 resultSet.getInt("sex_id"),

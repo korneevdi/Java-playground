@@ -62,6 +62,21 @@ public class StatusesDao extends AbstractDictionaryDao<Status> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET status_name = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Status status) throws SQLException {
+        ps.setString(1, status.getName());
+        ps.setInt(2, status.getId());
+    }
+
+    @Override
     protected Status mapRow(ResultSet resultSet) throws SQLException {
         return new Status(
                 resultSet.getInt("status_id"),

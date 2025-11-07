@@ -78,27 +78,12 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
     }
 
     @Override
-    protected EmergencyContact mapRow(ResultSet resultSet) throws SQLException {
-        return new EmergencyContact(
-                resultSet.getInt("contact_id"),
-                resultSet.getString("contact_name"),
-                resultSet.getString("relation"),
-                resultSet.getString("contact_phone")
-        );
-    }
-
-
-    // ---------------------------------------------------------------------------------------------------
-
-    /*
-    // Update element
-    @Override
     protected String buildUpdateSql() {
         return """
                 UPDATE %s
-                SET contact_name = ?, relation = ?, phone = ?
-                WHERE contact_id = ?
-                """.formatted(TABLE_NAME);
+                SET contact_name = ?, contact_relation = ?, contact_phone = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
     }
 
     @Override
@@ -107,7 +92,15 @@ public class EmergencyContactsDao extends AbstractContactDao<EmergencyContact> {
         ps.setString(2, contact.getRelation());
         ps.setString(3, contact.getPhone());
         ps.setInt(4, contact.getId());
-        ps.setInt(6, contact.getId());
     }
-*/
+
+    @Override
+    protected EmergencyContact mapRow(ResultSet resultSet) throws SQLException {
+        return new EmergencyContact(
+                resultSet.getInt("contact_id"),
+                resultSet.getString("contact_name"),
+                resultSet.getString("relation"),
+                resultSet.getString("contact_phone")
+        );
+    }
 }

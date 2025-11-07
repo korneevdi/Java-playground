@@ -123,6 +123,17 @@ public abstract class AbstractContactDao<T> {
         }
     }
 
+    public boolean update(T entity) {
+        String sql = buildUpdateSql();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            setUpdateStatement(ps, entity);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean deleteById(int id) {
         String sql = """
                 DELETE FROM %s
@@ -156,6 +167,10 @@ public abstract class AbstractContactDao<T> {
     protected abstract String buildInsertSql();
 
     protected abstract void setInsertStatement(PreparedStatement ps, T entity) throws SQLException;
+
+    protected abstract String buildUpdateSql();
+
+    protected abstract void setUpdateStatement(PreparedStatement ps, T entity) throws SQLException;
 
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 

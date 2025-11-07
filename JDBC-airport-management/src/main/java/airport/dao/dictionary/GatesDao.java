@@ -62,6 +62,21 @@ public class GatesDao extends AbstractDictionaryDao<Gate> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET gate_number = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, Gate gate) throws SQLException {
+        ps.setString(1, gate.getNumber());
+        ps.setInt(2, gate.getId());
+    }
+
+    @Override
     protected Gate mapRow(ResultSet resultSet) throws SQLException {
         return new Gate(
                 resultSet.getInt("gate_id"),

@@ -62,6 +62,21 @@ public class BaggageClaimsDao extends AbstractDictionaryDao<BaggageClaim> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET claim_number = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, BaggageClaim baggageClaim) throws SQLException {
+        ps.setString(1, baggageClaim.getNumber());
+        ps.setInt(2, baggageClaim.getId());
+    }
+
+    @Override
     protected BaggageClaim mapRow(ResultSet resultSet) throws SQLException {
         return new BaggageClaim(
                 resultSet.getInt("claim_id"),

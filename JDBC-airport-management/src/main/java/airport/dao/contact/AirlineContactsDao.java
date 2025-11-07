@@ -71,6 +71,25 @@ public class AirlineContactsDao extends AbstractContactDao<AirlineContact> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET contact_name = ?, contact_email = ?, contact_phone = ?, city = ?, notes = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, AirlineContact contact) throws SQLException {
+        ps.setString(1, contact.getContactName());
+        ps.setString(2, contact.getEmail());
+        ps.setString(3, contact.getPhone());
+        ps.setString(4, contact.getCity());
+        ps.setString(5, contact.getNotes());
+        ps.setInt(6, contact.getId());
+    }
+
+    @Override
     protected AirlineContact mapRow(ResultSet resultSet) throws SQLException {
         return new AirlineContact(
                 resultSet.getInt("contact_id"),

@@ -66,6 +66,25 @@ public class CustomerContactsDao extends AbstractContactDao<CustomerContact> {
     }
 
     @Override
+    protected String buildUpdateSql() {
+        return """
+                UPDATE %s
+                SET contact_email = ?, contact_phone = ?, city = ?, address = ?, notes = ?
+                WHERE %s = ?
+                """.formatted(TABLE_NAME, ID_NAME);
+    }
+
+    @Override
+    protected void setUpdateStatement(PreparedStatement ps, CustomerContact contact) throws SQLException {
+        ps.setString(1, contact.getEmail());
+        ps.setString(2, contact.getPhone());
+        ps.setString(3, contact.getCity());
+        ps.setString(4, contact.getAddress());
+        ps.setString(5, contact.getNotes());
+        ps.setInt(6, contact.getId());
+    }
+
+    @Override
     protected CustomerContact mapRow(ResultSet resultSet) throws SQLException {
         return new CustomerContact(
                 resultSet.getInt("contact_id"),
