@@ -1,16 +1,20 @@
 package airport.service.basic;
 
 import airport.dao.basic.PassengersDao;
+import airport.dao.dictionary.SexesDao;
 import airport.entity.basic.Passenger;
+import airport.entity.dictionary.Sex;
 
 import java.util.Map;
 
 public class PassengersService extends AbstractBasicService<Passenger>{
 
+    private final SexesDao sexesDao;
     private final static String ENTITY_NAME = "Passenger";
 
-    public PassengersService(PassengersDao passengerDao) {
+    public PassengersService(PassengersDao passengerDao, SexesDao sexesDao) {
         super(passengerDao, ENTITY_NAME);
+        this.sexesDao = sexesDao;
 
         // Set the map of the fields and max lengths
         stringFields = Map.ofEntries(
@@ -24,5 +28,23 @@ public class PassengersService extends AbstractBasicService<Passenger>{
         integerFields = Map.ofEntries(
                 Map.entry("age", new IntRange(0, 130))
         );
+    }
+
+    // Add new passenger
+    public void add(String firstName, String lastName, String sexName,
+                    int age, String passportCountry, String passportNumber) {
+
+        // Check whether sex exists (using sex name)
+        Sex sex = sexesDao.findByField("sex_name", sexName)
+                .stream().findFirst().orElse(null);
+        if(sex == null) {
+            System.out.printf("Sex '%s' does not exist. Please, add new sex first", sexName);
+            return;
+        }
+
+        // Create Passenger object and insert it
+        Passenger passenger = new Passenger(0, firstName, lastName, sex, age, passportCountry, passportNumber);
+
+        addElement(passenger);
     }
 }

@@ -1,7 +1,8 @@
 package airport.service.basic;
 
-import airport.dao.basic.AbstractBasicDao;
+import airport.dao.AbstractDao;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,15 +10,14 @@ import java.util.*;
 
 public abstract class AbstractBasicService<T> {
 
-    protected final AbstractBasicDao<T> dao;
-
+    protected final AbstractDao<T> dao;
     private final String entityName;
 
     protected Map<String, Integer> stringFields = new HashMap<>();
     protected Map<String, IntRange> integerFields = new HashMap<>();
     protected Set<String> dateFields = new HashSet<>();
 
-    public AbstractBasicService(AbstractBasicDao<T> dao, String entityName) {
+    public AbstractBasicService(AbstractDao<T> dao, String entityName) {
         this.dao = dao;
         this.entityName = entityName;
     }
@@ -35,7 +35,7 @@ public abstract class AbstractBasicService<T> {
 
     // Find element(s) by field
     public void findAllByField(String fieldName, Object fieldValue) {
-        if(!validateField(fieldName, fieldValue.toString())) return;
+        if(!isValidField(fieldName, fieldValue.toString())) return;
 
         Object realValue = fieldValue;
         if (dateFields.contains(fieldName) && fieldValue instanceof String) {
@@ -51,83 +51,20 @@ public abstract class AbstractBasicService<T> {
         }
     }
 
-    protected boolean validateField(String fieldName, String value) {
-        if (stringFields.containsKey(fieldName)) {
-            return validateString(fieldName, value);
-        } else if (integerFields.containsKey(fieldName)) {
-            return validateInt(fieldName, value);
-        } else if (dateFields.contains(fieldName)) {
-            return validateDate(value);
-        } else {
-            System.out.println("The " + entityName + " entity does not contain property '" + fieldName + "'");
-            return false;
-        }
-    }
-
-    private boolean validateString(String fieldName, String value) {
-        int maxLength = stringFields.get(fieldName);
-        if (value == null || value.isEmpty()) {
-            System.out.println("Field '" + fieldName + "' cannot be empty");
-            return false;
-        }
-        if (value.length() > maxLength) {
-            System.out.println("Field '" + fieldName + "' exceeds max length (" + maxLength + ")");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateInt(String fieldName, String value) {
-        try {
-            int intValue = Integer.parseInt(value);
-            IntRange range = integerFields.get(fieldName);
-            if (intValue < range.min() || intValue > range.max()) {
-                System.out.println("Field '" + fieldName + "' must be between " + range.min() + " and " + range.max());
-                return false;
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            System.out.println("Field '" + fieldName + "' must be a number");
-            return false;
-        }
-    }
-
-    private boolean validateDate(String value) {
-        try {
-            LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
-            return true;
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format (expected yyyy-MM-dd)");
-            return false;
-        }
-    }
-
-    protected void printList(List<T> list) {
-        for(int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ": " + list.get(i));
-        }
-    }
-
-    // Auxiliary class for integer range
-    protected record IntRange(int min, int max) {}
-
-    /*
     // Insert new element into tables
-    public boolean addElement(T element) {
+    public void addElement(T element) {
         if(!isValidElement(element)) {
             System.out.println("Invalid input");
-            return false;
+            return;
         }
 
         if (dao.exists(element)) {
             System.out.println("Element with properties entered already exists");
-            return false;
+            return;
         }
 
         dao.insert(element);
         System.out.println("New element inserted successfully");
-
-        return true;
     }
 
     protected boolean isValidElement(T element) {
@@ -146,10 +83,9 @@ public abstract class AbstractBasicService<T> {
                 Object value = field.get(element);
                 String stringValue = value != null ? value.toString() : "";
 
-                if (!validateField(fieldName, stringValue)) {
+                if (!isValidField(fieldName, stringValue)) {
                     return false;
                 }
-
             } catch (NoSuchFieldException e) {
                 System.out.println("Warning: field '" + fieldName + "' not found in class " + clazz.getSimpleName());
             } catch (IllegalAccessException e) {
@@ -158,7 +94,78 @@ public abstract class AbstractBasicService<T> {
         }
 
         return true;
-    }*/
+    }
+
+    protected boolean isValidField(String fieldName, String value) {
+        if (stringFields.containsKey(fieldName)) {
+            return isValidString(fieldName, value);
+        } else if (integerFields.containsKey(fieldName)) {
+            return isValidInt(fieldName, value);
+        } else if (dateFields.contains(fieldName)) {
+            return isValidDate(value);
+        } else {
+            System.out.println("The " + entityName + " entity does not contain property '" + fieldName + "'");
+            return false;
+        }
+    }
+
+    private boolean isValidString(String fieldName, String value) {
+        int maxLength = stringFields.get(fieldName);
+        if (value == null || value.isEmpty()) {
+            System.out.println("Field '" + fieldName + "' cannot be empty");
+            return false;
+        }
+        if (value.length() > maxLength) {
+            System.out.println("Field '" + fieldName + "' exceeds max length (" + maxLength + ")");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidInt(String fieldName, String value) {
+        try {
+            int intValue = Integer.parseInt(value);
+            IntRange range = integerFields.get(fieldName);
+            if (intValue < range.min() || intValue > range.max()) {
+                System.out.println("Field '" + fieldName + "' must be between " + range.min() + " and " + range.max());
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Field '" + fieldName + "' must be a number");
+            return false;
+        }
+    }
+
+    private boolean isValidDate(String value) {
+        try {
+            LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
+            return true;
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format (expected yyyy-MM-dd)");
+            return false;
+        }
+    }
+
+    protected void printList(List<T> list) {
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ": " + list.get(i));
+        }
+    }
+
+    public LocalDate parseDate(String input) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        try {
+            return LocalDate.parse(input, formatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use dd.MM.yyyy");
+            return null;
+        }
+    }
+
+    // Auxiliary class for integer range
+    protected record IntRange(int min, int max) {}
 
 /*
     // Update contact
@@ -201,21 +208,6 @@ public abstract class AbstractBasicService<T> {
             System.out.println("Failed to delete element");
         }
     }
-
-    protected boolean validateField(String fieldName, String value) {
-        if(value == null || value.isBlank()) {
-            System.out.printf("Field '%s' must not be null or empty%n", fieldName);
-            return false;
-        }
-        Integer maxLength = fieldMaxLengths.get(fieldName);
-        if(maxLength != null && value.length() > maxLength) {
-            System.out.printf("Field '%s' is too long (max %d symbols)%n", fieldName, maxLength);
-            return false;
-        }
-        return true;
-    }
-
-    protected abstract boolean isValidContact(T entity);
 
     protected abstract void existsOrNotOutput(T entity, boolean isExists);
 

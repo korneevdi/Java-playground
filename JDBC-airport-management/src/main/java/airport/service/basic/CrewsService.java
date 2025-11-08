@@ -1,16 +1,21 @@
 package airport.service.basic;
 
 import airport.dao.basic.CrewsDao;
+import airport.dao.dictionary.SexesDao;
 import airport.entity.basic.Crew;
+import airport.entity.dictionary.Sex;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class CrewsService extends AbstractBasicService<Crew>{
 
+    private final SexesDao sexesDao;
     private final static String ENTITY_NAME = "Flight Crew";
 
-    public CrewsService(CrewsDao crewDao) {
+    public CrewsService(CrewsDao crewDao, SexesDao sexesDao) {
         super(crewDao, ENTITY_NAME);
+        this.sexesDao = sexesDao;
 
         // Set the map of the fields and max lengths
         stringFields = Map.ofEntries(
@@ -23,5 +28,27 @@ public class CrewsService extends AbstractBasicService<Crew>{
         );
 
         dateFields.add("birth_date");
+    }
+
+    // Add new crew
+    public void add(String pilotLicenseNumber, String firstName, String lastName, String sexName,
+                    String stringBirthDate, String passportCountry, String passportNumber) {
+
+        // Check whether sex exists (using sex name)
+        Sex sex = sexesDao.findByField("sex_name", sexName)
+                .stream().findFirst().orElse(null);
+        if(sex == null) {
+            System.out.printf("Sex '%s' does not exist. Please, add new sex first", sexName);
+            return;
+        }
+
+        // Parse the birth date to the correct data type
+        LocalDate birthDate = parseDate(stringBirthDate);
+
+        // Create Crew object and insert it
+        Crew crew = new Crew(0, pilotLicenseNumber, firstName, lastName, sex,
+                birthDate, passportCountry, passportNumber);
+
+        addElement(crew);
     }
 }

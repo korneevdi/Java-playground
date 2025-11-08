@@ -3,60 +3,50 @@ package airport.service.basic;
 import airport.dao.basic.AirlinesDao;
 import airport.dao.contact.AirlineContactsDao;
 import airport.entity.basic.Airline;
-import airport.service.contact.AirlineContactsService;
+import airport.entity.contact.AirlineContact;
 
 import java.util.Map;
 
 
 public class AirlinesService extends AbstractBasicService<Airline> {
 
+    private final AirlineContactsDao airlineContactsDao;
+
     private final static String ENTITY_NAME = "Airline";
 
-    public AirlinesService(AirlinesDao airlineDao) {
+    public AirlinesService(AirlinesDao airlineDao, AirlineContactsDao airlineContactsDao) {
         super(airlineDao, ENTITY_NAME);
+        this.airlineContactsDao = airlineContactsDao;
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(
                 Map.entry("iata", 2),
                 Map.entry("icao", 3),
-                Map.entry("name", 60),
-                Map.entry("contact_name", 100),
-                Map.entry("contact_email", 100),
-                Map.entry("contact_phone", 30),
-                Map.entry("city", 25),
-                Map.entry("notes", 1000)
+                Map.entry("name", 60)
         );
     }
-/*
+
     // Add new airline (airline data + contact data)
     public void add(String iata, String icao, String name, String contactName,
                     String contactEmail, String contactPhone, String city, String notes) {
 
         AirlineContact contact = new AirlineContact(0, contactName, contactEmail, contactPhone, city, notes);
+
+        // Make sure the contact already exists or create it
+        if(!airlineContactsDao.exists(contact)) {
+            airlineContactsDao.insert(contact);
+        }
+
+        // Get the ID of an existing or new contact
+        int contactId = airlineContactsDao.findId(Map.of("contact_email", contactEmail))
+                .orElseThrow(() -> new IllegalStateException("Could not retrieve contact ID after insert"));
+
+        contact.setId(contactId);
+
         Airline airline = new Airline(0, iata, icao, name, contact);
 
-        if(!airlineContactsService.isValidContact(contact)) return;
-
-        int contactId;
-        if(airlineContactsDao.exists(contact)) {
-            // get id
-            contactId = airlineContactsDao.findId(contact);
-            contact.setId(contactId);
-            airline.setContact(contact);
-            addElement(airline);
-        } else {
-            // insert & get id
-            airlineContactsDao.insert(contact);
-            contactId = airlineContactsDao.findId(contact);
-            contact.setId(contactId);
-            airline.setContact(contact);
-
-            boolean inserted = addElement(airline);
-            if(!inserted) {
-                airlineContactsDao.deleteById(contactId);
-            }
-        }
-    }*/
+        addElement(airline);
+    }
 
     /*
     // Update airline
@@ -70,40 +60,5 @@ public class AirlinesService extends AbstractBasicService<Airline> {
         Airline oldAirline = new Airline(0, oldIata, oldIcao, oldName, oldContact);
         int airlineId = airlineDao.
     }
-
-    @Override
-    protected boolean isValidContact(Airline airline) {
-        boolean validAirline = validateField("iata", airline.getIata()) &&
-                validateField("icao", airline.getIcao()) &&
-                validateField("name", airline.getName());
-
-        boolean validContact = airlineContactsService.isValidContact(airline.getContact());
-
-        return validAirline && validContact;
-    }
-
-    @Override
-    protected void existsOrNotOutput(Airline airline, boolean isExists) {
-        String output =
-                """
-                Element with the following properties
-
-                iata: %s,
-                icao: %s,
-                name: %s,
-                contact name: %s,
-                email: %s,
-                phone: %s,
-                city: %s
-                """.formatted(airline.getIata(), airline.getIcao(), airline.getName(),
-                        airline.getContact().getContactName(), airline.getContact().getEmail(),
-                        airline.getContact().getPhone(), airline.getContact().getCity());
-
-        if(isExists) {
-            output = output + "\nalready exists.";
-        } else {
-            output = output + "\ndoes not exist.";
-        }
-        System.out.println(output);
-    }*/
+    */
 }

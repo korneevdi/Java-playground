@@ -1,16 +1,24 @@
 package airport.service.basic;
 
+import airport.dao.basic.AirlinesDao;
 import airport.dao.basic.AirplanesDao;
+import airport.dao.dictionary.TypesDao;
+import airport.entity.basic.Airline;
 import airport.entity.basic.Airplane;
+import airport.entity.dictionary.Type;
 
 import java.util.Map;
 
 public class AirplanesService extends AbstractBasicService<Airplane> {
 
+    private final AirlinesDao airlinesDao;
+    private final TypesDao typesDao;
     private final static String ENTITY_NAME = "Airplane";
 
-    public AirplanesService(AirplanesDao airplaneDao) {
+    public AirplanesService(AirplanesDao airplaneDao, AirlinesDao airlinesDao, TypesDao typesDao) {
         super(airplaneDao, ENTITY_NAME);
+        this.airlinesDao = airlinesDao;
+        this.typesDao = typesDao;
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(
@@ -25,28 +33,28 @@ public class AirplanesService extends AbstractBasicService<Airplane> {
         );
     }
 
-    /*// Add new airline (airline data + contact data)
+    // Add new airplane
     public void add(String airlineName, String registrationNumber, String model, int capacity, String typeName) {
 
-        // Check airline
-        List<Airline> airlines = airlineDao.findByField("name", airlineName);
-        if(airlines.isEmpty()) {
-            System.out.println("There is not an airline " + airlineName + ". You need to add the airline first.");
+        // Check whether airline exists (using airline name)
+        Airline airline = airlinesDao.findByField("name", airlineName)
+                .stream().findFirst().orElse(null);
+        if(airline == null) {
+            System.out.printf("Airline '%s' does not exist. Please, add new airline first", airlineName);
             return;
         }
 
-        // Check type
-        Type type = typeDao.findByName(typeName);
+        // Check whether type exists (using type name)
+        Type type = typesDao.findByField("type_name", typeName)
+                .stream().findFirst().orElse(null);
         if(type == null) {
-            System.out.println("There is not such a type");
+            System.out.printf("Type '%s' does not exist. Please, add new type first", typeName);
             return;
         }
 
-        AirlineContact mockContact = new AirlineContact(0, "mockContactName", "mockEmail",
-                "mockPhone", "mockCity", "mockNotes");
-        Airline mockAirline = new Airline(0, "mockIata", "mockIcao", airlineName, mockContact);
-        Airplane airplane = new Airplane(0, mockAirline, registrationNumber, model, capacity, type);
+        // Create Airplane object and insert it
+        Airplane airplane = new Airplane(0, airline, registrationNumber, model, capacity, type);
 
         addElement(airplane);
-    }*/
+    }
 }
