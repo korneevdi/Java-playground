@@ -2,20 +2,19 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.CheckInCountersDao;
 import airport.entity.dictionary.CheckInCounter;
+import airport.service.AbstractService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CheckInCountersService extends AbstractDictionaryService<CheckInCounter> {
+public class CheckInCountersService extends AbstractService<CheckInCounter> {
 
     private final static String ENTITY_NAME = "Check-in counter";
 
     public CheckInCountersService(CheckInCountersDao checkInCountersDao) {
         super(checkInCountersDao, ENTITY_NAME);
-
-
 
         // Set the maps of the fields
         stringFields = Map.ofEntries(

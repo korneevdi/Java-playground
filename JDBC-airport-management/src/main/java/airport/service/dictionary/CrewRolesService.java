@@ -2,10 +2,11 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.CrewRolesDao;
 import airport.entity.dictionary.CrewRole;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class CrewRolesService extends AbstractDictionaryService<CrewRole> {
+public class CrewRolesService extends AbstractService<CrewRole> {
 
     private final static String ENTITY_NAME = "Crew role";
 

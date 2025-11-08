@@ -2,13 +2,14 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.GatesDao;
 import airport.entity.dictionary.Gate;
+import airport.service.AbstractService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class GatesService extends AbstractDictionaryService<Gate> {
+public class GatesService extends AbstractService<Gate> {
 
     private final static String ENTITY_NAME = "Gate";
 

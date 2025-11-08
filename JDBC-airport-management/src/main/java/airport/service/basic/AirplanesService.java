@@ -6,10 +6,11 @@ import airport.dao.dictionary.TypesDao;
 import airport.entity.basic.Airline;
 import airport.entity.basic.Airplane;
 import airport.entity.dictionary.Type;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class AirplanesService extends AbstractBasicService<Airplane> {
+public class AirplanesService extends AbstractService<Airplane> {
 
     private final AirlinesDao airlinesDao;
     private final TypesDao typesDao;

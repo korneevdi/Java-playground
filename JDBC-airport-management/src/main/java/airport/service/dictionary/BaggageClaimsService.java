@@ -2,10 +2,11 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.BaggageClaimsDao;
 import airport.entity.dictionary.BaggageClaim;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class BaggageClaimsService extends AbstractDictionaryService<BaggageClaim> {
+public class BaggageClaimsService extends AbstractService<BaggageClaim> {
 
     private final static String ENTITY_NAME = "Baggage claim";
 

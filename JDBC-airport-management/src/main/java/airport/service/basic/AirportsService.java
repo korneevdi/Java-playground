@@ -2,10 +2,11 @@ package airport.service.basic;
 
 import airport.dao.basic.AirportsDao;
 import airport.entity.basic.Airport;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class AirportsService extends AbstractBasicService<Airport> {
+public class AirportsService extends AbstractService<Airport> {
 
     private final static String ENTITY_NAME = "Airport";
 

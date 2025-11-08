@@ -4,10 +4,11 @@ import airport.dao.basic.CustomersDao;
 import airport.dao.contact.CustomerContactsDao;
 import airport.entity.basic.Customer;
 import airport.entity.contact.CustomerContact;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class CustomersService extends AbstractBasicService<Customer>{
+public class CustomersService extends AbstractService<Customer> {
 
     private final CustomerContactsDao customerContactsDao;
     private final static String ENTITY_NAME = "Customer";

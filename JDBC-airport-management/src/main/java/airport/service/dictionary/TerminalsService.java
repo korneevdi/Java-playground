@@ -2,10 +2,11 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.TerminalsDao;
 import airport.entity.dictionary.Terminal;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class TerminalsService extends AbstractDictionaryService<Terminal> {
+public class TerminalsService extends AbstractService<Terminal> {
 
     private final static String ENTITY_NAME = "Terminal";
 

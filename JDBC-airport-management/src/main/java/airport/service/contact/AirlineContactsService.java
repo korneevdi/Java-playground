@@ -2,10 +2,11 @@ package airport.service.contact;
 
 import airport.dao.contact.AirlineContactsDao;
 import airport.entity.contact.AirlineContact;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class AirlineContactsService extends AbstractContactService<AirlineContact> {
+public class AirlineContactsService extends AbstractService<AirlineContact> {
 
     private final static String ENTITY_NAME = "Airline contact";
 

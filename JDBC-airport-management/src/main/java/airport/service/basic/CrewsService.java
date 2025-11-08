@@ -4,11 +4,12 @@ import airport.dao.basic.CrewsDao;
 import airport.dao.dictionary.SexesDao;
 import airport.entity.basic.Crew;
 import airport.entity.dictionary.Sex;
+import airport.service.AbstractService;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-public class CrewsService extends AbstractBasicService<Crew>{
+public class CrewsService extends AbstractService<Crew> {
 
     private final SexesDao sexesDao;
     private final static String ENTITY_NAME = "Flight Crew";

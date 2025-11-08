@@ -2,10 +2,11 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.ControlTypesDao;
 import airport.entity.dictionary.ControlType;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class ControlTypesService extends AbstractDictionaryService<ControlType> {
+public class ControlTypesService extends AbstractService<ControlType> {
 
     private final static String ENTITY_NAME = "Control type";
 

@@ -1,4 +1,4 @@
-package airport.service.basic;
+package airport.service;
 
 import airport.dao.AbstractDao;
 
@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public abstract class AbstractBasicService<T> {
+public abstract class AbstractService<T> {
 
     protected final AbstractDao<T> dao;
     private final String entityName;
@@ -17,7 +17,7 @@ public abstract class AbstractBasicService<T> {
     protected Map<String, IntRange> integerFields = new HashMap<>();
     protected Set<String> dateFields = new HashSet<>();
 
-    public AbstractBasicService(AbstractDao<T> dao, String entityName) {
+    public AbstractService(AbstractDao<T> dao, String entityName) {
         this.dao = dao;
         this.entityName = entityName;
     }
@@ -165,7 +165,7 @@ public abstract class AbstractBasicService<T> {
     }
 
     // Auxiliary class for integer range
-    protected record IntRange(int min, int max) {}
+    public record IntRange(int min, int max) {}
 
 /*
     // Update contact

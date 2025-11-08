@@ -2,10 +2,11 @@ package airport.service.dictionary;
 
 import airport.dao.dictionary.SexesDao;
 import airport.entity.dictionary.Sex;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class SexesService extends AbstractDictionaryService<Sex> {
+public class SexesService extends AbstractService<Sex> {
 
     private final static String ENTITY_NAME = "Sex";
 

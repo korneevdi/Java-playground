@@ -4,10 +4,11 @@ import airport.dao.basic.PassengersDao;
 import airport.dao.dictionary.SexesDao;
 import airport.entity.basic.Passenger;
 import airport.entity.dictionary.Sex;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
-public class PassengersService extends AbstractBasicService<Passenger>{
+public class PassengersService extends AbstractService<Passenger> {
 
     private final SexesDao sexesDao;
     private final static String ENTITY_NAME = "Passenger";

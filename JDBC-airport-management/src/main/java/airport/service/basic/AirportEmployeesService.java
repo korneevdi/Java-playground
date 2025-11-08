@@ -10,11 +10,12 @@ import airport.entity.contact.AirportEmployeeContact;
 import airport.entity.contact.EmergencyContact;
 import airport.entity.dictionary.AirportEmployeeRole;
 import airport.entity.dictionary.Sex;
+import airport.service.AbstractService;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-public class AirportEmployeesService extends AbstractBasicService<AirportEmployee>{
+public class AirportEmployeesService extends AbstractService<AirportEmployee> {
 
     private final AirportEmployeeRolesDao airportEmployeeRolesDao;
     private final SexesDao sexesDao;

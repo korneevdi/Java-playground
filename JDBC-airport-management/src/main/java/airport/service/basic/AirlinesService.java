@@ -4,11 +4,12 @@ import airport.dao.basic.AirlinesDao;
 import airport.dao.contact.AirlineContactsDao;
 import airport.entity.basic.Airline;
 import airport.entity.contact.AirlineContact;
+import airport.service.AbstractService;
 
 import java.util.Map;
 
 
-public class AirlinesService extends AbstractBasicService<Airline> {
+public class AirlinesService extends AbstractService<Airline> {
 
     private final AirlineContactsDao airlineContactsDao;
 

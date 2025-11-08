@@ -16,7 +16,6 @@ import airport.service.dictionary.*;
 import airport.utils.ConnectionManager;
 
 import java.sql.Connection;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -157,7 +156,7 @@ public class Main {
 
             // 17.Airlines
             AirlinesDao airlinesDao = new AirlinesDao(connection);
-            AirlinesService airlinesService = new AirlinesService(airlinesDao);
+            AirlinesService airlinesService = new AirlinesService(airlinesDao, airlineContactsDao);
 
             //airlinesService.showAll();
             //airlinesService.findAllByField("iata", "JL");
@@ -171,7 +170,7 @@ public class Main {
 
             // 18.Customers
             CustomersDao customersDao = new CustomersDao(connection);
-            CustomersService customersService = new CustomersService(customersDao);
+            CustomersService customersService = new CustomersService(customersDao, customerContactsDao);
 
             //customersService.showAll();
             //customersService.findAllByField("first_name", "Ava");
@@ -186,7 +185,7 @@ public class Main {
 
             // 19.Flight crews
             CrewsDao crewsDao = new CrewsDao(connection);
-            CrewsService crewsService = new CrewsService(crewsDao);
+            CrewsService crewsService = new CrewsService(crewsDao, sexesDao);
 
             //crewsService.showAll();
             //crewsService.findAllByField("pilot_license_number", "PILOT002");
@@ -199,7 +198,9 @@ public class Main {
 
             // 20.Airport employees
             AirportEmployeesDao airportEmployeesDao = new AirportEmployeesDao(connection);
-            AirportEmployeesService airportEmployeesService = new AirportEmployeesService(airportEmployeesDao);
+            AirportEmployeesService airportEmployeesService = new AirportEmployeesService(
+                    airportEmployeesDao, airportEmployeeRolesDao, sexesDao,
+                    airportEmployeeContactsDao, emergencyContactsDao);
 
             //airportEmployeesService.showAll();
             //airportEmployeesService.findAllByField("first_name", "Olivia");
@@ -220,7 +221,7 @@ public class Main {
 
             // 21.Passengers
             PassengersDao passengersDao = new PassengersDao(connection);
-            PassengersService passengersService = new PassengersService(passengersDao);
+            PassengersService passengersService = new PassengersService(passengersDao, sexesDao);
 
             //passengersService.showAll();
             //passengersService.findAllByField("first_name", "Joseph");
@@ -232,7 +233,7 @@ public class Main {
 
             // 22.Airplanes
             AirplanesDao airplanesDao = new AirplanesDao(connection);
-            AirplanesService airplanesService = new AirplanesService(airplanesDao);
+            AirplanesService airplanesService = new AirplanesService(airplanesDao, airlinesDao, typesDao);
 
             //airplanesService.showAll();
             //airplanesService.findAllByField("name", "Japan Airlines");
