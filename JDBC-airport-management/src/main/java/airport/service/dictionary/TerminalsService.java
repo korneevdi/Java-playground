@@ -18,4 +18,9 @@ public class TerminalsService extends AbstractService<Terminal> {
                 Map.entry("terminal_number", 30)
         );
     }
+
+    // Add new element
+    public void add(String terminalNumber) {
+        addElement(new Terminal(0, terminalNumber));
+    }
 }

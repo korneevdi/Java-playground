@@ -26,11 +26,7 @@ public class AirportsService extends AbstractService<Airport> {
 
     // Add new airport
     public void add(String iata, String icao, String name, String city, String country, String timezone) {
-
-        // Create Airport object and insert it
-        Airport airline = new Airport(0, iata, icao, name, city, country, timezone);
-
-        addElement(airline);
+        addElement(new Airport(0, iata, icao, name, city, country, timezone));
     }
 
     /*

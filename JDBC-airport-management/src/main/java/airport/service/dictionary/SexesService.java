@@ -18,4 +18,9 @@ public class SexesService extends AbstractService<Sex> {
                 Map.entry("sex_name", 20)
         );
     }
+
+    // Add new element
+    public void add(String sexName) {
+        addElement(new Sex(0, sexName));
+    }
 }

@@ -21,13 +21,12 @@ public class EmergencyContactsService extends AbstractService<EmergencyContact> 
         );
     }
 
-    /*
     // Add new contact
-    public void add(String contactName, String relation, String phone) {
-        EmergencyContact contact = new EmergencyContact(0, contactName, relation, phone);
-        addContact(contact);
+    public void add(String contactName, String relation, String contactPhone) {
+        addElement(new EmergencyContact(0, contactName, relation, contactPhone));
     }
 
+    /*
     // Update contact
     public void update(String oldContactName, String oldRelation, String oldPhone,
                        String newContactName, String newRelation, String newPhone) {
@@ -51,13 +50,6 @@ public class EmergencyContactsService extends AbstractService<EmergencyContact> 
     }
 
     @Override
-    protected boolean isValidContact(EmergencyContact contact) {
-        return validateField("contact_name", contact.getContactName()) &&
-                validateField("relation", contact.getRelation()) &&
-                validateField("phone", contact.getPhone());
-    }
-
-    @Override
     protected void existsOrNotOutput(EmergencyContact contact, boolean isExists) {
         String output =
                 """
@@ -75,16 +67,5 @@ public class EmergencyContactsService extends AbstractService<EmergencyContact> 
         }
         System.out.println(output);
     }
-
-    @Override
-    protected boolean areContactsIdentical(EmergencyContact oldContact, EmergencyContact newContact) {
-        return oldContact.equals(newContact);
-    }
-
-    @Override
-    protected Optional<Integer> findId(EmergencyContact contact) {
-        return emergencyContactsDao.findSingle(
-                contact.getContactName(), contact.getRelation(), contact.getPhone()
-        ).map(EmergencyContact::getId);
-    }*/
+    */
 }

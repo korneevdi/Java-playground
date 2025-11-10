@@ -18,4 +18,9 @@ public class TypesService extends AbstractService<Type> {
                 Map.entry("type_name", 30)
         );
     }
+
+    // Add new element
+    public void add(String typeName) {
+        addElement(new Type(0, typeName));
+    }
 }

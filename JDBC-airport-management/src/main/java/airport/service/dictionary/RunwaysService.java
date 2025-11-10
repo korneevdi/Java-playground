@@ -18,4 +18,9 @@ public class RunwaysService extends AbstractService<Runway> {
                 Map.entry("runway_number", 4)
         );
     }
+
+    // Add new element
+    public void add(String runwayNumber) {
+        addElement(new Runway(0, runwayNumber));
+    }
 }

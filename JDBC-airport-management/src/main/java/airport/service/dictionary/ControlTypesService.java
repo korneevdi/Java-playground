@@ -18,4 +18,9 @@ public class ControlTypesService extends AbstractService<ControlType> {
                 Map.entry("type_name", 40)
         );
     }
+
+    // Add new element
+    public void add(String typeName) {
+        addElement(new ControlType(0, typeName));
+    }
 }

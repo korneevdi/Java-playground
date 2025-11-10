@@ -18,4 +18,9 @@ public class CrewRolesService extends AbstractService<CrewRole> {
                 Map.entry("role_name", 50)
         );
     }
+
+    // Add new element
+    public void add(String roleName) {
+        addElement(new CrewRole(0, roleName));
+    }
 }

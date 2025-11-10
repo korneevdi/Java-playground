@@ -23,13 +23,12 @@ public class CustomerContactsService extends AbstractService<CustomerContact> {
         );
     }
 
-    /*
     // Add new contact
-    public void add(String email, String phone, String city, String address, String notes) {
-        CustomerContact contact = new CustomerContact(0, email, phone, city, address, notes);
-        addContact(contact);
+    public void add(String contactEmail, String contactPhone, String city, String address, String notes) {
+        addElement(new CustomerContact(0, contactEmail, contactPhone, city, address, notes));
     }
 
+    /*
     // Update contact
     public void update(String oldEmail, String oldPhone, String oldCity, String oldAddress, String oldNotes,
                        String newEmail, String newPhone, String newCity, String newAddress, String newNotes) {
@@ -52,14 +51,6 @@ public class CustomerContactsService extends AbstractService<CustomerContact> {
     }
 
     @Override
-    protected boolean isValidContact(CustomerContact contact) {
-        return validateField("email", contact.getEmail()) &&
-                validateField("phone", contact.getPhone()) &&
-                validateField("city", contact.getCity()) &&
-                validateField("address", contact.getAddress());
-    }
-
-    @Override
     protected void existsOrNotOutput(CustomerContact contact, boolean isExists) {
         String output =
                 """
@@ -78,14 +69,5 @@ public class CustomerContactsService extends AbstractService<CustomerContact> {
         }
         System.out.println(output);
     }
-
-    @Override
-    protected boolean areContactsIdentical(CustomerContact oldContact, CustomerContact newContact) {
-        return oldContact.equals(newContact);
-    }
-
-    @Override
-    protected Optional<Integer> findId(CustomerContact contact) {
-        return customerContactsDao.findByEmail(contact.getEmail()).map(CustomerContact::getId);
-    }*/
+    */
 }

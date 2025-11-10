@@ -23,13 +23,12 @@ public class AirlineContactsService extends AbstractService<AirlineContact> {
         );
     }
 
-
-    /*// Add new contact
-    public void add(String contactName, String email, String phone, String city, String notes) {
-        AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, notes);
-        addContact(contact);
+    // Add new contact
+    public void add(String contactName, String contactEmail, String contactPhone, String city, String notes) {
+        addElement(new AirlineContact(0, contactName, contactEmail, contactPhone, city, notes));
     }
 
+    /*
     // Update contact
     public void update(String oldContactName, String oldEmail, String oldPhone, String oldCity, String oldNotes,
                        String newContactName, String newEmail, String newPhone, String newCity, String newNotes) {
@@ -52,14 +51,6 @@ public class AirlineContactsService extends AbstractService<AirlineContact> {
     }
 
     @Override
-    public boolean isValidContact(AirlineContact contact) {
-        return validateField("contact_name", contact.getContactName()) &&
-                validateField("email", contact.getEmail()) &&
-                validateField("phone", contact.getPhone()) &&
-                validateField("headquarter_city", contact.getCity());
-    }
-
-    @Override
     protected void existsOrNotOutput(AirlineContact contact, boolean isExists) {
         String output =
                 """
@@ -77,11 +68,6 @@ public class AirlineContactsService extends AbstractService<AirlineContact> {
             output = output + "\ndoes not exist.";
         }
         System.out.println(output);
-    }
-
-    @Override
-    protected boolean areContactsIdentical(AirlineContact oldContact, AirlineContact newContact) {
-        return oldContact.equals(newContact);
     }
 
     @Override

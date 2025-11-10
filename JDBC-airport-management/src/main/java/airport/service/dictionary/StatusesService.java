@@ -18,4 +18,9 @@ public class StatusesService extends AbstractService<Status> {
                 Map.entry("status_name", 40)
         );
     }
+
+    // Add new element
+    public void add(String statusName) {
+        addElement(new Status(0, statusName));
+    }
 }

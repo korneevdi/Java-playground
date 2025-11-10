@@ -46,4 +46,9 @@ public class CheckInCountersService extends AbstractService<CheckInCounter> {
             System.out.println("No data found");
         }
     }
+
+    // Add new element
+    public void add(String counterNumber) {
+        addElement(new CheckInCounter(0, counterNumber));
+    }
 }

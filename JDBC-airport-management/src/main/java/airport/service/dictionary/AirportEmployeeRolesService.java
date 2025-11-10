@@ -18,4 +18,9 @@ public class AirportEmployeeRolesService extends AbstractService<AirportEmployee
                 Map.entry("role_name", 100)
         );
     }
+
+    // Add new element
+    public void add(String roleName) {
+        addElement(new AirportEmployeeRole(0, roleName));
+    }
 }

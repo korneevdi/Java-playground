@@ -46,4 +46,9 @@ public class GatesService extends AbstractService<Gate> {
             System.out.println("No data found");
         }
     }
+
+    // Add new element
+    public void add(String gateNumber) {
+        addElement(new Gate(0, gateNumber));
+    }
 }

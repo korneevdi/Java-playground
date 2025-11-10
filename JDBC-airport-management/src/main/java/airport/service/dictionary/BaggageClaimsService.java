@@ -18,4 +18,9 @@ public class BaggageClaimsService extends AbstractService<BaggageClaim> {
                 Map.entry("claim_number", 3)
         );
     }
+
+    // Add new element
+    public void add(String claimNumber) {
+        addElement(new BaggageClaim(0, claimNumber));
+    }
 }
