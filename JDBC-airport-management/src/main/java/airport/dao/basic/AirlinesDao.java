@@ -6,6 +6,7 @@ import airport.entity.contact.AirlineContact;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class AirlinesDao extends AbstractDao<Airline> {
 
@@ -97,6 +98,17 @@ public class AirlinesDao extends AbstractDao<Airline> {
                 resultSet.getString("icao"),
                 resultSet.getString("name"),
                 contact
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("airline_id", "id"),
+                Map.entry("iata", "iata"),
+                Map.entry("icao", "icao"),
+                Map.entry("name", "name"),
+                Map.entry("contact", "contact")
         );
     }
 }

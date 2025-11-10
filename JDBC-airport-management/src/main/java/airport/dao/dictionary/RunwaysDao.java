@@ -5,6 +5,7 @@ import airport.entity.dictionary.Runway;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class RunwaysDao extends AbstractDao<Runway> {
 
@@ -66,6 +67,14 @@ public class RunwaysDao extends AbstractDao<Runway> {
         return new Runway(
                 resultSet.getInt("runway_id"),
                 resultSet.getString("runway_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("runway_id", "id"),
+                Map.entry("runway_number", "number")
         );
     }
 }

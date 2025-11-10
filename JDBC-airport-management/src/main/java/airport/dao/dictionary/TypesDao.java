@@ -5,6 +5,7 @@ import airport.entity.dictionary.Type;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class TypesDao extends AbstractDao<Type> {
 
@@ -66,6 +67,14 @@ public class TypesDao extends AbstractDao<Type> {
         return new Type(
                 resultSet.getInt("type_id"),
                 resultSet.getString("type_name")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("type_id", "id"),
+                Map.entry("type_name", "name")
         );
     }
 }

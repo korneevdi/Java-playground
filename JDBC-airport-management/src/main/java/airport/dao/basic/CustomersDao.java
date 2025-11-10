@@ -6,6 +6,7 @@ import airport.entity.contact.CustomerContact;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomersDao extends AbstractDao<Customer> {
@@ -111,6 +112,18 @@ public class CustomersDao extends AbstractDao<Customer> {
                 resultSet.getString("passport_country"),
                 resultSet.getString("passport_number"),
                 contact
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("customer_id", "id"),
+                Map.entry("first_name", "firstName"),
+                Map.entry("last_name", "lastName"),
+                Map.entry("passport_country", "passportCountry"),
+                Map.entry("passport_number", "passportNumber"),
+                Map.entry("contact", "contact")
         );
     }
 }

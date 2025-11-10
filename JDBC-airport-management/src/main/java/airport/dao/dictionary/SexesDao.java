@@ -5,6 +5,7 @@ import airport.entity.dictionary.Sex;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class SexesDao extends AbstractDao<Sex> {
 
@@ -66,6 +67,14 @@ public class SexesDao extends AbstractDao<Sex> {
         return new Sex(
                 resultSet.getInt("sex_id"),
                 resultSet.getString("sex_name")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("sex_id", "id"),
+                Map.entry("sex_name", "name")
         );
     }
 }

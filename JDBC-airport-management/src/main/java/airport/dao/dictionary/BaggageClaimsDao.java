@@ -5,6 +5,7 @@ import airport.entity.dictionary.BaggageClaim;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class BaggageClaimsDao extends AbstractDao<BaggageClaim> {
 
@@ -66,6 +67,14 @@ public class BaggageClaimsDao extends AbstractDao<BaggageClaim> {
         return new BaggageClaim(
                 resultSet.getInt("claim_id"),
                 resultSet.getString("claim_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("claim_id", "id"),
+                Map.entry("claim_number", "number")
         );
     }
 }

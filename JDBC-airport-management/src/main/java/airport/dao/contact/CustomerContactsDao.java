@@ -5,6 +5,7 @@ import airport.entity.contact.CustomerContact;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerContactsDao extends AbstractDao<CustomerContact> {
 
@@ -84,6 +85,18 @@ public class CustomerContactsDao extends AbstractDao<CustomerContact> {
                 resultSet.getString("city"),
                 resultSet.getString("address"),
                 resultSet.getString("notes")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("contact_id", "id"),
+                Map.entry("contact_email", "email"),
+                Map.entry("contact_phone", "phone"),
+                Map.entry("city", "city"),
+                Map.entry("address", "address"),
+                Map.entry("notes", "notes")
         );
     }
 }

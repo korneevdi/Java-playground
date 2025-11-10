@@ -5,6 +5,7 @@ import airport.entity.dictionary.ControlType;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class ControlTypesDao extends AbstractDao<ControlType> {
 
@@ -66,6 +67,14 @@ public class ControlTypesDao extends AbstractDao<ControlType> {
         return new ControlType(
                 resultSet.getInt("type_id"),
                 resultSet.getString("type_name")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("type_id", "id"),
+                Map.entry("type_name", "name")
         );
     }
 }

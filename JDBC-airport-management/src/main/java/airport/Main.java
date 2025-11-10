@@ -29,6 +29,7 @@ public class Main {
 
             //sexesService.showAll();
             //sexesService.findAllByField("sex_name", "female");
+            //sexesService.add("tyty");
 
             // 2.Types (of flights & airplanes)
             TypesDao typesDao = new TypesDao(connection);
@@ -36,6 +37,7 @@ public class Main {
 
             //typesService.showAll();
             //typesService.findAllByField("type_name", "private");
+            //typesService.add("noch ein type");
 
             // 3.Statuses of flights
             StatusesDao statusesDao = new StatusesDao(connection);
@@ -43,6 +45,7 @@ public class Main {
 
             //statusesService.showAll();
             //statusesService.findAllByField("status_name", "delayed");
+            //statusesService.add("service");
 
             // 4.Crew roles
             CrewRolesDao crewRolesDao = new CrewRolesDao(connection);
@@ -50,6 +53,7 @@ public class Main {
 
             //crewRolesService.showAll();
             //crewRolesService.findAllByField("role_name", "purser");
+            //crewRolesService.add("crew");
 
             // 5.Control types
             ControlTypesDao controlTypesDao = new ControlTypesDao(connection);
@@ -57,6 +61,7 @@ public class Main {
 
             //controlTypesService.showAll();
             //controlTypesService.findAllByField("type_name", "none");
+            //controlTypesService.add("control type");
 
             // 6.Check-in counters
             CheckInCountersDao checkInCountersDao = new CheckInCountersDao(connection);
@@ -64,6 +69,7 @@ public class Main {
 
             //checkInCountersService.showAll();
             //checkInCountersService.findAllByField("counter_number", "A1");
+            //checkInCountersService.add("check-in");
 
             // 7.Baggage claims
             BaggageClaimsDao baggageClaimsDao = new BaggageClaimsDao(connection);
@@ -71,6 +77,7 @@ public class Main {
 
             //baggageClaimsService.showAll();
             //baggageClaimsService.findAllByField("claim_number", "8");
+            //baggageClaimsService.add("ree");
 
             // 8.Gates
             GatesDao gatesDao = new GatesDao(connection);
@@ -78,6 +85,7 @@ public class Main {
 
             //gatesService.showAll();
             //gatesService.findAllByField("gate_number", "B7");
+            //gatesService.add("75");
 
             // 9.Terminals
             TerminalsDao terminalsDao = new TerminalsDao(connection);
@@ -85,6 +93,7 @@ public class Main {
 
             //terminalsService.showAll();
             //terminalsService.findAllByField("terminal_number", "D");
+            //terminalsService.add("GG");
 
             // 10.Flight runways
             RunwaysDao runwaysDao = new RunwaysDao(connection);
@@ -92,6 +101,7 @@ public class Main {
 
             //runwaysService.showAll();
             //runwaysService.findAllByField("runway_number", "27L");
+            //runwaysService.add("7r8");
 
             // 11.Airport employee roles
             AirportEmployeeRolesDao airportEmployeeRolesDao = new AirportEmployeeRolesDao(connection);
@@ -99,6 +109,7 @@ public class Main {
 
             //airportEmployeeRolesService.showAll();
             //airportEmployeeRolesService.findAllByField("role_name", "Security Officer");
+            //airportEmployeeRolesService.add("security");
 
             // 12.Airline contacts
             AirlineContactsDao airlineContactsDao = new AirlineContactsDao(connection);
@@ -106,10 +117,7 @@ public class Main {
 
             //airlineContactsService.showAll();
             //airlineContactsService.findAllByField("contact_name", "Japan Airlines Contact");
-            //airlineContactsService.findAllByField("contact_email", "contact@cathaypacific.com");
-            //airlineContactsService.findAllByField("contact_phone", "+65-6223-8888");
-            //airlineContactsService.findAllByField("city", "Brisbane");
-            //airlineContactsService.findAllByField("notes", "Australian carrier");
+            //airlineContactsService.add("British Airways Contact", "email", "phone", "city", "notes");
 
             // 13.Customer contacts
             CustomerContactsDao customerContactsDao = new CustomerContactsDao(connection);
@@ -117,10 +125,7 @@ public class Main {
 
             //customerContactsService.showAll();
             //customerContactsService.findAllByField("contact_email", "ava.moore@example.com");
-            //customerContactsService.findAllByField("contact_phone", "+1-310-555-0106");
-            //customerContactsService.findAllByField("city", "Pasadena");
-            //customerContactsService.findAllByField("address", "987 Colorado Blvd");
-            //customerContactsService.findAllByField("notes", "Private flights");
+            //customerContactsService.add("ava.moore@example.com", "phone", "city", "address", "notes");
 
             // 14.Employee contacts
             AirportEmployeeContactsDao airportEmployeeContactsDao = new AirportEmployeeContactsDao(connection);
@@ -128,10 +133,7 @@ public class Main {
 
             //airportEmployeeContactsService.showAll();
             //airportEmployeeContactsService.findAllByField("contact_email", "olivia.johnson@airport.com");
-            //airportEmployeeContactsService.findAllByField("contact_phone", "+1-310-555-1011");
-            //airportEmployeeContactsService.findAllByField("city", "Los Angeles");
-            //airportEmployeeContactsService.findAllByField("address", "106 Airport Rd");
-            //airportEmployeeContactsService.findAllByField("notes", "Operations");
+            //airportEmployeeContactsService.add("olivia.johnson@airport.com", "phone", "city", "address", "notes");
 
             // 15.Employee contacts
             EmergencyContactsDao emergencyContactsDao = new EmergencyContactsDao(connection);
@@ -139,8 +141,7 @@ public class Main {
 
             //emergencyContactsService.showAll();
             //emergencyContactsService.findAllByField("contact_name", "Paul Johnson");
-            //emergencyContactsService.findAllByField("relation", "Brother");
-            //emergencyContactsService.findAllByField("contact_phone", "+1-310-555-2013");
+            //emergencyContactsService.add("Paul Johnson", "brother", "phone");
 
             // 16.Airports
             AirportsDao airportsDao = new AirportsDao(connection);
@@ -148,11 +149,7 @@ public class Main {
 
             //airportsService.showAll();
             //airportsService.findAllByField("iata", "LAS");
-            //airportsService.findAllByField("icao", "FACT");
-            //airportsService.findAllByField("name", "O. R. Tambo International Airport");
-            //airportsService.findAllByField("city", "São Paulo");
-            //airportsService.findAllByField("country", "Germany");
-            //airportsService.findAllByField("timezone", "Europe/Amsterdam");
+            //airportsService.add("iat", "icao", "name", "city", "country", "timezone");
 
             // 17.Airlines
             AirlinesDao airlinesDao = new AirlinesDao(connection);
@@ -160,13 +157,7 @@ public class Main {
 
             //airlinesService.showAll();
             //airlinesService.findAllByField("iata", "JL");
-            //airlinesService.findAllByField("icao", "BAW");
-            //airlinesService.findAllByField("name", "Cathay Pacific");
-            //airlinesService.findAllByField("contact_name", "Cathay Pacific Contact");
-            //airlinesService.findAllByField("contact_email", "contact@fijiairways.com.fj");
-            //airlinesService.findAllByField("contact_phone", "+1-800-367-5320");
-            //airlinesService.findAllByField("city", "Seattle");
-            //airlinesService.findAllByField("notes", "US West Coast regional carrier");
+            //airlineContactsService.add("Korean Air", "email", "phone", "city", "notes");
 
             // 18.Customers
             CustomersDao customersDao = new CustomersDao(connection);
@@ -174,14 +165,8 @@ public class Main {
 
             //customersService.showAll();
             //customersService.findAllByField("first_name", "Ava");
-            //customersService.findAllByField("last_name", "Wilson");
-            //customersService.findAllByField("passport_country", "US");
-            //customersService.findAllByField("passport_number", "X7890123");
-            //customersService.findAllByField("contact_email", "liam.davis@example.com");
-            //customersService.findAllByField("contact_phone", "+1-310-555-0105");
-            //customersService.findAllByField("city", "Beverly Hills");
-            //customersService.findAllByField("address", "789 Rodeo Dr");
-            //customersService.findAllByField("notes", "VIP cargo customer");
+            //customersService.add("name", "lastName", "Moldova", "efeoifeor",
+            //        "email", "phone", "city", "address", "notes");
 
             // 19.Flight crews
             CrewsDao crewsDao = new CrewsDao(connection);
@@ -189,12 +174,8 @@ public class Main {
 
             //crewsService.showAll();
             //crewsService.findAllByField("pilot_license_number", "PILOT002");
-            //crewsService.findAllByField("first_name", "Isabella");
-            //crewsService.findAllByField("last_name", "Martin");
-            //crewsService.findAllByField("sex_name", "female");
-            //crewsService.findAllByField("passport_country", "Finland");
-            //crewsService.findAllByField("passport_number", "N45678901");
-            //crewsService.findAllByField("birth_date", "1982-09-10");
+            //crewsService.add("number", "name", "name", "male",
+            //        "08.08.1996", "Finland", "passport");
 
             // 20.Airport employees
             AirportEmployeesDao airportEmployeesDao = new AirportEmployeesDao(connection);
@@ -204,20 +185,9 @@ public class Main {
 
             //airportEmployeesService.showAll();
             //airportEmployeesService.findAllByField("first_name", "Olivia");
-            //airportEmployeesService.findAllByField("last_name", "Smith");
-            //airportEmployeesService.findAllByField("role_name", "Baggage Handler");
-            //airportEmployeesService.findAllByField("sex_name", "female");
-            //airportEmployeesService.findAllByField("passport_country", "Mexico");
-            //airportEmployeesService.findAllByField("passport_number", "E3123456");
-            //airportEmployeesService.findAllByField("emp_contact_email", "noah.smith@airport.com");
-            //airportEmployeesService.findAllByField("emp_contact_phone", "+1-310-555-1014");
-            //airportEmployeesService.findAllByField("city", "Moscow");
-            //airportEmployeesService.findAllByField("address", "114 Airport Rd");
-            //airportEmployeesService.findAllByField("notes", "Administration");
-            //airportEmployeesService.findAllByField("emerg_contact_name", "Paul Johnson");
-            //airportEmployeesService.findAllByField("emerg_contact_relation", "Husband");
-            //airportEmployeesService.findAllByField("emerg_contact_phone", "+1-310-555-2011");
-            //airportEmployeesService.findAllByField("birth_date", "1985-03-03");
+            //airportEmployeesService.add("name", "name", "Administrator", "female", "19.03.1980",
+            //        "Italy", "iefweiofj", "email", "phone", "Milano",
+            //        "address", "notes", "emContName", "relation", "phone");
 
             // 21.Passengers
             PassengersDao passengersDao = new PassengersDao(connection);
@@ -225,11 +195,7 @@ public class Main {
 
             //passengersService.showAll();
             //passengersService.findAllByField("first_name", "Joseph");
-            //passengersService.findAllByField("last_name", "Roberts");
-            //passengersService.findAllByField("sex_name", "female");
-            //passengersService.findAllByField("age", 15);
-            //passengersService.findAllByField("passport_country", "New Zealand");
-            //passengersService.findAllByField("passport_number", "P0012366");
+            //passengersService.add("name", "name", "male", 46, "Spain", "number");
 
             // 22.Airplanes
             AirplanesDao airplanesDao = new AirplanesDao(connection);
@@ -237,10 +203,7 @@ public class Main {
 
             //airplanesService.showAll();
             //airplanesService.findAllByField("name", "Japan Airlines");
-            //airplanesService.findAllByField("registration_number", "N142AA");
-            //airplanesService.findAllByField("model", "Cessna 208 Caravan");
-            //airplanesService.findAllByField("type_name", "private");
-            //airplanesService.findAllByField("total_capacity", 99);
+            //airplanesService.add("Korean Air", "eriferiof45", "tutu", 180, "private");
 
         } catch (Exception e) {
             throw new RuntimeException(e);

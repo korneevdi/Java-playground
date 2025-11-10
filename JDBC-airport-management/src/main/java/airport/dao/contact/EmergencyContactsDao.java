@@ -5,6 +5,7 @@ import airport.entity.contact.EmergencyContact;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
@@ -25,7 +26,7 @@ public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
     @Override
     protected String buildFindAllSql(){
         return """
-                SELECT ec.contact_id, ec.contact_name, ec.relation, ec.contact_phone
+                SELECT ec.contact_id, ec.contact_name, ec.contact_relation, ec.contact_phone
                 FROM emergency_contacts ec
                 """;
     }
@@ -33,7 +34,7 @@ public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
     @Override
     protected String buildFindByIdSql(){
         return """
-                SELECT ec.contact_id, ec.contact_name, ec.relation, ec.contact_phone
+                SELECT ec.contact_id, ec.contact_name, ec.contact_relation, ec.contact_phone
                 FROM emergency_contacts ec
                 WHERE %s = ?
                 """.formatted(ID_NAME);
@@ -42,7 +43,7 @@ public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
     @Override
     protected String buildFindByFieldSql(String fieldName) {
         return """
-                SELECT ec.contact_id, ec.contact_name, ec.relation, ec.contact_phone
+                SELECT ec.contact_id, ec.contact_name, ec.contact_relation, ec.contact_phone
                 FROM emergency_contacts ec
                 WHERE %s = ?
                 """.formatted(fieldName);
@@ -84,8 +85,18 @@ public class EmergencyContactsDao extends AbstractDao<EmergencyContact> {
         return new EmergencyContact(
                 resultSet.getInt("contact_id"),
                 resultSet.getString("contact_name"),
-                resultSet.getString("relation"),
+                resultSet.getString("contact_relation"),
                 resultSet.getString("contact_phone")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("contact_id", "id"),
+                Map.entry("contact_name", "contactName"),
+                Map.entry("contact_relation", "relation"),
+                Map.entry("contact_phone", "phone")
         );
     }
 }

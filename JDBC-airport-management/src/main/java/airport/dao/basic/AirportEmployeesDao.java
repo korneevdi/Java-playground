@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AirportEmployeesDao extends AbstractDao<AirportEmployee> {
@@ -189,6 +190,22 @@ public class AirportEmployeesDao extends AbstractDao<AirportEmployee> {
                 rs.getString("passport_number"),
                 empContact,
                 emergContact
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("airport_employee_id", "id"),
+                Map.entry("first_name", "firstName"),
+                Map.entry("last_name", "lastName"),
+                Map.entry("role", "role"),
+                Map.entry("sex", "sex"),
+                Map.entry("birth_date", "birthDate"),
+                Map.entry("passport_country", "passportCountry"),
+                Map.entry("passport_number", "passportNumber"),
+                Map.entry("contact", "contact"),
+                Map.entry("emergency_contact", "emergencyContact")
         );
     }
 }

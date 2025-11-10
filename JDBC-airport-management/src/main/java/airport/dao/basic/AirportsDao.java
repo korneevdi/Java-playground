@@ -5,6 +5,7 @@ import airport.entity.basic.Airport;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class AirportsDao extends AbstractDao<Airport> {
 
@@ -57,6 +58,8 @@ public class AirportsDao extends AbstractDao<Airport> {
     @Override
     protected void setExistsStatement(PreparedStatement ps, Airport airport) throws SQLException {
         ps.setString(1, airport.getIata());
+        ps.setString(2, airport.getIcao());
+        ps.setString(3, airport.getName());
     }
 
     @Override
@@ -90,6 +93,19 @@ public class AirportsDao extends AbstractDao<Airport> {
                 resultSet.getString("city"),
                 resultSet.getString("country"),
                 resultSet.getString("timezone")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("airport_id", "id"),
+                Map.entry("iata", "iata"),
+                Map.entry("icao", "icao"),
+                Map.entry("name", "name"),
+                Map.entry("city", "city"),
+                Map.entry("country", "country"),
+                Map.entry("timezone", "timezone")
         );
     }
 }

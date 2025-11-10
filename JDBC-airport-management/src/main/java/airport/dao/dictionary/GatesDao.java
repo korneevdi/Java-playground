@@ -5,6 +5,7 @@ import airport.entity.dictionary.Gate;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class GatesDao extends AbstractDao<Gate> {
 
@@ -66,6 +67,14 @@ public class GatesDao extends AbstractDao<Gate> {
         return new Gate(
                 resultSet.getInt("gate_id"),
                 resultSet.getString("gate_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("gate_id", "id"),
+                Map.entry("gate_number", "number")
         );
     }
 }

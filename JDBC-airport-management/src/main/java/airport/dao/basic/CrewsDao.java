@@ -7,6 +7,7 @@ import airport.entity.dictionary.Sex;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CrewsDao extends AbstractDao<Crew> {
@@ -116,6 +117,20 @@ public class CrewsDao extends AbstractDao<Crew> {
                 resultSet.getObject("birth_date", LocalDate.class),
                 resultSet.getString("passport_country"),
                 resultSet.getString("passport_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("flight_crew_id", "id"),
+                Map.entry("pilot_license_number", "pilotLicenseNumber"),
+                Map.entry("first_name", "firstName"),
+                Map.entry("last_name", "lastName"),
+                Map.entry("sex", "sex"),
+                Map.entry("birth_date", "birthDate"),
+                Map.entry("passport_country", "passportCountry"),
+                Map.entry("passport_number", "passportNumber")
         );
     }
 }

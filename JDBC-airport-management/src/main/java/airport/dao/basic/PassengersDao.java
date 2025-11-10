@@ -6,6 +6,7 @@ import airport.entity.dictionary.Sex;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PassengersDao extends AbstractDao<Passenger> {
@@ -111,6 +112,19 @@ public class PassengersDao extends AbstractDao<Passenger> {
                 resultSet.getInt("age"),
                 resultSet.getString("passport_country"),
                 resultSet.getString("passport_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("passenger_id", "id"),
+                Map.entry("first_name", "firstName"),
+                Map.entry("last_name", "lastName"),
+                Map.entry("sex", "sex"),
+                Map.entry("age", "age"),
+                Map.entry("passport_country", "passportCountry"),
+                Map.entry("passport_number", "passportNumber")
         );
     }
 }

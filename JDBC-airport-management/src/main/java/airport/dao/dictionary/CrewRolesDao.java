@@ -5,6 +5,7 @@ import airport.entity.dictionary.CrewRole;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class CrewRolesDao extends AbstractDao<CrewRole> {
 
@@ -66,6 +67,14 @@ public class CrewRolesDao extends AbstractDao<CrewRole> {
         return new CrewRole(
                 resultSet.getInt("role_id"),
                 resultSet.getString("role_name")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("role_id", "id"),
+                Map.entry("role_name", "name")
         );
     }
 }

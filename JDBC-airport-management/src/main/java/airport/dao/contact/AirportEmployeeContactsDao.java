@@ -5,6 +5,7 @@ import airport.entity.contact.AirportEmployeeContact;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class AirportEmployeeContactsDao extends AbstractDao<AirportEmployeeContact> {
 
@@ -87,27 +88,15 @@ public class AirportEmployeeContactsDao extends AbstractDao<AirportEmployeeConta
         );
     }
 
-
-    // ----------------------------------------------------------------------------------------------------
-
-    /*
     @Override
-    protected String buildUpdateSql() {
-        return """
-                UPDATE %s
-                SET email = ?, phone = ?, city = ?, address = ?, notes = ?
-                WHERE contact_id = ?
-                """.formatted(TABLE_NAME);
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("contact_id", "id"),
+                Map.entry("contact_email", "email"),
+                Map.entry("contact_phone", "phone"),
+                Map.entry("city", "city"),
+                Map.entry("address", "address"),
+                Map.entry("notes", "notes")
+        );
     }
-
-    @Override
-    protected void setUpdateStatement(PreparedStatement ps, AirportEmployeeContact contact) throws SQLException {
-        ps.setString(1, contact.getEmail());
-        ps.setString(2, contact.getPhone());
-        ps.setString(3, contact.getCity());
-        ps.setString(4, contact.getAddress());
-        ps.setString(5, contact.getNotes());
-        ps.setInt(6, contact.getId());
-    }
-*/
 }

@@ -5,6 +5,7 @@ import airport.entity.dictionary.Status;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class StatusesDao extends AbstractDao<Status> {
 
@@ -66,6 +67,14 @@ public class StatusesDao extends AbstractDao<Status> {
         return new Status(
                 resultSet.getInt("status_id"),
                 resultSet.getString("status_name")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("status_id", "id"),
+                Map.entry("status_name", "name")
         );
     }
 }

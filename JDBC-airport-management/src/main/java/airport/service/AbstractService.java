@@ -70,31 +70,76 @@ public abstract class AbstractService<T> {
     protected boolean isValidElement(T element) {
         Class<?> clazz = element.getClass();
 
-        // Gather all fields, which must be checked
-        Set<String> allFields = new HashSet<>();
-        allFields.addAll(stringFields.keySet());
-        allFields.addAll(integerFields.keySet());
-        allFields.addAll(dateFields);
+        // Собираем все проверяемые колонки
+        Set<String> allColumns = new HashSet<>();
+        allColumns.addAll(stringFields.keySet());
+        allColumns.addAll(integerFields.keySet());
+        allColumns.addAll(dateFields);
 
-        for (String fieldName : allFields) {
+        // Мапа соответствия "имя столбца БД → имя поля класса"
+        // Если совпадают, можно сделать просто: Map.of("registration_number", "registrationNumber")
+        Map<String, String> columnToField = dao.getColumnToFieldMap();
+
+        for (String columnName : allColumns) {
+            String fieldName = columnToField.getOrDefault(columnName, columnName);
+
+            // Пропускаем id и всё, чего нет в классе
+            if (fieldName.equalsIgnoreCase("id")) continue;
+
             try {
                 Field field = clazz.getDeclaredField(fieldName);
                 field.setAccessible(true);
                 Object value = field.get(element);
-                String stringValue = value != null ? value.toString() : "";
 
-                if (!isValidField(fieldName, stringValue)) {
+                if (value == null) {
+                    System.out.printf("Field '%s' cannot be null%n", fieldName);
                     return false;
                 }
+
+                if (value instanceof String s) {
+                    int maxLen = stringFields.getOrDefault(columnName, Integer.MAX_VALUE);
+                    if (s.isEmpty()) {
+                        System.out.printf("Field '%s' cannot be empty%n", fieldName);
+                        return false;
+                    }
+                    if (s.length() > maxLen) {
+                        System.out.printf("Field '%s' exceeds max length (%d)%n", fieldName, maxLen);
+                        return false;
+                    }
+                }
+
+                else if (value instanceof Integer i) {
+                    IntRange range = integerFields.get(columnName);
+                    if (range != null && (i < range.min() || i > range.max())) {
+                        System.out.printf("Field '%s' must be between %d and %d%n", fieldName, range.min(), range.max());
+                        return false;
+                    }
+                }
+
+                else if (value instanceof LocalDate d) {
+                    if (dateFields.contains(columnName)) {
+                        // Формат LocalDate уже гарантирован Java, можно просто принять
+                        // Или добавить проверку диапазона, если нужно
+                    }
+                }
+
+                else {
+                    // Если это вложенный объект или что-то ещё — просто пропускаем
+                    continue;
+                }
+
             } catch (NoSuchFieldException e) {
-                System.out.println("Warning: field '" + fieldName + "' not found in class " + clazz.getSimpleName());
+                System.out.printf("Warning: no field '%s' found in %s (expected for column '%s')%n",
+                        fieldName, clazz.getSimpleName(), columnName);
             } catch (IllegalAccessException e) {
-                System.out.println("Cannot access field '" + fieldName + "' in class " + clazz.getSimpleName());
+                System.out.printf("Cannot access field '%s' in class %s%n", fieldName, clazz.getSimpleName());
             }
         }
 
         return true;
     }
+
+
 
     protected boolean isValidField(String fieldName, String value) {
         if (stringFields.containsKey(fieldName)) {

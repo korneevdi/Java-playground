@@ -198,4 +198,6 @@ public abstract class AbstractDao<T> {
     protected abstract void setUpdateStatement(PreparedStatement ps, T entity) throws SQLException;
 
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+    public abstract Map<String, String> getColumnToFieldMap();
 }

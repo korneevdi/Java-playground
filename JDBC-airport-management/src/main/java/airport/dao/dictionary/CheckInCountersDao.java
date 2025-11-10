@@ -5,6 +5,7 @@ import airport.entity.dictionary.CheckInCounter;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class CheckInCountersDao extends AbstractDao<CheckInCounter> {
 
@@ -66,6 +67,14 @@ public class CheckInCountersDao extends AbstractDao<CheckInCounter> {
         return new CheckInCounter(
                 resultSet.getInt("counter_id"),
                 resultSet.getString("counter_number")
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("counter_id", "id"),
+                Map.entry("counter_number", "number")
         );
     }
 }

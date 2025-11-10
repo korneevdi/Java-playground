@@ -8,6 +8,7 @@ import airport.entity.dictionary.Type;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class AirplanesDao extends AbstractDao<Airplane> {
 
@@ -127,6 +128,18 @@ public class AirplanesDao extends AbstractDao<Airplane> {
                 resultSet.getString("model"),
                 resultSet.getInt("total_capacity"),
                 type
+        );
+    }
+
+    @Override
+    public Map<String, String> getColumnToFieldMap() {
+        return Map.ofEntries(
+                Map.entry("airplane_id", "id"),
+                Map.entry("airline", "airline"),
+                Map.entry("registration_number", "registrationNumber"),
+                Map.entry("model", "model"),
+                Map.entry("total_capacity", "capacity"),
+                Map.entry("type", "type")
         );
     }
 }
