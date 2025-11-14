@@ -51,4 +51,10 @@ public class CheckInCountersService extends AbstractService<CheckInCounter> {
     public void add(String counterNumber) {
         addElement(new CheckInCounter(0, counterNumber));
     }
+
+    // Delete element
+    public void delete(String counterNumber) {
+        Map<String, String> map = Map.of("counter_number", counterNumber);
+        deleteElement(map);
+    }
 }

@@ -6,6 +6,8 @@ import airport.entity.basic.Airline;
 import airport.entity.contact.AirlineContact;
 import airport.service.AbstractService;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 
 
@@ -15,8 +17,8 @@ public class AirlinesService extends AbstractService<Airline> {
 
     private final static String ENTITY_NAME = "Airline";
 
-    public AirlinesService(AirlinesDao airlineDao, AirlineContactsDao airlineContactsDao) {
-        super(airlineDao, ENTITY_NAME);
+    public AirlinesService(AirlinesDao airlinesDao, AirlineContactsDao airlineContactsDao) {
+        super(airlinesDao, ENTITY_NAME);
         this.airlineContactsDao = airlineContactsDao;
 
         // Set the maps of the fields
@@ -47,6 +49,26 @@ public class AirlinesService extends AbstractService<Airline> {
         Airline airline = new Airline(0, iata, icao, name, contact);
 
         addElement(airline);
+    }
+
+    // Delete element
+    public void delete(String iata) {
+        int contactId = 0;
+        try{
+            contactId = dao.findByField("iata", iata).get(0).getContact().getId();
+        } catch (RuntimeException ignored) {}
+
+        Map<String, String> map = Map.of("iata", iata);
+        deleteElement(map);
+
+        try{
+            boolean contactDeleted = airlineContactsDao.deleteById(contactId);
+            if(contactDeleted) {
+                System.out.println("Airline contact deleted successfully");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Airline contact was not deleted");
+        }
     }
 
     /*

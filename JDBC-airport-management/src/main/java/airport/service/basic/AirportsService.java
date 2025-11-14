@@ -29,6 +29,12 @@ public class AirportsService extends AbstractService<Airport> {
         addElement(new Airport(0, iata, icao, name, city, country, timezone));
     }
 
+    // Delete element
+    public void delete(String iata) {
+        Map<String, String> map = Map.of("iata", iata);
+        deleteElement(map);
+    }
+
     /*
     // Update airport
     public void update(String oldIata, String oldIcao, String oldName, String oldCity, String oldCountry, String oldTimezone,
@@ -43,35 +49,6 @@ public class AirportsService extends AbstractService<Airport> {
         Airport newAirport = new Airport(id, newIata, newIcao, newName, newCity, newCountry, newTimezone);
 
         updateElement(oldAirport, newAirport);
-    }
-
-    // Delete airport
-    public void delete(String iata, String icao, String name, String city, String country, String timezone) {
-        Airport airport = new Airport(0, iata, icao, name, city, country, timezone);
-        deleteContact(airport);
-    }
-
-    @Override
-    protected void existsOrNotOutput(Airport airport, boolean isExists) {
-        String output =
-                """
-                Element with the following properties
-
-                iata: %s,
-                icao: %s,
-                name: %s,
-                city: %s,
-                country: %s,
-                timezone: %s
-                """.formatted(airport.getIata(), airport.getIcao(), airport.getName(),
-                        airport.getCity(), airport.getCountry(), airport.getTimezone());
-
-        if(isExists) {
-            output = output + "\nalready exists.";
-        } else {
-            output = output + "\ndoes not exist.";
-        }
-        System.out.println(output);
     }
     */
 }

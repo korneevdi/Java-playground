@@ -23,4 +23,10 @@ public class BaggageClaimsService extends AbstractService<BaggageClaim> {
     public void add(String claimNumber) {
         addElement(new BaggageClaim(0, claimNumber));
     }
+
+    // Delete element
+    public void delete(String claimNumber) {
+        Map<String, String> map = Map.of("claim_number", claimNumber);
+        deleteElement(map);
+    }
 }

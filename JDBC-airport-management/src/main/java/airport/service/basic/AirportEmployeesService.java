@@ -111,4 +111,33 @@ public class AirportEmployeesService extends AbstractService<AirportEmployee> {
 
         addElement(airportEmployee);
     }
+
+    // Delete element
+    public void delete(String passportCountry, String passportNumber) {
+        int contactId = 0;
+        int emergencyContactId = 0;
+        try{
+            contactId = dao.findByField("passport_number", passportNumber).get(0).getContact().getId();
+            emergencyContactId = dao.findByField("passport_number", passportNumber)
+                    .get(0).getEmergencyContact().getId();
+        } catch (RuntimeException ignored) {}
+
+        Map<String, String> map = Map.of(
+                "passport_country", passportCountry,
+                "passport_number", passportNumber);
+        deleteElement(map);
+
+        try{
+            boolean contactDeleted = airportEmployeeContactsDao.deleteById(contactId);
+            boolean emergencyContactDeleted = airportEmployeeContactsDao.deleteById(emergencyContactId);
+            if(contactDeleted) {
+                System.out.println("Employee contact deleted successfully");
+            }
+            if(emergencyContactDeleted) {
+                System.out.println("Employee emergency contact deleted successfully");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Contact was not deleted");
+        }
+    }
 }

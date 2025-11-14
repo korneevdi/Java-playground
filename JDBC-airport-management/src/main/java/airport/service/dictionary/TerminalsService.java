@@ -23,4 +23,10 @@ public class TerminalsService extends AbstractService<Terminal> {
     public void add(String terminalNumber) {
         addElement(new Terminal(0, terminalNumber));
     }
+
+    // Delete element
+    public void delete(String terminalNumber) {
+        Map<String, String> map = Map.of("terminal_number", terminalNumber);
+        deleteElement(map);
+    }
 }

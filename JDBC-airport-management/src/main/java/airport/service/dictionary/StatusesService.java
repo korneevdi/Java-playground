@@ -23,4 +23,10 @@ public class StatusesService extends AbstractService<Status> {
     public void add(String statusName) {
         addElement(new Status(0, statusName));
     }
+
+    // Delete element
+    public void delete(String statusName) {
+        Map<String, String> map = Map.of("status_name", statusName);
+        deleteElement(map);
+    }
 }

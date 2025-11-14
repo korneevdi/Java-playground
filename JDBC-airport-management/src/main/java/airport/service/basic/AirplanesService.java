@@ -58,4 +58,10 @@ public class AirplanesService extends AbstractService<Airplane> {
 
         addElement(airplane);
     }
+
+    // Delete element
+    public void delete(String registrationNumber) {
+        Map<String, String> map = Map.of("registration_number", registrationNumber);
+        deleteElement(map);
+    }
 }

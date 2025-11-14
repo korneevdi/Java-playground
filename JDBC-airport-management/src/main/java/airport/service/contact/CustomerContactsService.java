@@ -28,6 +28,12 @@ public class CustomerContactsService extends AbstractService<CustomerContact> {
         addElement(new CustomerContact(0, contactEmail, contactPhone, city, address, notes));
     }
 
+    // Delete element
+    public void delete(String contactEmail) {
+        Map<String, String> map = Map.of("contact_email", contactEmail);
+        deleteElement(map);
+    }
+
     /*
     // Update contact
     public void update(String oldEmail, String oldPhone, String oldCity, String oldAddress, String oldNotes,
@@ -42,32 +48,6 @@ public class CustomerContactsService extends AbstractService<CustomerContact> {
         CustomerContact newContact = new CustomerContact(id, newEmail, newPhone, newCity, newAddress, newNotes);
 
         updateContact(oldContact, newContact);
-    }
-
-    // Delete contact
-    public void delete(String email, String phone, String city, String address) {
-        CustomerContact contact = new CustomerContact(0, email, phone, city, address, "");
-        deleteContact(contact);
-    }
-
-    @Override
-    protected void existsOrNotOutput(CustomerContact contact, boolean isExists) {
-        String output =
-                """
-                Element with the following properties
-
-                email: %s,
-                phone: %s,
-                city: %s,
-                address: %s
-                """.formatted(contact.getEmail(), contact.getPhone(), contact.getCity(), contact.getAddress());
-
-        if(isExists) {
-            output = output + "\nalready exists.";
-        } else {
-            output = output + "\ndoes not exist.";
-        }
-        System.out.println(output);
     }
     */
 }

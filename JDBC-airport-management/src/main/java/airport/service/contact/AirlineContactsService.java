@@ -28,6 +28,12 @@ public class AirlineContactsService extends AbstractService<AirlineContact> {
         addElement(new AirlineContact(0, contactName, contactEmail, contactPhone, city, notes));
     }
 
+    // Delete element
+    public void delete(String contactEmail) {
+        Map<String, String> map = Map.of("contact_email", contactEmail);
+        deleteElement(map);
+    }
+
     /*
     // Update contact
     public void update(String oldContactName, String oldEmail, String oldPhone, String oldCity, String oldNotes,
@@ -43,35 +49,5 @@ public class AirlineContactsService extends AbstractService<AirlineContact> {
 
         updateContact(oldContact, newContact);
     }
-
-    // Delete contact
-    public void delete(String contactName, String email, String phone, String city) {
-        AirlineContact contact = new AirlineContact(0, contactName, email, phone, city, "");
-        deleteContact(contact);
-    }
-
-    @Override
-    protected void existsOrNotOutput(AirlineContact contact, boolean isExists) {
-        String output =
-                """
-                Element with the following properties
-
-                contact name: %s,
-                email: %s,
-                phone: %s,
-                headquarter city: %s
-                """.formatted(contact.getContactName(), contact.getEmail(), contact.getPhone(), contact.getCity());
-
-        if(isExists) {
-            output = output + "\nalready exists.";
-        } else {
-            output = output + "\ndoes not exist.";
-        }
-        System.out.println(output);
-    }
-
-    @Override
-    protected Optional<Integer> findId(AirlineContact contact) {
-        return airlineContactsDao.findByEmail(contact.getEmail()).map(AirlineContact::getId);
-    }*/
+    */
 }

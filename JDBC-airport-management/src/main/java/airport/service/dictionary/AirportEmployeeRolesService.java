@@ -23,4 +23,10 @@ public class AirportEmployeeRolesService extends AbstractService<AirportEmployee
     public void add(String roleName) {
         addElement(new AirportEmployeeRole(0, roleName));
     }
+
+    // Delete element
+    public void delete(String roleName) {
+        Map<String, String> map = Map.of("role_name", roleName);
+        deleteElement(map);
+    }
 }

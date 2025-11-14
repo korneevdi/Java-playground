@@ -115,12 +115,12 @@ public abstract class AbstractDao<T> {
         }
     }
 
-    public void insert(T entity) {
+    public boolean insert(T entity) {
         String sql = buildInsertSql();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             setInsertStatement(ps, entity);
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

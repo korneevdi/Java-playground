@@ -51,4 +51,10 @@ public class GatesService extends AbstractService<Gate> {
     public void add(String gateNumber) {
         addElement(new Gate(0, gateNumber));
     }
+
+    // Delete element
+    public void delete(String gateNumber) {
+        Map<String, String> map = Map.of("gate_number", gateNumber);
+        deleteElement(map);
+    }
 }

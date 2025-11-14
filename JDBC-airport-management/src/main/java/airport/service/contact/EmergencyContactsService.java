@@ -26,6 +26,15 @@ public class EmergencyContactsService extends AbstractService<EmergencyContact> 
         addElement(new EmergencyContact(0, contactName, relation, contactPhone));
     }
 
+    // Delete element
+    public void delete(String contactName, String contactRelation, String contactPhone) {
+        Map<String, String> map = Map.of(
+                "contact_name", contactName,
+                "contact_relation", contactRelation,
+                "contact_phone", contactPhone);
+        deleteElement(map);
+    }
+
     /*
     // Update contact
     public void update(String oldContactName, String oldRelation, String oldPhone,
@@ -41,31 +50,6 @@ public class EmergencyContactsService extends AbstractService<EmergencyContact> 
         EmergencyContact newContact = new EmergencyContact(id, newContactName, newRelation, newPhone);
 
         updateContact(oldContact, newContact);
-    }
-
-    // Delete contact
-    public void delete(String contactName, String relation, String phone) {
-        EmergencyContact contact = new EmergencyContact(0, contactName, relation, phone);
-        deleteContact(contact);
-    }
-
-    @Override
-    protected void existsOrNotOutput(EmergencyContact contact, boolean isExists) {
-        String output =
-                """
-                Element with the following properties
-
-                contact name: %s,
-                relation: %s,
-                phone: %s
-                """.formatted(contact.getContactName(), contact.getRelation(), contact.getPhone());
-
-        if(isExists) {
-            output = output + "\nalready exists.";
-        } else {
-            output = output + "\ndoes not exist.";
-        }
-        System.out.println(output);
     }
     */
 }

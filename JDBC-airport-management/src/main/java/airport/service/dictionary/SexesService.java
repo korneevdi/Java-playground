@@ -23,4 +23,10 @@ public class SexesService extends AbstractService<Sex> {
     public void add(String sexName) {
         addElement(new Sex(0, sexName));
     }
+
+    // Delete element
+    public void delete(String sexName) {
+        Map<String, String> map = Map.of("sex_name", sexName);
+        deleteElement(map);
+    }
 }

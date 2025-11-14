@@ -63,6 +63,8 @@ public class AirlinesDao extends AbstractDao<Airline> {
     @Override
     protected void setExistsStatement(PreparedStatement ps, Airline airline) throws SQLException {
         ps.setString(1, airline.getIata());
+        ps.setString(2, airline.getIcao());
+        ps.setString(3, airline.getName());
     }
 
     @Override

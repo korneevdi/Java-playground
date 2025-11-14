@@ -52,4 +52,26 @@ public class CustomersService extends AbstractService<Customer> {
 
         addElement(customer);
     }
+
+    // Delete element
+    public void delete(String passportCountry, String passportNumber) {
+        int contactId = 0;
+        try{
+            contactId = dao.findByField("passport_number", passportNumber).get(0).getContact().getId();
+        } catch (RuntimeException ignored) {}
+
+        Map<String, String> map = Map.of(
+                "passport_country", passportCountry,
+                "passport_number", passportNumber);
+        deleteElement(map);
+
+        try{
+            boolean contactDeleted = customerContactsDao.deleteById(contactId);
+            if(contactDeleted) {
+                System.out.println("Customer contact deleted successfully");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Customer contact was not deleted");
+        }
+    }
 }

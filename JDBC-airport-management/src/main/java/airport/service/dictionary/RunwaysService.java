@@ -23,4 +23,10 @@ public class RunwaysService extends AbstractService<Runway> {
     public void add(String runwayNumber) {
         addElement(new Runway(0, runwayNumber));
     }
+
+    // Delete element
+    public void delete(String runwayNumber) {
+        Map<String, String> map = Map.of("runway_number", runwayNumber);
+        deleteElement(map);
+    }
 }

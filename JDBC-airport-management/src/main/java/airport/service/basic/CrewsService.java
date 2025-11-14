@@ -52,4 +52,12 @@ public class CrewsService extends AbstractService<Crew> {
 
         addElement(crew);
     }
+
+    // Delete element
+    public void delete(String passportCountry, String passportNumber) {
+        Map<String, String> map = Map.of(
+                "passport_country", passportCountry,
+                "passport_number", passportNumber);
+        deleteElement(map);
+    }
 }

@@ -157,7 +157,9 @@ public class Main {
 
             //airlinesService.showAll();
             //airlinesService.findAllByField("iata", "JL");
-            //airlineContactsService.add("Korean Air", "email", "phone", "city", "notes");
+            //airlinesService.add("it", "ico", "Name Air", "contact name",
+            //        "email", "phone", "city", "notes");
+            //airlinesService.delete("it");
 
             // 18.Customers
             CustomersDao customersDao = new CustomersDao(connection);

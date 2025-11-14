@@ -63,11 +63,52 @@ public abstract class AbstractService<T> {
             return;
         }
 
-        dao.insert(element);
-        System.out.println("New element inserted successfully");
+        boolean inserted = dao.insert(element);
+        if (inserted) {
+            System.out.println("New element inserted successfully");
+        } else {
+            System.out.println("Failed to insert element");
+        }
     }
 
-    protected boolean isValidElement(T element) {
+    // Update element in tables
+    public void updateElement(T oldElement, T newElement) {
+        if(!dao.exists(oldElement)) {
+            System.out.println("Element to update does not exist");
+            return;
+        }
+
+        if(!isValidElement(newElement)) {
+            System.out.println("Element with new properties is invalid");
+            return;
+        }
+
+        if(oldElement.equals(newElement)) {
+            System.out.println("Properties of old and old element are identical. Nothing to update");
+            return;
+        }
+
+        boolean updated = dao.update(newElement);
+        if (updated) {
+            System.out.println("Element updated successfully");
+        } else {
+            System.out.println("Failed to update element");
+        }
+    }
+
+    // Delete element from tables
+    public void deleteElement(Map<String, String> fieldsForDeletion) {
+        int id = dao.findId(fieldsForDeletion)
+                .orElseThrow(() -> new IllegalStateException("Element does not exist"));
+        boolean deleted = dao.deleteById(id);
+        if (deleted) {
+            System.out.println("Element deleted successfully");
+        } else {
+            System.out.println("Failed to delete element");
+        }
+    }
+
+    public boolean isValidElement(T element) {
         Class<?> clazz = element.getClass();
 
         // Собираем все проверяемые колонки
@@ -109,7 +150,7 @@ public abstract class AbstractService<T> {
                 }
 
                 else if (value instanceof Integer i) {
-                    IntRange range = integerFields.get(columnName);
+                    AbstractService.IntRange range = integerFields.get(columnName);
                     if (range != null && (i < range.min() || i > range.max())) {
                         System.out.printf("Field '%s' must be between %d and %d%n", fieldName, range.min(), range.max());
                         return false;
@@ -139,9 +180,7 @@ public abstract class AbstractService<T> {
         return true;
     }
 
-
-
-    protected boolean isValidField(String fieldName, String value) {
+    public boolean isValidField(String fieldName, String value) {
         if (stringFields.containsKey(fieldName)) {
             return isValidString(fieldName, value);
         } else if (integerFields.containsKey(fieldName)) {
@@ -170,7 +209,7 @@ public abstract class AbstractService<T> {
     private boolean isValidInt(String fieldName, String value) {
         try {
             int intValue = Integer.parseInt(value);
-            IntRange range = integerFields.get(fieldName);
+            AbstractService.IntRange range = integerFields.get(fieldName);
             if (intValue < range.min() || intValue > range.max()) {
                 System.out.println("Field '" + fieldName + "' must be between " + range.min() + " and " + range.max());
                 return false;
@@ -213,28 +252,6 @@ public abstract class AbstractService<T> {
     public record IntRange(int min, int max) {}
 
 /*
-    // Update contact
-    public void updateElement(T oldEntity, T newEntity) {
-        if (!dao.exists(oldEntity)) {
-            existsOrNotOutput(oldEntity, false);
-            return;
-        }
-
-        if (areContactsIdentical(oldEntity, newEntity)) {
-            System.out.println("The old and new properties are identical. Nothing to update.");
-            return;
-        }
-
-        if (!isValidContact(newEntity)) return;
-
-        boolean updated = dao.update(newEntity);
-        if (updated) {
-            System.out.println("Element updated successfully");
-        } else {
-            System.out.println("Failed to update element");
-        }
-    }
-
     // Delete contact
     public void deleteContact(T contact) {
         if (!dao.exists(contact)) {

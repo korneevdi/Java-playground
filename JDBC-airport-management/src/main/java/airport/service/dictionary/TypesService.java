@@ -23,4 +23,10 @@ public class TypesService extends AbstractService<Type> {
     public void add(String typeName) {
         addElement(new Type(0, typeName));
     }
+
+    // Delete element
+    public void delete(String typeName) {
+        Map<String, String> map = Map.of("type_name", typeName);
+        deleteElement(map);
+    }
 }

@@ -23,4 +23,10 @@ public class ControlTypesService extends AbstractService<ControlType> {
     public void add(String typeName) {
         addElement(new ControlType(0, typeName));
     }
+
+    // Delete element
+    public void delete(String typeName) {
+        Map<String, String> map = Map.of("type_name", typeName);
+        deleteElement(map);
+    }
 }
