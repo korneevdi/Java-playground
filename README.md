@@ -19,6 +19,7 @@ The goal of this repository is to:
 
 The repository already includes several thematic modules, such as:
 
+ - [Algorithms](./Algorithms)
  - [Annotations](./Annotations)
     - Using annotations in Java with simple examples.
  - [Collections](./Collections)
@@ -28,12 +29,12 @@ The repository already includes several thematic modules, such as:
  - [JDBC-airport-management](./JDBC-airport-management)
     - Practicing database connections, queries, and statements without using frameworks like Hibernate.
     - Core of my future portfolio project for airport management
+ - [Reflection](./Reflection)
 
 ## Upcoming Modules
 
 More topics will be added soon, for example:
 
- - Reflection
  - Exceptions
  - Multithreading & Concurrency
  - Generics
