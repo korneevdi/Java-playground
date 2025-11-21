@@ -8,6 +8,12 @@
         <option value="$PROJECT_DIR$/Annotation/pom.xml" />
         <option value="$PROJECT_DIR$/Collection/pom.xml" />
         <option value="$PROJECT_DIR$/Sockets/pom.xml" />
+        <option value="$PROJECT_DIR$/JDBC-airport-management/pom.xml" />
+        <option value="$PROJECT_DIR$/Collections/pom.xml" />
+        <option value="$PROJECT_DIR$/Annotations/pom.xml" />
+        <option value="$PROJECT_DIR$/Reflection/pom.xml" />
+        <option value="$PROJECT_DIR$/DataStructures/pom.xml" />
+        <option value="$PROJECT_DIR$/Exceptions/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

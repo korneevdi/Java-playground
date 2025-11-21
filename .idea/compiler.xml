@@ -6,9 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Collection" />
-        <module name="Algorithms" />
-        <module name="Annotation" />
+        <module name="Exceptions" />
+        <module name="Reflection" />
+        <module name="DataStructures" />
+        <module name="Annotations" />
+        <module name="JDBC-airport-management" />
+        <module name="Collections" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

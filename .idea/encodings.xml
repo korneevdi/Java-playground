@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/Algorithms/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Algorithms/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Annotation/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Annotation/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Collection/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Collection/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Annotations/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Annotations/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Collections/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Collections/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataStructures/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataStructures/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Exceptions/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Exceptions/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/JDBC-airport-management/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/JDBC-airport-management/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Reflection/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Reflection/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Sockets/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Sockets/src/main/resources" charset="UTF-8" />
   </component>
